@@ -1,0 +1,2 @@
+{"level":"INFO","timestamp":"2020-07-13 16:34:40.292","file":"Psychic-health/main.go:54","msg":"Start to listening the incoming requests on http address: :8100"}
+{"level":"INFO","timestamp":"2020-07-13 16:34:40.294","file":"Psychic-health/main.go:51","msg":"The router has been deployed successfully."}
