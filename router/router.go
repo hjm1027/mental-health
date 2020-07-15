@@ -3,8 +3,8 @@ package router
 import (
 	"net/http"
 
-	"github.com/Psychic-health/handler/sd"
-	"github.com/Psychic-health/router/middleware"
+	"github.com/mental-health/handler/sd"
+	"github.com/mental-health/router/middleware"
 
 	"github.com/gin-gonic/gin"
 )

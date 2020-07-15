@@ -5,8 +5,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Psychic-health/config"
-	"github.com/Psychic-health/router"
+	"github.com/mental-health/config"
+	"github.com/mental-health/router"
+	"github.com/mental-health/model"
 
 	"github.com/gin-gonic/gin"
 	"github.com/lexkong/log"
@@ -25,6 +26,10 @@ func main(){
 	if err := config.Init(*cfg); err != nil {
 		panic(err)
 	}
+
+	// init db
+	model.DB.Init()
+	defer model.DB.Close()
 
 	// Set gin mode.
 	gin.SetMode(viper.GetString("runmode"))
