@@ -6,8 +6,9 @@ import (
 	"time"
 
 	"github.com/mental-health/config"
-	"github.com/mental-health/router"
 	"github.com/mental-health/model"
+	"github.com/mental-health/router"
+	"github.com/mental-health/router/middleware"
 
 	"github.com/gin-gonic/gin"
 	"github.com/lexkong/log"
@@ -19,9 +20,9 @@ var (
 	cfg = pflag.StringP("config", "c", "", "apiserver config file path.")
 )
 
-func main(){
+func main() {
 	pflag.Parse()
-	
+
 	// init config
 	if err := config.Init(*cfg); err != nil {
 		panic(err)
@@ -37,15 +38,14 @@ func main(){
 	// Create the Gin engine.
 	g := gin.New()
 
-	middlewares := []gin.HandlerFunc{}
-
 	// Routes.
 	router.Load(
 		// Cores.
 		g,
 
 		// Middlwares.
-		middlewares...,
+		middleware.RequestId(),
+		middleware.Logging(),
 	)
 
 	// Ping the server to make sure the router is working.
@@ -73,5 +73,5 @@ func pingServer() error {
 		log.Info("Waiting for the router, retry in 1 second.")
 		time.Sleep(time.Second)
 	}
-	return errors.New("Cannot connect to the router.")
+	return errors.New("Cannot connect to the router")
 }

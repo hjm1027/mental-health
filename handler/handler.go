@@ -3,7 +3,7 @@ package handler
 import (
 	"net/http"
 
-	"github.com/mental-healthr/pkg/errno"
+	"github.com/mental-health/pkg/errno"
 
 	"github.com/gin-gonic/gin"
 )
