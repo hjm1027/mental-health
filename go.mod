@@ -8,6 +8,6 @@ require (
 	github.com/jinzhu/gorm v1.9.14
 	github.com/lexkong/log v0.0.0-20180607165131-972f9cd951fc
 	github.com/shirou/gopsutil v2.20.6+incompatible
-	github.com/spf13/pflag v1.0.5 // indirect
+	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.7.0
 )
