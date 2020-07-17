@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/mental-health/handler/sd"
+	"github.com/mental-health/handler/user"
 	"github.com/mental-health/router/middleware"
 
 	"github.com/gin-gonic/gin"
@@ -21,6 +22,9 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	g.NoRoute(func(c *gin.Context) {
 		c.String(http.StatusNotFound, "The incorrect API route.")
 	})
+
+	// api for authentication functionalities
+	g.POST("/login", user.Login)
 
 	// The health check handlers
 	svcd := g.Group("/sd")

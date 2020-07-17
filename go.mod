@@ -11,5 +11,6 @@ require (
 	github.com/shirou/gopsutil v2.20.6+incompatible
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.7.0
+	github.com/teris-io/shortid v0.0.0-20171029131806-771a37caa5cf
 	github.com/willf/pad v0.0.0-20200313202418-172aa767f2a4
 )

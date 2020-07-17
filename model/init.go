@@ -5,13 +5,14 @@ import (
 
 	"github.com/lexkong/log"
 	"github.com/spf13/viper"
+
 	// MySQL driver.
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
 type Database struct {
-	Self   *gorm.DB
+	Self *gorm.DB
 }
 
 var DB *Database
@@ -59,7 +60,7 @@ func GetSelfDB() *gorm.DB {
 
 func (db *Database) Init() {
 	DB = &Database{
-		Self:   GetSelfDB(),
+		Self: GetSelfDB(),
 	}
 }
 
