@@ -4,3 +4,18 @@ package model
 func (u *UserModel) TableName() string {
 	return "user"
 }
+
+// Create creates a new user account.
+func (user *UserModel) Create() error {
+	d := DB.Self.Create(user)
+	return d.Error
+}
+
+// HaveUser determines whether there is this user or not by the user identifier.
+func (user *UserModel) HaveUser() (uint8, error) {
+	d := DB.Self.First(user, "sid = ?", user.Sid)
+	if d.RecordNotFound() {
+		return 0, nil
+	}
+	return 1, d.Error
+}
