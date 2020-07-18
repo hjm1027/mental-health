@@ -5,6 +5,7 @@ import (
 	"github.com/mental-health/handler"
 	"github.com/mental-health/model"
 	"github.com/mental-health/pkg/errno"
+	"github.com/mental-health/pkg/token"
 	"github.com/mental-health/util"
 )
 
@@ -34,5 +35,19 @@ func Login(c *gin.Context) {
 		}
 	}
 
-	handler.SendResponse(c, errno.OK, nil)
+	// get user
+	u, err := model.GetUserBySid(l.Sid)
+	if err != nil {
+		handler.SendError(c, errno.ErrUserNotFound, nil, err.Error())
+		return
+	}
+
+	// Sign the json web token.
+	t, err := token.Sign(c, token.Context{Id: u.Id}, "")
+	if err != nil {
+		handler.SendError(c, errno.ErrToken, nil, err.Error())
+		return
+	}
+
+	handler.SendResponse(c, errno.OK, model.AuthResponse{Token: t, IsNew: IsNewUser})
 }

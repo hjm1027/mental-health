@@ -19,3 +19,17 @@ func (user *UserModel) HaveUser() (uint8, error) {
 	}
 	return 1, d.Error
 }
+
+// GetUser gets an user by the student identifier.
+func GetUserBySid(sid string) (*UserModel, error) {
+	u := &UserModel{}
+	d := DB.Self.Where("sid = ?", sid).First(&u)
+	return u, d.Error
+}
+
+// GetUser gets an user by the user identifier.
+func GetUserById(id uint32) (*UserModel, error) {
+	u := &UserModel{}
+	d := DB.Self.Where("id = ?", id).First(&u)
+	return u, d.Error
+}

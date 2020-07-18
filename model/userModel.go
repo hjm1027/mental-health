@@ -13,3 +13,9 @@ type UserModel struct {
 	Username string `gorm:"column:username"`
 	Avatar   string `gorm:"column:avatar"`
 }
+
+// AuthResponse represents a JSON web token.
+type AuthResponse struct {
+	Token string `json:"token"`
+	IsNew uint8  `json:"is_new"`
+}

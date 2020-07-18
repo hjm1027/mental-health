@@ -5,6 +5,7 @@ var (
 	OK                  = &Errno{Code: 0, Message: "OK"}
 	InternalServerError = &Errno{Code: 10001, Message: "Internal server error."}
 	ErrBind             = &Errno{Code: 10002, Message: "Error occurred while binding the request body to the struct."}
+	ErrToken            = &Errno{Code: 20003, Message: "Error occurred while signing the JSON web token."}
 
 	// Auth errors
 	ErrAuthFailed   = &Errno{Code: 20101, Message: "The sid or password was incorrect."}
