@@ -32,7 +32,13 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 		svcd.GET("/health", sd.HealthCheck)
 		svcd.GET("/disk", sd.DiskCheck)
 		svcd.GET("/cpu", sd.CPUCheck)
-		svcd.GET("/ram", sd.RAMCheck)
+
+	}
+
+	test1 := g.Group("/test")
+	test1.Use(middleware.AuthMiddleware())
+	{
+		test1.GET("/ram", sd.RAMCheck)
 	}
 
 	return g
