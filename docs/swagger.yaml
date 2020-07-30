@@ -1,10 +1,8 @@
-#sid:学生学号
-
 swagger: '2.0'
 info:
   title: mental-health
   version: 1.0.0
-  description: 二级心理工作站
+  description: 二级心理健康工作站
 
 host: ...
 basePath: /api/v1
@@ -22,8 +20,8 @@ paths:
     post:
       tags:
         - auth
-      summary: login in one.ccnu.edu.cn
-      description:  login in with sid .
+      summary: 用户登录
+      description: 用学号和密码登录一站式门户
       consumes:
         - application/json
       parameters:
@@ -54,8 +52,8 @@ paths:
     get:
       tags:
         - user
+      summary: 获取用户信息
       description: 返回 头像、名称、简介、手机、个人主页照片
-      summary: return user
       consumes:
         - application/json
       parameters:
@@ -89,7 +87,7 @@ paths:
     post:
       tags:
         - user
-      summary: modify user info
+      summary: 修改用户信息
       description: 修改用户信息（可以先GET,改变其中一两项，再POST）
       consumes:
         - application/json
@@ -124,7 +122,118 @@ paths:
           description: 服务器错误
           schema:
             $ref: '#/definitions/CodeResponse'
+  
+  /user/mood/new/:   
+    post:
+      tags:
+        - user
+      summary: 添加心情指数和笔记
+      description: post user mood
+      consumes:
+        - application/json
+      parameters:
+        - name: token
+          in: header
+          required: true
+          description: token
+          type: string
+        - name: data
+          in: body
+          required: true
+          description: token
+          schema:
+            $ref: '#/definitions/MoodInfo'
+      responses:
+        200:
+          description: OK
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '401':
+          description: 未授权
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '500':
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/CodeResponse'
 
+  /user/mood/score/:
+    get:
+      tags:
+        - user
+      summary: 获取用户心情指数
+      description: 获取用户心情指数
+      consumes:
+        - application/json
+      parameters:
+        - name: token
+          in: header
+          required: true
+          description: token
+          type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/MoodScoreResponse'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '401':
+          description: 未授权
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '500':
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/CodeResponse'
+  
+  /user/mood/notes/:
+    get:
+      tags:
+        - user
+      summary: 获取用户心情笔记
+      description: 获取用户心情笔记
+      consumes:
+        - application/json
+      parameters:
+        - name: token
+          in: header
+          required: true
+          description: token
+          type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/MoodNotesResponse'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '401':
+          description: 未授权
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '500':
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/CodeResponse'
 
 definitions:
   authModel:
@@ -138,6 +247,7 @@ definitions:
       password:
         type: string
         description: student's password in one.ccnu.edu.cn
+
 
   authResponse:
     properties:
@@ -154,7 +264,8 @@ definitions:
             example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1OTUwNjU1MDQsImlkIjoxLCJuYmYiOjE1OTUwNjU1MDR9.qa37IXE3LRh57HUxlouA5Oebslzmm8LSJnrWRz0-zUE"
           is_new:
             type: integer
-            description: 是不是新用户，如果返回0，你就要调(POST)/user/info/ 这个api传输头像和昵称
+            description: 是不是新用户
+
 
   UserInfo:
     required:
@@ -179,7 +290,67 @@ definitions:
       back_avatar:
         type: string
         description: 个人主页照片
-      
+  
+  
+  MoodInfo:
+    required:
+      - score
+    properties:
+      score:
+        type: integer
+        description: 心情分数
+      note:
+        type: string
+        description: 心情记录
+
+
+  MoodScoreResponse:
+      type: array
+      description: 所有的心情分数
+      items:
+        $ref: "#/definitions/MoodScoreMonth"
+  
+  MoodScoreMonth:
+    type: array
+    description: 某年中某个月的所有的心情分数
+    items:
+      $ref: "#/definitions/MoodScoreItem"
+  
+  MoodScoreItem:
+    type: object
+    description: 心情的日期和分数
+    properties:
+      date:
+        type: integer
+        description: 从1-31
+      score:
+        type: integer
+        description: 从1-5（或者1-10？）
+
+
+  MoodNotesResponse:
+      type: array
+      description: 所有的心情笔记
+      items:
+        $ref: "#/definitions/MoodNotesMonth"
+  
+  MoodNotesMonth:
+    type: array
+    description: 某年中某个月的所有的心情笔记
+    items:
+      $ref: "#/definitions/MoodNotesItem"
+  
+  MoodNotesItem:
+    type: object
+    description: 心情的日期和笔记
+    properties:
+      date:
+        type: string
+        description: 具体的日期（2020.07.30）
+      notes:
+        type: string
+        description: 笔记的内容
+
 
   UserInfoResponse:
     properties:
@@ -189,6 +360,7 @@ definitions:
         type: string
       data:
         $ref: '#/definitions/UserInfo'
+  
   
   CodeResponse:
     type: object
