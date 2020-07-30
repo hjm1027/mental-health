@@ -1,0 +1,202 @@
+#sid:学生学号
+
+swagger: '2.0'
+info:
+  title: mental-health
+  version: 1.0.0
+  description: 二级心理工作站
+
+host: ...
+basePath: /api/v1
+tags:
+  - name: auth
+    description: token
+  - name: user
+    description: user info
+
+schemes:
+  - https
+
+paths:
+  /login/:
+    post:
+      tags:
+        - auth
+      summary: login in one.ccnu.edu.cn
+      description:  login in with sid .
+      consumes:
+        - application/json
+      parameters:
+        - name: data
+          description: login information
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/authModel'
+      produces:
+        - application/json
+      responses:
+        200:
+          description: ok
+          schema:
+            $ref: '#/definitions/authResponse'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '500':
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/CodeResponse'
+
+
+  /user/info/:
+    get:
+      tags:
+        - user
+      description: 返回 头像、名称、简介、手机、个人主页照片
+      summary: return user
+      consumes:
+        - application/json
+      parameters:
+        - name: token
+          in: header
+          required: true
+          description: token
+          type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/UserInfoResponse'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '401':
+          description: 未授权
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '500':
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/CodeResponse'
+
+    post:
+      tags:
+        - user
+      summary: modify user info
+      description: 修改用户信息（可以先GET,改变其中一两项，再POST）
+      consumes:
+        - application/json
+      parameters:
+        - name: data
+          description: login information
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/UserInfo'
+        - name: token
+          in: header
+          required: true
+          description: token
+          type: string
+      responses:
+        200:
+          description: OK
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '401':
+          description: 未授权
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '500':
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/CodeResponse'
+
+
+definitions:
+  authModel:
+    required:
+      - sid
+      - password
+    properties:
+      sid:
+        type: integer
+        description: student's id
+      password:
+        type: string
+        description: student's password in one.ccnu.edu.cn
+
+  authResponse:
+    properties:
+      code:
+        type: integer
+      message:
+        type: string
+      data:
+        type: object
+        properties:
+          token:
+            type: string
+            description: token
+            example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1OTUwNjU1MDQsImlkIjoxLCJuYmYiOjE1OTUwNjU1MDR9.qa37IXE3LRh57HUxlouA5Oebslzmm8LSJnrWRz0-zUE"
+          is_new:
+            type: integer
+            description: 是不是新用户，如果返回0，你就要调(POST)/user/info/ 这个api传输头像和昵称
+
+  UserInfo:
+    required:
+      - username
+      - avatar
+      - introduction
+      - phone
+      - back_avatar
+    properties:
+      username:
+        type: string
+        description: 用户名称
+      avatar:
+        type: string
+        description: 用户头像
+      introduction:
+        type: string
+        description: 用户简介
+      phone:
+        type: integer
+        description: 用户手机号
+      back_avatar:
+        type: string
+        description: 个人主页照片
+      
+
+  UserInfoResponse:
+    properties:
+      code:
+        type: integer
+      message:
+        type: string
+      data:
+        $ref: '#/definitions/UserInfo'
+  
+  CodeResponse:
+    type: object
+    properties:
+      code:
+        type: integer
+      message:
+        type: string
+      data:
+        type: object
+
