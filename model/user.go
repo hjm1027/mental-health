@@ -55,3 +55,25 @@ func UpdateInfoById(id uint32, info *UserInfoRequest) error {
 	}
 	return nil
 }
+
+// 通过用户id获取用户信息
+func GetUserInfoById(id uint32) (*UserInfoResponse, error) {
+	u, err := GetUserById(id)
+	if err != nil {
+		return &UserInfoResponse{}, err
+	}
+	info := u.GetInfo()
+	return info, nil
+}
+
+func (u *UserModel) GetInfo() *UserInfoResponse {
+	info := UserInfoResponse{
+		Sid:          u.Sid,
+		Username:     u.Username,
+		Avatar:       u.Avatar,
+		Introduction: u.Introduction,
+		Phone:        u.Phone,
+		Back_avatar:  u.Back_avatar,
+	}
+	return &info
+}

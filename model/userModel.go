@@ -30,3 +30,12 @@ type UserInfoRequest struct {
 	Phone        string `json:"phone"`
 	Back_avatar  string `json:"back_avatar"`
 }
+
+type UserInfoResponse struct {
+	Sid          string `json:"sid"`
+	Username     string `json:"username"`
+	Avatar       string `json:"avatar"`
+	Introduction string `json:"introduction"`
+	Phone        string `json:"phone"`
+	Back_avatar  string `json:"back_avatar"`
+}
