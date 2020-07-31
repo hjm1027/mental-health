@@ -18,3 +18,9 @@ db:
   addr: 127.0.0.1:3306
   username: root
   password: 123
+default_user:
+  username: health
+  avatar: https://avatars2.githubusercontent.com/u/43539191?s=460&v=4
+  introduction: 该用户没有填写简介~
+  phone: 无
+  back_avatar: https://avatars2.githubusercontent.com/u/43539191?s=460&v=4

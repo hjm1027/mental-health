@@ -759,7 +759,7 @@ definitions:
         type: string
         description: 用户简介
       phone:
-        type: integer
+        type: string
         description: 用户手机号
       back_avatar:
         type: string

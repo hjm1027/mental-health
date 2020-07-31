@@ -8,14 +8,25 @@ type LoginModel struct {
 
 // UserModel represents a registered user.
 type UserModel struct {
-	Id       uint32 `gorm:"column:id; primary_key; AUTO_INCREMENT"`
-	Sid      string `gorm:"column:sid"`
-	Username string `gorm:"column:username"`
-	Avatar   string `gorm:"column:avatar"`
+	Id           uint32 `gorm:"column:id; primary_key; AUTO_INCREMENT"`
+	Sid          string `gorm:"column:sid"`
+	Username     string `gorm:"column:username"`
+	Avatar       string `gorm:"column:avatar"`
+	Introduction string `gorm:"column:introduction"`
+	Phone        string `gorm:"column:phone"`
+	Back_avatar  string `gorm:"column:back_avatar"`
 }
 
 // AuthResponse represents a JSON web token.
 type AuthResponse struct {
 	Token string `json:"token"`
 	IsNew uint8  `json:"is_new"`
+}
+
+type UserInfoRequest struct {
+	Username     string `json:"username"`
+	Avatar       string `json:"avatar"`
+	Introduction string `json:"introduction"`
+	Phone        string `json:"phone"`
+	Back_avatar  string `json:"back_avatar"`
 }

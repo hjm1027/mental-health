@@ -1,12 +1,15 @@
 package user
 
 import (
+	"strconv"
+
 	"github.com/gin-gonic/gin"
 	"github.com/mental-health/handler"
 	"github.com/mental-health/model"
 	"github.com/mental-health/pkg/errno"
 	"github.com/mental-health/pkg/token"
 	"github.com/mental-health/util"
+	"github.com/spf13/viper"
 )
 
 func Login(c *gin.Context) {
@@ -40,6 +43,20 @@ func Login(c *gin.Context) {
 	if err != nil {
 		handler.SendError(c, errno.ErrUserNotFound, nil, err.Error())
 		return
+	}
+
+	if IsNewUser == 0 {
+		err := u.UpdateInfo(&model.UserInfoRequest{
+			Avatar:       viper.GetString("default_user.avatar"),
+			Username:     viper.GetString("default_user.username") + strconv.FormatUint(uint64(u.Id), 10),
+			Introduction: viper.GetString("default_user.introduction"),
+			Phone:        viper.GetString("default_user.phone"),
+			Back_avatar:  viper.GetString("default_user.back_avatar"),
+		})
+		if err != nil {
+			handler.SendError(c, errno.ErrUpdateUser, nil, err.Error())
+			return
+		}
 	}
 
 	// Sign the json web token.

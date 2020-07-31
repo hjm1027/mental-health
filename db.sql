@@ -96,4 +96,6 @@ CREATE TABLE `comment_like` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
+/*
 INSERT INTO `user` VALUES(0,2018212691,'hjm','0','asd','','','');
+*/
