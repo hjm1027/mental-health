@@ -8,9 +8,11 @@ host: ...
 basePath: /api/v1
 tags:
   - name: auth
-    description: token
+    description: 获得token
   - name: user
-    description: user info
+    description: 用户
+  - name: hole
+    description: 树洞
 
 schemes:
   - https
@@ -235,6 +237,478 @@ paths:
           schema:
             $ref: '#/definitions/CodeResponse'
 
+  /hole/list/:
+    get:
+      tags:
+        - hole
+      summary: 树洞首页，获取问题列表
+      parameters:
+        - in: header
+          name: token
+          required: true
+          type: string
+        - in: query
+          name: pageSize
+          required: true
+          description: 期望的问题数量
+          type: integer
+        - in: query
+          name: pageNum
+          required: true
+          description: 页数，默认为1
+          type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  sum:
+                    type: integer
+                    description: 返回的问题数
+                  list:
+                    type: array
+                    items:
+                      $ref: '#/definitions/HoleResponse'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '401':
+          description: 未授权
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '500':
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/CodeResponse'
+
+  /hole/:
+    post:
+      tags:
+        - hole
+      summary: 发布问题
+      parameters:
+        - in: header
+          name: token
+          description: token
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: 问题内容
+          required: true
+          schema:
+            $ref: '#/definitions/HolePublish'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  hole_id:
+                    type: integer
+                    description: 树洞id
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '401':
+          description: 未授权
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '500':
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/CodeResponse'
+
+  /hole/{id}/:
+    get:
+      tags:
+        - hole
+      summary: 获取评课详情
+      parameters:
+        - in: header
+          name: token
+          required: false
+          type: string
+        - in: path
+          name: id
+          required: true
+          description: 评课id
+          type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                $ref: '#/definitions/HoleResponse'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '401':
+          description: 未授权
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '500':
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/CodeResponse'
+
+  /hole/{id}/like/:
+    put:
+      tags:
+        - hole
+      summary: 问题点赞
+      parameters:
+        - in: header
+          name: token
+          required: true
+          type: string
+        - in: path
+          name: id
+          required: true
+          description: 点赞对象id
+          type: string
+        - in: body
+          name: data
+          required: true
+          schema:
+            type: object
+            properties:
+              is_like:
+                type: boolean
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  is_like:
+                    type: boolean
+                    description: 点赞状态
+                  like_num:
+                    type: integer
+                    description: 点赞数
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '401':
+          description: 未授权
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '500':
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/CodeResponse'
+
+  /hole/{id}/comments/:
+    get:
+      tags:
+        - hole
+      summary: 获取某一问题下的全部评论
+      parameters:
+        - in: header
+          name: token
+          required: true
+          type: string
+        - in: path
+          name: id
+          required: true
+          description: 问题id
+          type: string
+        - in: query
+          name: pageSize
+          required: true
+          description: 期望的一级评论数量
+          type: integer
+        - in: query
+          name: pageNum
+          required: true
+          description: 翻页页码，默认为1
+          type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  parent_comment_sum:
+                    type: integer
+                    description: 一级评论数
+                  parent_comments_list:
+                    type: array
+                    description: 一级评论列表
+                    items:
+                      type: object
+                      description: 父评论内容
+                      properties:
+                        id:
+                          type: integer
+                          description: 问题id
+                        comment_id:
+                          type: integer
+                          description: 评论id
+                        content:
+                          type: string
+                          description: 评论内容
+                        like_num:
+                          type: integer
+                          description: 点赞数
+                        is_like:
+                          type: boolean
+                          description: 是否已点赞
+                        time:
+                          type: string
+                          description: 评课时间（时间戳）
+                        is_anonymous:
+                          type: boolean
+                          description: 是否匿名
+                        user_info:
+                          type: object
+                          description: 评论用户的信息
+                          properties:
+                            username:
+                              type: string
+                            avatar:
+                              type: string
+                              description: 头像
+                        sub_comments_num:
+                          type: integer
+                          description: 子评论总数
+                        sub_comments_list:
+                          type: array
+                          description: 子评论列表
+                          items:
+                            $ref: '#/definitions/CommentResponse'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '401':
+          description: 未授权
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '500':
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/CodeResponse'
+
+  /hole/{id}/comment/:
+    post:
+      tags:
+        - hole
+      summary: 评论问题
+      parameters:
+        - in: header
+          name: token
+          required: true
+          type: string
+        - in: path
+          name: id
+          required: true
+          description: 问题id
+          type: string
+        - in: body
+          name: data
+          required: true
+          schema:
+            type: object
+            properties:
+              content:
+                type: string
+                description: 评论内容
+              is_anonymous:
+                type: boolean
+                description: 是否匿名
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                $ref: '#/definitions/CommentResponse'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '401':
+          description: 未授权
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '500':
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/CodeResponse'
+
+  /comment/{id}/:
+    post:
+      tags:
+        - hole
+      summary: 回复评论
+      parameters:
+        - in: header
+          name: token
+          required: true
+          type: string
+        - in: path
+          name: id
+          required: true
+          description: 评论id
+          type: string
+        - in: body
+          name: data
+          required: true
+          schema:
+            type: object
+            properties:
+              content:
+                type: string
+                description: 评论内容
+              is_anonymous:
+                type: boolean
+                description: 是否匿名
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                $ref: '#/definitions/CommentResponse'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '401':
+          description: 未授权
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '500':
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/CodeResponse'
+
+  /comment/{id}/like/:
+    put:
+      tags:
+        - hole
+      summary: 评论点赞
+      parameters:
+        - in: header
+          name: token
+          required: true
+          type: string
+        - in: path
+          name: id
+          required: true
+          description: 点赞对象id
+          type: string
+        - in: body
+          name: data
+          required: true
+          schema:
+            type: object
+            properties:
+              is_like:
+                type: boolean
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  is_like:
+                    type: boolean
+                    description: 点赞状态
+                  like_num:
+                    type: integer
+                    description: 点赞数
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '401':
+          description: 未授权
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '500':
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/CodeResponse'
+
 definitions:
   authModel:
     required:
@@ -371,4 +845,96 @@ definitions:
         type: string
       data:
         type: object
+
+  HolePublish:
+    type: object
+    properties:
+      header:
+        type: string
+        description: 问题标题
+      type:
+        type: integer
+        description: 分类，0/1/2分别为 环境适应、人际关系、学业学习
+      content:
+        type: string
+        description: 问题描述
+
+  HoleResponse:
+    type: object
+    description: 返回的问题信息模型
+    properties:
+      id:
+        type: integer
+        description: 问题id
+      type:
+        type: integer
+        description: 问题类型（0/1/2）
+      content:
+        type: string
+        description: 问题内容
+      is_anonymous:
+        type: boolean
+        description: 是否匿名
+      like_num:
+        type: integer
+        description: 点赞数
+      is_like:
+        type: boolean
+        description: 当前用户是否已点赞
+      time:
+        type: integer
+        description: 问题发布时间(时间戳)
+      comment_num:
+        type: integer
+        description: 一级评论数
+      user_info:
+        type: object
+        description: 发布问题的用户信息
+        properties:
+          username:
+            type: string
+          avatar:
+            type: string
+            description: 头像
+  
+  CommentResponse:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: 评论id
+      content:
+        type: string
+        description: 评论内容
+      like_num:
+        type: integer
+        description: 点赞数
+      is_like:
+        type: boolean
+        description: 是否已点赞
+      time:
+        type: string
+        description: 评课时间（时间戳）
+      is_anonymous:
+        type: boolean
+        description: 是否匿名
+      user_info:
+        type: object
+        description: 用户信息
+        properties:
+          username:
+            type: string
+          avatar:
+            type: string
+            description: 头像
+          is_teacher:
+            type: boolean
+            description: 是否是老师（显示“指导老师详情”/“用户详情”）
+      target_user_info:
+        type: object
+        description: 评课对象信息
+        properties:
+          id:
+            type: integer
+            description: 用户id
 
