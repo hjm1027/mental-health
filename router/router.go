@@ -23,16 +23,23 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 		c.String(http.StatusNotFound, "The incorrect API route.")
 	})
 
-	// api for authentication functionalities
-	g.POST("/login", user.Login)
+	//用户认证和登录
+	g.POST("/api/v1/login", user.Login)
 
-	// The health check handlers
+	//服务器健康检查
 	svcd := g.Group("/sd")
 	{
 		svcd.GET("/health", sd.HealthCheck)
 		svcd.GET("/disk", sd.DiskCheck)
 		svcd.GET("/cpu", sd.CPUCheck)
 
+	}
+
+	// User路由组
+	u := g.Group("/api/v1/user/")
+	u.Use(middleware.AuthMiddleware())
+	{
+		u.POST("/info/", user.PostInfo)
 	}
 
 	test1 := g.Group("/test")

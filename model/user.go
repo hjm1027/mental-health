@@ -43,3 +43,15 @@ func (u *UserModel) UpdateInfo(info *UserInfoRequest) error {
 	u.Back_avatar = info.Back_avatar
 	return DB.Self.Save(u).Error
 }
+
+// 通过用户id更新用户信息
+func UpdateInfoById(id uint32, info *UserInfoRequest) error {
+	u, err := GetUserById(id)
+	if err != nil {
+		return err
+	}
+	if err = u.UpdateInfo(info); err != nil {
+		return err
+	}
+	return nil
+}
