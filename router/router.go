@@ -3,6 +3,7 @@ package router
 import (
 	"net/http"
 
+	"github.com/mental-health/handler/mood"
 	"github.com/mental-health/handler/sd"
 	"github.com/mental-health/handler/user"
 	"github.com/mental-health/router/middleware"
@@ -32,7 +33,7 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 		svcd.GET("/health", sd.HealthCheck)
 		svcd.GET("/disk", sd.DiskCheck)
 		svcd.GET("/cpu", sd.CPUCheck)
-
+		svcd.GET("/ram", sd.RAMCheck)
 	}
 
 	// User路由组
@@ -43,10 +44,11 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 		u.POST("/info/", user.PostInfo)
 	}
 
-	test1 := g.Group("/test")
-	test1.Use(middleware.AuthMiddleware())
+	// Mood路由组
+	Mood := g.Group("/api/v1/mood/")
+	Mood.Use(middleware.AuthMiddleware())
 	{
-		test1.GET("/ram", sd.RAMCheck)
+		Mood.POST("/new/", mood.NewMood)
 	}
 
 	return g

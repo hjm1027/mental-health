@@ -21,9 +21,11 @@ CREATE TABLE `user` (
 
 CREATE TABLE `mood` (
   `id`         INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `time`   DATETIME    NOT NULL    COMMENT "记录时间",
-  `star`   TINYINT(1)   NOT NULL    COMMENT "星数评级",
-  `notes` VARCHAR(50) COMMENT "心情记录",
+  `year`   INT    NOT NULL    COMMENT "记录时间(年)",
+  `month`   INT    NOT NULL    COMMENT "记录时间(月)",
+  `day`   INT    NOT NULL    COMMENT "记录时间(日)",
+  `score`   TINYINT(1)   NOT NULL    COMMENT "星数评级",
+  `note` VARCHAR(255) COMMENT "心情记录",
 
   `user_id` INT UNSIGNED NOT NULL,
 
