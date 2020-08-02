@@ -49,6 +49,7 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	Mood.Use(middleware.AuthMiddleware())
 	{
 		Mood.GET("/score/", mood.GetMoodScore)
+		Mood.GET("/note/", mood.GetMoodNote)
 		Mood.POST("/new/", mood.NewMood)
 	}
 

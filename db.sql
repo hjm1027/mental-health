@@ -21,6 +21,7 @@ CREATE TABLE `user` (
 
 CREATE TABLE `mood` (
   `id`         INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `date`   VARCHAR(50) NOT NULL COMMENT "记录时间(2020.08.02)",
   `year`   INT    NOT NULL    COMMENT "记录时间(年)",
   `month`   INT    NOT NULL    COMMENT "记录时间(月)",
   `day`   INT    NOT NULL    COMMENT "记录时间(日)",

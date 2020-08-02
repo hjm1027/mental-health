@@ -1,6 +1,7 @@
 package mood
 
 import (
+	"strconv"
 	"time"
 
 	"github.com/mental-health/handler"
@@ -13,6 +14,22 @@ import (
 type MoodRequest struct {
 	Score uint8  `json:"score" binding:"required"`
 	Note  string `json:"note" binding:"required"`
+}
+
+func mix(year uint32, month uint8, day uint8) string {
+	var monthstr, daystr string
+	if month < 10 {
+		monthstr = "0" + strconv.Itoa(int(month))
+	} else {
+		monthstr = strconv.Itoa(int(month))
+	}
+	if day < 10 {
+		daystr = "0" + strconv.Itoa(int(day))
+	} else {
+		daystr = strconv.Itoa(int(day))
+	}
+	str := strconv.Itoa(int(year)) + "." + monthstr + "." + daystr
+	return str
 }
 
 //添加心情信息
@@ -37,6 +54,7 @@ func NewMood(c *gin.Context) {
 
 	var mood = &model.MoodModel{
 		UserId: userId,
+		Date:   mix(year, month, day),
 		Year:   year,
 		Month:  month,
 		Day:    day,

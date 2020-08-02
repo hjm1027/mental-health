@@ -11,43 +11,42 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type MoodScoreRequest struct {
+type MoodNoteRequest struct {
 	Year  uint32 `json:"year" binding:"required"`
 	Month uint8  `json:"month" binding:"required"`
 }
 
-type MoodScoreResponse struct {
-	Month uint8                 `json:"month"`
-	List  []model.MoodScoreItem `json:"list"`
+type MoodNoteResponse struct {
+	Month uint8                `json:"month"`
+	List  []model.MoodNoteItem `json:"list"`
 }
 
-//获取一年的心情指数
-func GetMoodScore(c *gin.Context) {
+//获取一年的心情笔记
+func GetMoodNote(c *gin.Context) {
 	userId := c.MustGet("id").(uint32)
 	yearstr := c.Query("year")
 	year, _ := strconv.ParseInt(yearstr, 10, 64)
-	monthstr := c.Query("month")
-	month, _ := strconv.ParseInt(monthstr, 10, 64)
+	month := uint8(time.Now().Month())
 
 	var i uint8
 	if year == int64(time.Now().Year()) {
-		i = uint8(month)
+		i = month
 	} else {
 		i = 12
 	}
 
-	//var finResponse MoodScoreResponseList
-	var finResponse []MoodScoreResponse
+	//var finResponse MoodNoteResponseList
+	var finResponse []MoodNoteResponse
 	for ; i > 0; i-- {
-		response, err := model.GetMoodScore(userId, uint32(year), uint8(i))
+		response, err := model.GetMoodNote(userId, uint32(year), uint8(i))
 		if err != nil {
-			handler.SendError(c, errno.ErrGetScoreInfo, nil, err.Error())
+			handler.SendError(c, errno.ErrGetNoteInfo, nil, err.Error())
 		}
-		scorelist := MoodScoreResponse{
+		notelist := MoodNoteResponse{
 			Month: uint8(i),
 			List:  response,
 		}
-		finResponse = append(finResponse, scorelist)
+		finResponse = append(finResponse, notelist)
 	}
 
 	handler.SendResponse(c, errno.OK, finResponse)

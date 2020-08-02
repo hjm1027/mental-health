@@ -20,4 +20,5 @@ var (
 
 	//mood errors
 	ErrGetScoreInfo = &Errno{Code: 20301, Message: "Error in getting mood score."}
+	ErrGetNoteInfo  = &Errno{Code: 20302, Message: "Error in getting mood note."}
 )
