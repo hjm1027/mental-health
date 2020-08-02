@@ -9,3 +9,8 @@ type MoodModel struct {
 	Score  uint8  `gorm:"column:score"`
 	Note   string `gorm:"column:note"`
 }
+
+type MoodScoreItem struct {
+	Day   uint8 `json:"day"`
+	Score uint8 `json:"score"`
+}

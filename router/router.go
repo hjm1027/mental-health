@@ -48,6 +48,7 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	Mood := g.Group("/api/v1/mood/")
 	Mood.Use(middleware.AuthMiddleware())
 	{
+		Mood.GET("/score/", mood.GetMoodScore)
 		Mood.POST("/new/", mood.NewMood)
 	}
 

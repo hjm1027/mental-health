@@ -10,3 +10,13 @@ func (mood *MoodModel) New() error {
 	d := DB.Self.Create(mood)
 	return d.Error
 }
+
+func GetMoodScore(userId uint32, year uint32, month uint8) ([]MoodScoreItem, error) {
+	var data []MoodScoreItem
+	query := DB.Self.Table("mood").Select("day, score").Where("user_id = ? AND year = ? AND month = ?", userId, year, month)
+	//fmt.Println("This is query : ", query)
+	if err := query.Scan(&data).Error; err != nil {
+		return nil, err
+	}
+	return data, nil
+}

@@ -17,4 +17,7 @@ var (
 	ErrUserNotFound = &Errno{Code: 20203, Message: "The user was not found."}
 	ErrGetUserInfo  = &Errno{Code: 20204, Message: "Error in getting user info"}
 	ErrUserInfo     = &Errno{Code: 20205, Message: "The user information json cannot be null"}
+
+	//mood errors
+	ErrGetScoreInfo = &Errno{Code: 20301, Message: "Error in getting mood score."}
 )
