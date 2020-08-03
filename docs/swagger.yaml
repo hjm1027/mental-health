@@ -4,7 +4,7 @@ info:
   version: 1.0.0
   description: 二级心理健康工作站
 
-host: ...
+host: 120.25.215.117
 basePath: /api/v1
 tags:
   - name: auth
@@ -13,6 +13,18 @@ tags:
     description: 用户
   - name: hole
     description: 树洞
+  - name: mood
+    description: 心情
+  - name: course
+    description: 心理微课
+  - name: search
+    description: 搜索
+  - name: upload
+    description: 上传图片
+  - name: message
+    description: 消息提醒
+  - name: reserve
+    description: 预约老师
 
 schemes:
   - https
@@ -108,6 +120,8 @@ paths:
       responses:
         200:
           description: OK
+          schema:
+            $ref: '#/definitions/CodeResponse'
         '400':
           description: bad request
           schema:
@@ -125,10 +139,10 @@ paths:
           schema:
             $ref: '#/definitions/CodeResponse'
   
-  /user/mood/new/:   
+  /mood/new/:   
     post:
       tags:
-        - user
+        - mood
       summary: 添加心情指数和笔记
       description: post user mood
       consumes:
@@ -148,6 +162,8 @@ paths:
       responses:
         200:
           description: OK
+          schema:
+            $ref: '#/definitions/CodeResponse'
         '400':
           description: bad request
           schema:
@@ -165,10 +181,10 @@ paths:
           schema:
             $ref: '#/definitions/CodeResponse'
 
-  /user/mood/score/:
+  /mood/score/:
     get:
       tags:
-        - user
+        - mood
       summary: 获取用户心情指数
       description: 获取用户心情指数
       consumes:
@@ -178,6 +194,11 @@ paths:
           in: header
           required: true
           description: token
+          type: string
+        - name: year
+          in: query
+          required: true
+          description: 哪一年
           type: string
       responses:
         200:
@@ -201,10 +222,10 @@ paths:
           schema:
             $ref: '#/definitions/CodeResponse'
   
-  /user/mood/notes/:
+  /mood/note/:
     get:
       tags:
-        - user
+        - mood
       summary: 获取用户心情笔记
       description: 获取用户心情笔记
       consumes:
@@ -215,11 +236,16 @@ paths:
           required: true
           description: token
           type: string
+        - name: year
+          in: query
+          required: true
+          description: 哪一年
+          type: string
       responses:
         200:
           description: OK
           schema:
-            $ref: '#/definitions/MoodNotesResponse'
+            $ref: '#/definitions/MoodNoteResponse'
         '400':
           description: bad request
           schema:
@@ -250,7 +276,7 @@ paths:
         - in: query
           name: pageSize
           required: true
-          description: 期望的问题数量
+          description: 每一页期望的问题数量
           type: integer
         - in: query
           name: pageNum
@@ -344,7 +370,7 @@ paths:
     get:
       tags:
         - hole
-      summary: 获取评课详情
+      summary: 获取问题详情
       parameters:
         - in: header
           name: token
@@ -353,7 +379,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: 评课id
+          description: 问题id
           type: string
       responses:
         "200":
@@ -426,6 +452,104 @@ paths:
                   like_num:
                     type: integer
                     description: 点赞数
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '401':
+          description: 未授权
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '500':
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/CodeResponse'
+
+  /hole/{id}/favorite/:
+    put:
+      tags:
+        - hole
+      summary: 问题收藏
+      parameters:
+        - in: header
+          name: token
+          required: true
+          type: string
+        - in: path
+          name: id
+          required: true
+          description: 问题id
+          type: string
+        - in: body
+          name: data
+          required: true
+          schema:
+            type: object
+            properties:
+              is_like:
+                type: boolean
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  is_like:
+                    type: boolean
+                    description: 收藏状态
+                  like_num:
+                    type: integer
+                    description: 收藏数
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '401':
+          description: 未授权
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '500':
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/CodeResponse'
+
+  /hole/collection/favorite/:
+    get:
+      tags:
+        - hole
+      summary: 获取收藏过的问题
+      parameters:
+        - in: header
+          name: token
+          required: true
+          type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  sum:
+                    type: integer
+                    description: 返回的课程数
+                  list:
+                    type: array
+                    items:
+                      $ref: '#/definitions/HoleResponse'
         '400':
           description: bad request
           schema:
@@ -566,9 +690,6 @@ paths:
               content:
                 type: string
                 description: 评论内容
-              is_anonymous:
-                type: boolean
-                description: 是否匿名
       responses:
         "200":
           description: OK
@@ -622,9 +743,6 @@ paths:
               content:
                 type: string
                 description: 评论内容
-              is_anonymous:
-                type: boolean
-                description: 是否匿名
       responses:
         "200":
           description: OK
@@ -709,6 +827,669 @@ paths:
           schema:
             $ref: '#/definitions/CodeResponse'
 
+  /course/{id}/info/:
+    get:
+      tags:
+        - course
+      summary: 获取课程信息
+      description: 获取课程信息
+      parameters:
+        - in: header
+          name: token
+          description: token
+          required: true
+          type: string
+        - in: path
+          name: id
+          description: 课程id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+            properties:
+              courseInfo:
+                $ref: '#/definitions/CourseInfoResponse'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '401':
+          description: 未授权
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '500':
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/CodeResponse'
+
+  /course/all/:
+    get:
+      tags:
+        - course
+      summary: 获取所有课程
+      description: 获取所有课程
+      parameters:
+        - in: header
+          name: token
+          description: token
+          required: true
+          type: string
+        - in: query
+          name: pageSize
+          required: true
+          description: 每一页期望的问题数量
+          type: integer
+        - in: query
+          name: pageNum
+          required: true
+          description: 页数，默认为1
+          type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  sum:
+                    type: integer
+                    description: 返回的课程数
+                  list:
+                    type: array
+                    items:
+                      $ref: '#/definitions/CourseInfoResponse'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '401':
+          description: 未授权
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '500':
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/CodeResponse'
+
+  /course/popular/:
+    get:
+      tags:
+        - course
+      summary: 获取热门课程
+      description: 获取热门课程
+      parameters:
+        - in: header
+          name: token
+          description: token
+          required: true
+          type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  sum:
+                    type: integer
+                    description: 返回的课程数
+                  list:
+                    type: array
+                    items:
+                      $ref: '#/definitions/CourseInfoResponse'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '401':
+          description: 未授权
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '500':
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/CodeResponse'
+
+  /course/{id}/like/:
+    put:
+      tags:
+        - course
+      summary: 课程点赞
+      parameters:
+        - in: header
+          name: token
+          required: true
+          type: string
+        - in: path
+          name: id
+          required: true
+          description: 课程id
+          type: string
+        - in: body
+          name: data
+          required: true
+          schema:
+            type: object
+            properties:
+              is_like:
+                type: boolean
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  is_like:
+                    type: boolean
+                    description: 点赞状态
+                  like_num:
+                    type: integer
+                    description: 点赞数
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '401':
+          description: 未授权
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '500':
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/CodeResponse'
+
+  /course/collection/like/:
+    get:
+      tags:
+        - course
+      summary: 获取点赞过的课程
+      parameters:
+        - in: header
+          name: token
+          required: true
+          type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  sum:
+                    type: integer
+                    description: 返回的课程数
+                  list:
+                    type: array
+                    items:
+                      $ref: '#/definitions/CourseInfoResponse'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '401':
+          description: 未授权
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '500':
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/CodeResponse'
+
+  /course/{id}/favorite/:
+    put:
+      tags:
+        - course
+      summary: 课程收藏
+      parameters:
+        - in: header
+          name: token
+          required: true
+          type: string
+        - in: path
+          name: id
+          required: true
+          description: 课程id
+          type: string
+        - in: body
+          name: data
+          required: true
+          schema:
+            type: object
+            properties:
+              is_like:
+                type: boolean
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  is_like:
+                    type: boolean
+                    description: 收藏状态
+                  like_num:
+                    type: integer
+                    description: 收藏数
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '401':
+          description: 未授权
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '500':
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/CodeResponse'
+
+  /course/collection/favorite/:
+    get:
+      tags:
+        - course
+      summary: 获取收藏过的课程
+      parameters:
+        - in: header
+          name: token
+          required: true
+          type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  sum:
+                    type: integer
+                    description: 返回的课程数
+                  list:
+                    type: array
+                    items:
+                      $ref: '#/definitions/CourseInfoResponse'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '401':
+          description: 未授权
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '500':
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/CodeResponse'
+
+  /search/course/:
+    get:
+      tags:
+        - search
+      summary: 搜索课程
+      parameters:
+        - in: header
+          name: token
+          required: true
+          type: string
+        - in: query
+          name: keyword
+          required: true
+          type: string
+          description: 关键字
+        - in: query
+          name: page
+          required: true
+          type: integer
+          description: 页码
+        - in: query
+          name: limit
+          required: true
+          type: integer
+          description: 每页最大数
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  sum:
+                    type: integer
+                    description: 返回的课程数
+                  list:
+                    type: array
+                    items:
+                      $ref: '#/definitions/CourseInfoResponse'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '401':
+          description: 未授权
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '500':
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/CodeResponse'
+
+  /search/hole/:
+    get:
+      tags:
+        - search
+      summary: 搜索问题
+      parameters:
+        - in: header
+          name: token
+          required: true
+          type: string
+        - in: query
+          name: keyword
+          required: true
+          type: string
+          description: 关键字
+        - in: query
+          name: type
+          required: true
+          type: integer
+          description: 0/1/2/3/4/5分别为全部、 环境适应、人际关系、学业学习、生活经济、求职择业
+        - in: query
+          name: page
+          required: true
+          type: integer
+          description: 页码
+        - in: query
+          name: limit
+          required: true
+          type: integer
+          description: 每页最大数
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  sum:
+                    type: integer
+                    description: 返回的问题数
+                  list:
+                    type: array
+                    items:
+                      $ref: '#/definitions/HoleResponse'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '401':
+          description: 未授权
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '500':
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/CodeResponse'
+
+  /upload/image/:
+    post:
+      tags:
+        - upload
+      summary: 上传头像
+      description: 上传图片文件，返回url
+      consumes:
+      - multipart/form-data
+      parameters:
+      - in: header
+        name: token
+        required: true
+        type: string
+        description: token
+      - in: formData
+        name: image
+        required: true
+        type: file
+        description: 二进制图片文件
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    description: url
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '401':
+          description: 未授权
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '500':
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/CodeResponse'
+
+  /message/all/:
+    get:
+      tags:
+        - message
+      summary: 获取所有消息提醒
+      parameters:
+      - in: header
+        name: token
+        required: true
+        type: string
+        description: token
+      - in: query
+        name: page
+        required: true
+        type: integer
+        description: 页码
+      - in: query
+        name: limit
+        required: true
+        type: integer
+        description: 每页最大数
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                $ref: '#/definitions/MessageResponseList'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '401':
+          description: 未授权
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '500':
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/CodeResponse'
+
+  /message/count/:
+    get:
+      tags:
+        - message
+      summary: 获取未读消息的数目
+      description: 进入页面前显示有几条未读消息
+      parameters:
+      - in: header
+        name: token
+        required: true
+        type: string
+        description: token
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '401':
+          description: 未授权
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '500':
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/CodeResponse'
+
+  /reserve/:
+    get:
+      tags:
+        - reserve
+      summary: 进行预约
+      parameters:
+      - in: header
+        name: token
+        required: true
+        type: string
+        description: token
+      - in: query
+        name: method
+        required: true
+        type: integer
+        description: 1为线上，2为线下
+      - in: query
+        name: type
+        required: true
+        type: integer
+        description: 1/2/3/4/5分别为 环境适应、人际关系、学业学习、生活经济、求职择业
+      - in: query
+        name: year
+        required: true
+        type: integer
+        description: 年
+      - in: query
+        name: month
+        required: true
+        type: integer
+        description: 月
+      - in: query
+        name: day
+        required: true
+        type: integer
+        description: 日
+      - in: query
+        name: hour
+        required: true
+        type: integer
+        description: 等一张 可预约时间表，比如1代表10:00-12:00之类的
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  can_reserve:
+                    type: boolean
+                    description: 是否可以预约
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '401':
+          description: 未授权
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '500':
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/CodeResponse'
+
+
+
 definitions:
   authModel:
     required:
@@ -785,11 +1566,16 @@ definitions:
         $ref: "#/definitions/MoodScoreMonth"
   
   MoodScoreMonth:
-    type: array
-    description: 某年中某个月的所有的心情分数
-    items:
-      $ref: "#/definitions/MoodScoreItem"
-  
+    properties:
+      month:
+        type: integer
+        description: 月份
+      list:
+        type: array
+        description: 某年中某个月的所有的心情分数
+        items:
+          $ref: "#/definitions/MoodScoreItem"
+    
   MoodScoreItem:
     type: object
     description: 心情的日期和分数
@@ -802,26 +1588,31 @@ definitions:
         description: 从1-5（或者1-10？）
 
 
-  MoodNotesResponse:
+  MoodNoteResponse:
       type: array
       description: 所有的心情笔记
       items:
-        $ref: "#/definitions/MoodNotesMonth"
+        $ref: "#/definitions/MoodNoteMonth"
   
-  MoodNotesMonth:
-    type: array
-    description: 某年中某个月的所有的心情笔记
-    items:
-      $ref: "#/definitions/MoodNotesItem"
+  MoodNoteMonth:
+    properties:
+      month:
+        type: integer
+        description: 月份
+      list:
+        type: array
+        description: 某年中某个月的所有的心情笔记
+        items:
+          $ref: "#/definitions/MoodNoteItem"
   
-  MoodNotesItem:
+  MoodNoteItem:
     type: object
     description: 心情的日期和笔记
     properties:
       date:
         type: string
         description: 具体的日期（2020.07.30）
-      notes:
+      note:
         type: string
         description: 笔记的内容
 
@@ -854,7 +1645,7 @@ definitions:
         description: 问题标题
       type:
         type: integer
-        description: 分类，0/1/2分别为 环境适应、人际关系、学业学习
+        description: 分类，1/2/3/4/5分别为 环境适应、人际关系、学业学习、生活经济、求职择业
       content:
         type: string
         description: 问题描述
@@ -868,19 +1659,25 @@ definitions:
         description: 问题id
       type:
         type: integer
-        description: 问题类型（0/1/2）
+        description: 问题类型（1/2/3/4/5）
       content:
         type: string
         description: 问题内容
-      is_anonymous:
-        type: boolean
-        description: 是否匿名
       like_num:
         type: integer
         description: 点赞数
+      read_num:
+        type: integer
+        description: 浏览数
+      favorite_num:
+        type: integer
+        description: 收藏数
       is_like:
         type: boolean
         description: 当前用户是否已点赞
+      is_favorite:
+        type: boolean
+        description: 当前用户是否已收藏
       time:
         type: integer
         description: 问题发布时间(时间戳)
@@ -915,9 +1712,6 @@ definitions:
       time:
         type: string
         description: 评课时间（时间戳）
-      is_anonymous:
-        type: boolean
-        description: 是否匿名
       user_info:
         type: object
         description: 用户信息
@@ -929,7 +1723,7 @@ definitions:
             description: 头像
           is_teacher:
             type: boolean
-            description: 是否是老师（显示“指导老师详情”/“用户详情”）
+            description: 是否是老师
       target_user_info:
         type: object
         description: 评课对象信息
@@ -938,3 +1732,62 @@ definitions:
             type: integer
             description: 用户id
 
+  CourseInfoResponse:
+    type: object
+    description: 课程信息返回值
+    properties:
+      name:
+        type: string
+        description: 课程名称
+      source:
+        type: string
+        description: 课程来源
+      summary:
+        type: string
+        description: 课程简介
+      like_num:
+        type: integer
+        description: 课程点赞数
+      favorite_num:
+        type: integer
+        description: 课程收藏数
+      time:
+        type: string
+        description: 创建时间
+      watch_num:
+        type: integer
+        description: 观看量
+
+  MessageResponseList:
+    type: array
+    description: 消息提醒列表
+    items:
+      $ref: '#/definitions/MessageResponseItem'
+  
+  MessageResponseItem:
+    type: object
+    description: 一个消息提醒
+    properties:
+      type:
+        type: integer
+        description: 消息类型,1/2/3分别为 预约通过/拒绝，回答了问题，回复了评论
+      hole_id:
+        type: integer
+        description: 问题id，可能为空
+      is_read:
+        type: boolean
+        description: 是否阅读
+      time: 
+        type: string
+        description: 消息时间
+      is_teacher:
+        type: boolean
+        description: 是否是老师（因为老师不匿名）
+      user_avatar:
+        type: string
+        description: 用户头像
+      user_username:
+        type: string
+        description: 用户姓名
+      
+      
