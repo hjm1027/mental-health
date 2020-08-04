@@ -58,6 +58,7 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	Hole := g.Group("/api/v1/hole/")
 	Hole.Use(middleware.AuthMiddleware())
 	{
+		Hole.GET("/:id/", hole.GetHoleInfo)
 		Hole.POST("/new/", hole.New)
 	}
 

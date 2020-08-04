@@ -39,3 +39,8 @@ type UserInfoResponse struct {
 	Phone        string `json:"phone"`
 	Back_avatar  string `json:"back_avatar"`
 }
+
+type UserHoleResponse struct {
+	Username string `json:"username"`
+	Avatar   string `json:"avatar"`
+}

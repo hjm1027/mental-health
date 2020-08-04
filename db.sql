@@ -90,6 +90,26 @@ CREATE TABLE `hole_like` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
+CREATE TABLE `hole_favorite` (
+  `id`            INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `hole_id` INT UNSIGNED NOT NULL COMMENT "问题id",
+  `user_id`       INT UNSIGNED NOT NULL,
+
+  PRIMARY KEY (`id`),
+  KEY `hole_id` (`hole_id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
+
+CREATE TABLE `hole_read` (
+  `id`            INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `hole_id` INT UNSIGNED NOT NULL COMMENT "问题id",
+  `user_id`       INT UNSIGNED NOT NULL,
+
+  PRIMARY KEY (`id`),
+  KEY `hole_id` (`hole_id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
+
 CREATE TABLE `comment_like` (
   `id`         INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `comment_id` VARCHAR(40)  NOT NULL COMMENT "评论id",
