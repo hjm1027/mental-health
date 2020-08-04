@@ -3,6 +3,7 @@ package router
 import (
 	"net/http"
 
+	"github.com/mental-health/handler/hole"
 	"github.com/mental-health/handler/mood"
 	"github.com/mental-health/handler/sd"
 	"github.com/mental-health/handler/user"
@@ -51,6 +52,13 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 		Mood.GET("/score/", mood.GetMoodScore)
 		Mood.GET("/note/", mood.GetMoodNote)
 		Mood.POST("/new/", mood.NewMood)
+	}
+
+	//Hole路由组
+	Hole := g.Group("/api/v1/hole/")
+	Hole.Use(middleware.AuthMiddleware())
+	{
+		Hole.POST("/new/", hole.New)
 	}
 
 	return g

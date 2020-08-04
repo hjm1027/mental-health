@@ -21,4 +21,7 @@ var (
 	//mood errors
 	ErrGetScoreInfo = &Errno{Code: 20301, Message: "Error in getting mood score."}
 	ErrGetNoteInfo  = &Errno{Code: 20302, Message: "Error in getting mood note."}
+
+	//hole errors
+	ErrWordLimitation = &Errno{Code: 20401, Message: "Word limit exceeded"}
 )

@@ -35,14 +35,15 @@ CREATE TABLE `mood` (
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 CREATE TABLE `hole` (
-  `id`                    INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `hole_name`           VARCHAR(50)  NOT NULL,
-  `content`               TEXT           COMMENT "问题内容",
-  `like_num`              INT          NOT NULL DEFAULT 0 COMMENT "点赞数",
-  `comment_num`           INT          NOT NULL DEFAULT 0 COMMENT "一级评论数",
-  `look_num`           INT          NOT NULL DEFAULT 0 COMMENT "浏览数",
-  `type`                  TINYINT(1)               COMMENT "0/1/2/ 环境适应，人际关系，学业学习",
-  `time`                  DATETIME     NOT NULL           COMMENT "发布时间",
+  `id`                    INT UNSIGNED   NOT NULL AUTO_INCREMENT,
+  `name`           VARCHAR(50)       NOT NULL,
+  `content`               TEXT                NOT NULL COMMENT "问题内容",
+  `like_num`              INT                 NOT NULL DEFAULT 0 COMMENT "点赞数",
+  `favorite_num`  INT                    NOT NULL DEFAULT 0 COMMENT "收藏数",
+  `comment_num`           INT       NOT NULL DEFAULT 0 COMMENT "一级评论数",
+  `read_num`           INT                  NOT NULL DEFAULT 0 COMMENT "浏览数",
+  `type`                  TINYINT(1)        NOT NULL COMMENT "1/2/3/4/5分别为 环境适应、人际关系、学业学习、生活经济、求职择业",
+  `time`                  DATETIME         NOT NULL COMMENT "发布时间",
 
   `user_id`               INT UNSIGNED NOT NULL,
 
@@ -102,3 +103,18 @@ CREATE TABLE `comment_like` (
 /*
 INSERT INTO `user` VALUES(0,2018212691,'hjm','0','asd','','','');
 */
+
+-- mock data
+INSERT INTO `user` (sid, username, is_teacher) VALUES ('2018212691', 'Hjm1027',  0);
+INSERT INTO `user` (sid, username, is_teacher) VALUES ('1234568890', '随便',  0);
+INSERT INTO `user` (sid, username, is_teacher) VALUES ('3787546378', '不知道取什么好',  0);
+INSERT INTO `user` (sid, username, is_teacher) VALUES ('1047395326', 'Wow, IGNB',  0);
+INSERT INTO `user` (sid, username, is_teacher) VALUES ('9247128475', '信息管理学院',  0);
+INSERT INTO `user` (sid, username, is_teacher) VALUES ('7204901939', 'GITHUB',  0);
+INSERT INTO `user` (sid, username, is_teacher) VALUES ('8705469760', '中华人民共和国湖北省武汉市',  0);
+
+INSERT INTO `hole` (name, content, type,time,user_id) VALUES ('第一个问题', '作业好多写不完',  1,'2020-08-04 09:16:50',1);
+INSERT INTO `hole` (name, content, type,time,user_id) VALUES ('水', '经验+3，告辞',  3,'2019-01-01 14:18:2',1);
+INSERT INTO `hole` (name, content, type,time,user_id) VALUES ('哈哈哈哈哈', '我又来水了',  5,'2020-07-03 22:27:01',1);
+INSERT INTO `hole` (name, content, type,time,user_id) VALUES ('过年啦', '到2020了',  2,'2020-01-01 00:00:01',2);
+INSERT INTO `hole` (name, content, type,time,user_id) VALUES ('不许水评论！', '小心封号',  2,'2020-08-02 23:56:59',5);
