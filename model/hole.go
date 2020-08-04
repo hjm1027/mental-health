@@ -57,3 +57,27 @@ func (hole *HoleReadModel) Read() error {
 	d = DB.Self.Save(&data)
 	return d.Error
 }
+
+// 判断问题是否已经被当前用户点赞
+func HasLiked(userId uint32, holeId uint32) (uint32, bool) {
+	var data HoleLikeModel
+	d := DB.Self.Where("user_id = ? AND hole_id = ? ", userId, holeId).First(&data)
+	return data.Id, !d.RecordNotFound()
+}
+
+// 点赞问题
+func Like(userId uint32, holeId uint32) error {
+	var data = HoleLikeModel{
+		HoleId: holeId,
+		UserId: userId,
+	}
+	d := DB.Self.Create(&data)
+	return d.Error
+}
+
+// 取消点赞
+func Unlike(id uint32) error {
+	var data = HoleLikeModel{Id: id}
+	d := DB.Self.Delete(&data)
+	return d.Error
+}

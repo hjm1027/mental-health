@@ -28,4 +28,6 @@ var (
 	//hole errors
 	ErrWordLimitation = &Errno{Code: 20401, Message: "Word limit exceeded"}
 	ErrGetHoleInfo    = &Errno{Code: 20402, Message: "Error occurred while getting hole."}
+	ErrNotLiked       = &Errno{Code: 20403, Message: "User has not liked yet. "}
+	ErrHasLiked       = &Errno{Code: 20404, Message: "User has already liked. "}
 )
