@@ -61,6 +61,7 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 		Hole.GET("/:id/", hole.GetHoleInfo)
 		Hole.POST("/new/", hole.New)
 		Hole.PUT("/:id/like/", hole.LikeHole)
+		Hole.PUT("/:id/favorite/", hole.FavoriteHole)
 	}
 
 	return g

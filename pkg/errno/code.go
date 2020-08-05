@@ -30,4 +30,6 @@ var (
 	ErrGetHoleInfo    = &Errno{Code: 20402, Message: "Error occurred while getting hole."}
 	ErrNotLiked       = &Errno{Code: 20403, Message: "User has not liked yet. "}
 	ErrHasLiked       = &Errno{Code: 20404, Message: "User has already liked. "}
+	ErrNotFavorited   = &Errno{Code: 20403, Message: "User has not favorited yet. "}
+	ErrHasFavorited   = &Errno{Code: 20404, Message: "User has already favorited. "}
 )

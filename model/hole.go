@@ -81,3 +81,27 @@ func Unlike(id uint32) error {
 	d := DB.Self.Delete(&data)
 	return d.Error
 }
+
+// 判断问题是否已经被当前用户收藏
+func HasFavorited(userId uint32, holeId uint32) (uint32, bool) {
+	var data HoleFavoriteModel
+	d := DB.Self.Where("user_id = ? AND hole_id = ? ", userId, holeId).First(&data)
+	return data.Id, !d.RecordNotFound()
+}
+
+// 收藏问题
+func Favorite(userId uint32, holeId uint32) error {
+	var data = HoleFavoriteModel{
+		HoleId: holeId,
+		UserId: userId,
+	}
+	d := DB.Self.Create(&data)
+	return d.Error
+}
+
+// 取消收藏
+func Unfavorite(id uint32) error {
+	var data = HoleFavoriteModel{Id: id}
+	d := DB.Self.Delete(&data)
+	return d.Error
+}

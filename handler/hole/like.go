@@ -10,7 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type likeDataRequest struct {
+type LikeDataRequest struct {
 	LikeState bool `json:"like_state"`
 }
 
@@ -25,25 +25,25 @@ func LikeHole(c *gin.Context) {
 
 	recordId, hasLiked := model.HasLiked(userId, uint32(holeId))
 
-	// 获取请求中当前的收藏状态
-	var bodyData likeDataRequest
+	// 获取请求中当前的点赞状态
+	var bodyData LikeDataRequest
 	if err := c.BindJSON(&bodyData); err != nil {
 		handler.SendBadRequest(c, errno.ErrBind, nil, err.Error())
 		return
 	}
 
-	// 未收藏
+	// 未点赞
 	if bodyData.LikeState && !hasLiked {
 		handler.SendResponse(c, errno.ErrNotLiked, nil)
 		return
 	}
-	// 已收藏
+	// 已点赞
 	if !bodyData.LikeState && hasLiked {
 		handler.SendResponse(c, errno.ErrHasLiked, nil)
 		return
 	}
 
-	// 收藏或者取消收藏
+	// 点赞或者取消点赞
 	if bodyData.LikeState {
 		err = model.Unlike(recordId)
 	} else {
