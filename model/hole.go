@@ -105,3 +105,13 @@ func Unfavorite(id uint32) error {
 	d := DB.Self.Delete(&data)
 	return d.Error
 }
+
+// Get collections' records by userId.
+func GetHoleCollectionsByUserId(userId uint32, limit, page uint32) (*[]HoleFavoriteModel, error) {
+	var data []HoleFavoriteModel
+	d := DB.Self.Where("user_id = ?", userId).Order("id DESC").Limit(limit).Offset((page - 1) * limit).Find(&data)
+	if d.RecordNotFound() {
+		return nil, nil
+	}
+	return &data, d.Error
+}

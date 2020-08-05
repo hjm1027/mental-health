@@ -2,7 +2,6 @@ package hole
 
 import (
 	"strconv"
-	"time"
 
 	"github.com/mental-health/handler"
 	"github.com/mental-health/model"
@@ -11,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+/*
 type HoleInfoResponse struct {
 	HoleId      uint32                 `json:"hole_id"`
 	Type        uint8                  `json:"type"`
@@ -23,7 +23,7 @@ type HoleInfoResponse struct {
 	Time        time.Time              `json:"time"`
 	CommentNum  uint32                 `json:"comment_num"`
 	UserInfo    model.UserHoleResponse `json:"user_info"`
-}
+}*/
 
 func GetHoleInfo(c *gin.Context) {
 	id, err := strconv.ParseUint(c.Param("id"), 10, 32)
@@ -71,7 +71,7 @@ func GetHoleInfo(c *gin.Context) {
 	_, isLike := hole.HasLiked(userId)
 	_, isFavorite := hole.HasFavorited(userId)
 
-	data := HoleInfoResponse{
+	data := model.HoleInfoResponse{
 		HoleId:      hole.Id,
 		Type:        hole.Type,
 		Content:     hole.Content,

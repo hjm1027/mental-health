@@ -530,6 +530,16 @@ paths:
           name: token
           required: true
           type: string
+        - in: query
+          name: page
+          required: false
+          type: string
+          description: 页数(默认为1)
+        - in: query
+          name: limit
+          required: false
+          type: string
+          description: 每一页个数(默认为1000)
       responses:
         "200":
           description: OK

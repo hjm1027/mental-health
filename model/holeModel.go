@@ -32,3 +32,17 @@ type HoleReadModel struct {
 	HoleId uint32 `gorm:"column:hole_id"`
 	UserId uint32 `gorm:"column:user_id"`
 }
+
+type HoleInfoResponse struct {
+	HoleId      uint32           `json:"hole_id"`
+	Type        uint8            `json:"type"`
+	Content     string           `json:"content"`
+	LikeNum     uint32           `json:"like_num"`
+	ReadNum     uint32           `json:"read_num"`
+	FavoriteNum uint32           `json:"favorite_num"`
+	IsLike      bool             `json:"is_like"`
+	IsFavorite  bool             `json:"is_favorite"`
+	Time        time.Time        `json:"time"`
+	CommentNum  uint32           `json:"comment_num"`
+	UserInfo    UserHoleResponse `json:"user_info"`
+}
