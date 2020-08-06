@@ -24,5 +24,6 @@ func GetInfo(c *gin.Context) {
 		Introduction: info.Introduction,
 		Phone:        info.Phone,
 		Back_avatar:  info.Back_avatar,
+		IsTeacher:    info.IsTeacher,
 	})
 }

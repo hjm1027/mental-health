@@ -49,6 +49,7 @@ func GetHoleInfo(c *gin.Context) {
 	userInfo := model.UserHoleResponse{
 		Username: user.Username,
 		Avatar:   user.Avatar,
+		Sid:      user.Sid,
 	}
 
 	//read_num +1

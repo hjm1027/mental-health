@@ -38,9 +38,18 @@ type UserInfoResponse struct {
 	Introduction string `json:"introduction"`
 	Phone        string `json:"phone"`
 	Back_avatar  string `json:"back_avatar"`
+	IsTeacher    bool   `json:"is_teacher"`
 }
 
 type UserHoleResponse struct {
 	Username string `json:"username"`
 	Avatar   string `json:"avatar"`
+	Sid      string `json:"sid"`
+}
+
+type UserHoleResponse2 struct {
+	Username  string `json:"username"`
+	Avatar    string `json:"avatar"`
+	Sid       string `json:"sid"`
+	IsTeacher bool   `json:"is_teacher"`
 }

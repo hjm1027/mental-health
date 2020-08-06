@@ -39,6 +39,7 @@ func GetCollectionList(userId, limit, page uint32) ([]*model.HoleInfoResponse, e
 		userInfo := model.UserHoleResponse{
 			Username: user.Username,
 			Avatar:   user.Avatar,
+			Sid:      user.Sid,
 		}
 
 		//get like state
@@ -97,6 +98,7 @@ func GetHoleList(userId, limit, page uint32) ([]*model.HoleInfoResponse, error) 
 		userInfo := model.UserHoleResponse{
 			Username: user.Username,
 			Avatar:   user.Avatar,
+			Sid:      user.Sid,
 		}
 
 		//get like state
@@ -136,10 +138,13 @@ func GetParentCommentInfo(id uint32, userId uint32) (*model.ParentCommentInfo, e
 		log.Error("ParentComment GetUserInfoById error", err)
 		return nil, err
 	}
-	userInfo := model.UserHoleResponse{
-		Username: user.Username,
-		Avatar:   user.Avatar,
+	userInfo := model.UserHoleResponse2{
+		Username:  user.Username,
+		Avatar:    user.Avatar,
+		Sid:       user.Sid,
+		IsTeacher: user.IsTeacher,
 	}
+	//fmt.Println(comment.Time)
 
 	data := &model.ParentCommentInfo{
 		Id:             comment.Id,

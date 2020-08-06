@@ -48,6 +48,20 @@ type HoleInfoResponse struct {
 	UserInfo    UserHoleResponse `json:"user_info"`
 }
 
+type HoleInfoResponse2 struct {
+	HoleId      uint32            `json:"hole_id"`
+	Type        uint8             `json:"type"`
+	Content     string            `json:"content"`
+	LikeNum     uint32            `json:"like_num"`
+	ReadNum     uint32            `json:"read_num"`
+	FavoriteNum uint32            `json:"favorite_num"`
+	IsLike      bool              `json:"is_like"`
+	IsFavorite  bool              `json:"is_favorite"`
+	Time        time.Time         `json:"time"`
+	CommentNum  uint32            `json:"comment_num"`
+	UserInfo    UserHoleResponse2 `json:"user_info"`
+}
+
 // 父评论物理表
 type ParentCommentModel struct {
 	Id            uint32    `gorm:"column:id; primary_key; AUTO_INCREMENT"`
@@ -79,11 +93,11 @@ type CommentInfo struct {
 
 // 返回的评论列表，一级评论模型
 type ParentCommentInfo struct {
-	Id             uint32           `json:"id"` // 父评论id
-	Content        string           `json:"content"`
-	LikeNum        uint32           `json:"like_num"`
-	IsLike         bool             `json:"is_like"`
-	Time           time.Time        `json:"time"`
-	UserInfo       UserHoleResponse `json:"user_info"`
-	SubCommentsNum uint32           `json:"sub_comments_num"`
+	Id             uint32            `json:"id"` // 父评论id
+	Content        string            `json:"content"`
+	LikeNum        uint32            `json:"like_num"`
+	IsLike         bool              `json:"is_like"`
+	Time           time.Time         `json:"time"`
+	UserInfo       UserHoleResponse2 `json:"user_info"`
+	SubCommentsNum uint32            `json:"sub_comments_num"`
 }

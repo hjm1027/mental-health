@@ -1,7 +1,6 @@
 package hole
 
 import (
-	"fmt"
 	"strconv"
 	"time"
 	"unicode/utf8"
@@ -34,8 +33,6 @@ func NewParentComment(c *gin.Context) {
 		return
 	}
 
-	//fmt.Println("asd")
-
 	// Words are limited to 300
 	if utf8.RuneCountInString(data.Content) > 300 {
 		handler.SendBadRequest(c, errno.ErrWordLimitation, nil, "Comment's content is limited to 300.")
@@ -58,7 +55,7 @@ func NewParentComment(c *gin.Context) {
 	}
 	//commentId, _ := strconv.Atoi(commentIdstr)
 
-	fmt.Println(comment.Id)
+	//fmt.Println(comment.Id)
 
 	// Add one to the hole's comment sum
 	hole := &model.HoleModel{Id: uint32(holeId)}
@@ -72,16 +69,12 @@ func NewParentComment(c *gin.Context) {
 		return
 	}
 
-	//fmt.Println("asd")
-
 	// Get comment info
 	commentInfo, err := service.GetParentCommentInfo(uint32(commentId), userId)
 	if err != nil {
 		handler.SendError(c, errno.ErrGetParentCommentInfo, nil, err.Error())
 		return
 	}
-
-	//fmt.Println("asd")
 
 	handler.SendResponse(c, nil, commentInfo)
 }
