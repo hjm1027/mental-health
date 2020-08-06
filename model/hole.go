@@ -106,10 +106,20 @@ func Unfavorite(id uint32) error {
 	return d.Error
 }
 
-// Get collections' records by userId.
+//获取收藏夹
 func GetHoleCollectionsByUserId(userId uint32, limit, page uint32) (*[]HoleFavoriteModel, error) {
 	var data []HoleFavoriteModel
 	d := DB.Self.Where("user_id = ?", userId).Order("id DESC").Limit(limit).Offset((page - 1) * limit).Find(&data)
+	if d.RecordNotFound() {
+		return nil, nil
+	}
+	return &data, d.Error
+}
+
+// 获取问题列表
+func GetHoleList(userId uint32, limit, page uint32) (*[]HoleModel, error) {
+	var data []HoleModel
+	d := DB.Self.Table("hole").Order("id DESC").Limit(limit).Offset((page - 1) * limit).Find(&data)
 	if d.RecordNotFound() {
 		return nil, nil
 	}
