@@ -121,3 +121,35 @@ func GetHoleList(userId, limit, page uint32) ([]*model.HoleInfoResponse, error) 
 	}
 	return response, nil
 }
+
+// 新建父评论时获取信息
+func GetParentCommentInfo(id uint32, userId uint32) (*model.ParentCommentInfo, error) {
+	// Get comment from Database
+	comment := &model.ParentCommentModel{Id: id}
+	if err := comment.GetById(); err != nil {
+		log.Error("comment.GetById() error", err)
+		return nil, err
+	}
+
+	user, err := model.GetUserInfoById(comment.UserId)
+	if err != nil {
+		log.Error("ParentComment GetUserInfoById error", err)
+		return nil, err
+	}
+	userInfo := model.UserHoleResponse{
+		Username: user.Username,
+		Avatar:   user.Avatar,
+	}
+
+	data := &model.ParentCommentInfo{
+		Id:             comment.Id,
+		Content:        comment.Content,
+		LikeNum:        0,
+		IsLike:         false,
+		Time:           comment.Time,
+		UserInfo:       userInfo,
+		SubCommentsNum: 0,
+	}
+
+	return data, nil
+}

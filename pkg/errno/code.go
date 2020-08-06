@@ -32,4 +32,7 @@ var (
 	ErrHasLiked       = &Errno{Code: 20404, Message: "User has already liked. "}
 	ErrNotFavorited   = &Errno{Code: 20403, Message: "User has not favorited yet. "}
 	ErrHasFavorited   = &Errno{Code: 20404, Message: "User has already favorited. "}
+
+	ErrGetSubCommentInfo    = &Errno{Code: 20405, Message: "Error occurred while getting subComment info"}
+	ErrGetParentCommentInfo = &Errno{Code: 20406, Message: "Error occurred while getting parent comment info"}
 )

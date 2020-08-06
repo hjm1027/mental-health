@@ -33,6 +33,7 @@ type HoleReadModel struct {
 	UserId uint32 `gorm:"column:user_id"`
 }
 
+//问题返回格式
 type HoleInfoResponse struct {
 	HoleId      uint32           `json:"hole_id"`
 	Type        uint8            `json:"type"`
@@ -45,4 +46,44 @@ type HoleInfoResponse struct {
 	Time        time.Time        `json:"time"`
 	CommentNum  uint32           `json:"comment_num"`
 	UserInfo    UserHoleResponse `json:"user_info"`
+}
+
+// 父评论物理表
+type ParentCommentModel struct {
+	Id            uint32    `gorm:"column:id; primary_key; AUTO_INCREMENT"`
+	UserId        uint32    `gorm:"column:user_id"`
+	HoleId        uint32    `gorm:"column:hole_id"`
+	Content       string    `gorm:"column:content"`
+	Time          time.Time `gorm:"column:time"`
+	SubCommentNum uint32    `gorm:"column:sub_comment_num"`
+}
+
+// 评论点赞中间表
+type CommentLikeModel struct {
+	Id        uint32 `gorm:"column:id; primary_key; AUTO_INCREMENT"`
+	UserId    uint32 `gorm:"column:user_id"`
+	CommentId string `gorm:"column:comment_id"`
+}
+
+// 评论信息
+type CommentInfo struct {
+	Id             uint32            `json:"id"`
+	Content        string            `json:"content"`
+	LikeNum        uint32            `json:"like_num"`
+	IsLike         bool              `json:"is_like"`
+	Date           string            `json:"date"`
+	Time           string            `json:"time"`
+	UserInfo       *UserInfoResponse `json:"user_info"`
+	TargetUserInfo *UserInfoResponse `json:"target_user_info"`
+}
+
+// 返回的评论列表，一级评论模型
+type ParentCommentInfo struct {
+	Id             uint32           `json:"id"` // 父评论id
+	Content        string           `json:"content"`
+	LikeNum        uint32           `json:"like_num"`
+	IsLike         bool             `json:"is_like"`
+	Time           time.Time        `json:"time"`
+	UserInfo       UserHoleResponse `json:"user_info"`
+	SubCommentsNum uint32           `json:"sub_comments_num"`
 }

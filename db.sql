@@ -52,7 +52,8 @@ CREATE TABLE `hole` (
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 CREATE TABLE `parent_comment` (
-  `id`              VARCHAR(40) NOT NULL           COMMENT "uuid",
+  `id`                    INT UNSIGNED   NOT NULL AUTO_INCREMENT,
+  /*`id`              VARCHAR(40) NOT NULL           COMMENT "uuid",*/
   `time`            DATETIME    NOT NULL           COMMENT "评论时间",
   `content`         TEXT                           COMMENT "评论内容",
   `sub_comment_num` INT         NOT NULL DEFAULT 0 COMMENT "子评论数",

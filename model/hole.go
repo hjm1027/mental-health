@@ -125,3 +125,50 @@ func GetHoleList(userId uint32, limit, page uint32) (*[]HoleModel, error) {
 	}
 	return &data, d.Error
 }
+
+/*--------------------------------------Comment operation/*--------------------------------------*/
+func (hole *ParentCommentModel) TableName() string {
+	return "parent_comment"
+}
+
+// 创建父评论
+func (comment *ParentCommentModel) New() (uint32, error) {
+	d := DB.Self.Create(comment)
+	id := comment.Id
+	return id, d.Error
+}
+
+func (hole *HoleModel) UpdateCommentNum() error {
+	hole.CommentNum += 1
+	d := DB.Self.Save(&hole)
+	return d.Error
+}
+
+// Get a parent comment by its id.
+func (comment *ParentCommentModel) GetById() error {
+	d := DB.Self.First(comment, "id = ?", comment.Id)
+	return d.Error
+}
+
+// Like a comment by the current user.
+func CommentLiking(userId uint32, commentId string) error {
+	var data = &CommentLikeModel{
+		UserId:    userId,
+		CommentId: commentId,
+	}
+	d := DB.Self.Create(data)
+	return d.Error
+}
+
+// Cancel liking a comment by the like-record id.
+func CommentCancelLiking(id uint32) error {
+	var data = CommentLikeModel{Id: id}
+	d := DB.Self.Delete(&data)
+	return d.Error
+}
+
+func CommentHasLiked(userId uint32, commentId string) (uint32, bool) {
+	var data CommentLikeModel
+	d := DB.Self.Where("user_id = ? AND comment_id = ?", userId, commentId).Find(&data)
+	return data.Id, !d.RecordNotFound()
+}
