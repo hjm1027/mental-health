@@ -135,6 +135,10 @@ func (hole *SubCommentModel) TableName() string {
 	return "sub_comment"
 }
 
+func (hole *CommentLikeModel) TableName() string {
+	return "comment_like"
+}
+
 // 创建父评论
 func (comment *ParentCommentModel) New() (uint32, error) {
 	d := DB.Self.Create(comment)
@@ -175,6 +179,16 @@ func CommentHasLiked(userId uint32, commentId string) (uint32, bool) {
 	var data CommentLikeModel
 	d := DB.Self.Where("user_id = ? AND comment_id = ?", userId, commentId).Find(&data)
 	return data.Id, !d.RecordNotFound()
+}
+
+// Get comment's total like amount by commentId.
+func GetCommentLikeSum(commentId string) (uint32, error) {
+	//var data CommentLikeModel
+	//Find()和Count()不要连用
+	var count uint32
+	d := DB.Self.Table("comment_like").Where("comment_id = ?", commentId).Count(&count)
+	//fmt.Println(count)
+	return count, d.Error
 }
 
 // Create a new subComment.

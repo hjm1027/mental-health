@@ -66,6 +66,7 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 		Hole.GET("/collection/favorite/", hole.GetFavoriteCollection)
 		Hole.POST("/comment/:id/", hole.NewParentComment)
 		Hole.POST("/comment/:id/reply/", hole.Reply)
+		Hole.PUT("/:id/comment/like/", hole.CommentLike)
 	}
 
 	return g

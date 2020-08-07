@@ -812,7 +812,7 @@ paths:
           schema:
             type: object
             properties:
-              is_like:
+              like_state:
                 type: boolean
       responses:
         "200":
