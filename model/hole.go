@@ -159,7 +159,7 @@ func (comment *ParentCommentModel) GetById() error {
 }
 
 // Like a comment by the current user.
-func CommentLiking(userId uint32, commentId string) error {
+func CommentLiking(userId uint32, commentId uint32) error {
 	var data = &CommentLikeModel{
 		UserId:    userId,
 		CommentId: commentId,
@@ -175,14 +175,14 @@ func CommentCancelLiking(id uint32) error {
 	return d.Error
 }
 
-func CommentHasLiked(userId uint32, commentId string) (uint32, bool) {
+func CommentHasLiked(userId uint32, commentId uint32) (uint32, bool) {
 	var data CommentLikeModel
 	d := DB.Self.Where("user_id = ? AND comment_id = ?", userId, commentId).Find(&data)
 	return data.Id, !d.RecordNotFound()
 }
 
 // Get comment's total like amount by commentId.
-func GetCommentLikeSum(commentId string) (uint32, error) {
+func GetCommentLikeSum(commentId uint32) (uint32, error) {
 	//var data CommentLikeModel
 	//Find()和Count()不要连用
 	var count uint32
@@ -203,4 +203,27 @@ func (comment *ParentCommentModel) UpdateSubCommentNum(n int) error {
 	comment.SubCommentNum += 1
 	d := DB.Self.Save(&comment)
 	return d.Error
+}
+
+// Get a subComment by its id.
+func (comment *SubCommentModel) GetById() error {
+	d := DB.Self.Unscoped().First(comment, "id = ?", comment.Id)
+	return d.Error
+}
+
+// Get parent comments by hole id.
+func GetParentComments(holeId uint32, limit, offset int32) (*[]ParentCommentModel, error) {
+	var comments []ParentCommentModel
+	d := DB.Self.Where("hole_id = ?", holeId).Order("time").Limit(limit).Offset(offset).Find(&comments)
+	if d.RecordNotFound() {
+		return &comments, nil
+	}
+	return &comments, d.Error
+}
+
+// Get subComments by their parentId.
+func GetSubCommentsByParentId(ParentId uint32) (*[]SubCommentModel, error) {
+	var subComments []SubCommentModel
+	d := DB.Self.Where("parent_id = ?", ParentId).Order("time").Find(&subComments)
+	return &subComments, d.Error
 }

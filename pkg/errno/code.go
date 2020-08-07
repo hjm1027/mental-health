@@ -30,9 +30,10 @@ var (
 	ErrGetHoleInfo    = &Errno{Code: 20402, Message: "Error occurred while getting hole."}
 	ErrNotLiked       = &Errno{Code: 20403, Message: "User has not liked yet. "}
 	ErrHasLiked       = &Errno{Code: 20404, Message: "User has already liked. "}
-	ErrNotFavorited   = &Errno{Code: 20403, Message: "User has not favorited yet. "}
-	ErrHasFavorited   = &Errno{Code: 20404, Message: "User has already favorited. "}
+	ErrNotFavorited   = &Errno{Code: 20405, Message: "User has not favorited yet. "}
+	ErrHasFavorited   = &Errno{Code: 20406, Message: "User has already favorited. "}
 
-	ErrGetSubCommentInfo    = &Errno{Code: 20405, Message: "Error occurred while getting subComment info"}
-	ErrGetParentCommentInfo = &Errno{Code: 20406, Message: "Error occurred while getting parent comment info"}
+	ErrGetSubCommentInfo    = &Errno{Code: 20501, Message: "Error occurred while getting subComment info"}
+	ErrGetParentCommentInfo = &Errno{Code: 20502, Message: "Error occurred while getting parent comment info"}
+	ErrCommentList          = &Errno{Code: 20503, Message: "Error occurred while getting comment list. "}
 )

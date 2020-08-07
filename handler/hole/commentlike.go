@@ -1,6 +1,8 @@
 package hole
 
 import (
+	"strconv"
+
 	"github.com/lexkong/log"
 	"github.com/mental-health/handler"
 	"github.com/mental-health/model"
@@ -20,7 +22,7 @@ type CommentLikeResponse struct {
 
 func CommentLike(c *gin.Context) {
 	var err error
-	id := c.Param("id")
+	id, err := strconv.ParseUint(c.Param("id"), 10, 32)
 
 	// 获取请求中的点赞状态
 	var bodyData CommentLikeRequest
@@ -31,7 +33,7 @@ func CommentLike(c *gin.Context) {
 
 	userId := c.MustGet("id").(uint32)
 
-	likeRecordId, hasLiked := model.CommentHasLiked(userId, id)
+	likeRecordId, hasLiked := model.CommentHasLiked(userId, uint32(id))
 
 	// 判断点赞请求是否合理
 	// 未点赞
@@ -49,7 +51,7 @@ func CommentLike(c *gin.Context) {
 	if bodyData.LikeState {
 		err = model.CommentCancelLiking(likeRecordId)
 	} else {
-		err = model.CommentLiking(userId, id)
+		err = model.CommentLiking(userId, uint32(id))
 	}
 
 	if err != nil {
@@ -57,7 +59,7 @@ func CommentLike(c *gin.Context) {
 		return
 	}
 
-	likeNum, err := model.GetCommentLikeSum(id)
+	likeNum, err := model.GetCommentLikeSum(uint32(id))
 	if err != nil {
 		log.Error("model.GetCommentLikeSum() error", err)
 		handler.SendError(c, err, nil, err.Error())

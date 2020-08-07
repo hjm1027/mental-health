@@ -113,7 +113,7 @@ CREATE TABLE `hole_read` (
 
 CREATE TABLE `comment_like` (
   `id`         INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `comment_id` VARCHAR(40)  NOT NULL COMMENT "评论id",
+  `comment_id` INT UNSIGNED  NOT NULL COMMENT "评论id",
   `user_id`    INT UNSIGNED NOT NULL,
 
   PRIMARY KEY (`id`),

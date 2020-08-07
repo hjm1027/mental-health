@@ -86,7 +86,7 @@ type SubCommentModel struct {
 type CommentLikeModel struct {
 	Id        uint32 `gorm:"column:id; primary_key; AUTO_INCREMENT"`
 	UserId    uint32 `gorm:"column:user_id"`
-	CommentId string `gorm:"column:comment_id"`
+	CommentId uint32 `gorm:"column:comment_id"`
 }
 
 // 评论信息
@@ -96,7 +96,7 @@ type CommentInfo struct {
 	LikeNum        uint32            `json:"like_num"`
 	IsLike         bool              `json:"is_like"`
 	Date           string            `json:"date"`
-	Time           string            `json:"time"`
+	Time           time.Time         `json:"time"`
 	UserInfo       *UserInfoResponse `json:"user_info"`
 	TargetUserInfo *UserInfoResponse `json:"target_user_info"`
 }
@@ -110,6 +110,18 @@ type ParentCommentInfo struct {
 	Time           time.Time         `json:"time"`
 	UserInfo       UserHoleResponse2 `json:"user_info"`
 	SubCommentsNum uint32            `json:"sub_comments_num"`
+}
+
+// 返回的评论列表，一级评论模型
+type ParentCommentInfo2 struct {
+	Id              uint32             `json:"id"` // 父评论id
+	Content         string             `json:"content"`
+	LikeNum         uint32             `json:"like_num"`
+	IsLike          bool               `json:"is_like"`
+	Time            time.Time          `json:"time"`
+	UserInfo        *UserHoleResponse2 `json:"user_info"`
+	SubCommentsNum  uint32             `json:"sub_comments_num"`
+	SubCommentsList *[]CommentInfo     `json:"sub_comments_list"`
 }
 
 type TargetUserInfo struct {
