@@ -15,6 +15,7 @@ type UserModel struct {
 	Introduction string `gorm:"column:introduction"`
 	Phone        string `gorm:"column:phone"`
 	Back_avatar  string `gorm:"column:back_avatar"`
+	IsTeacher    bool   `gorm:"column:is_teacher"`
 }
 
 // AuthResponse represents a JSON web token.

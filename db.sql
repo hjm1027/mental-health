@@ -67,7 +67,7 @@ CREATE TABLE `parent_comment` (
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 CREATE TABLE `sub_comment` (
-  `id`           VARCHAR(40) NOT NULL           COMMENT "uuid",
+  `id`                    INT UNSIGNED   NOT NULL AUTO_INCREMENT,
   `time`         DATETIME    NOT NULL           COMMENT "评论时间",
   `content`      TEXT                           COMMENT "评论内容",
 

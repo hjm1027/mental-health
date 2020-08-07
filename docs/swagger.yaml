@@ -748,6 +748,11 @@ paths:
           required: true
           description: 评论id
           type: string
+        - in: query
+          name: sid
+          required: true
+          description: 评论回复的目标用户的sid
+          type: string
         - in: body
           name: data
           required: true

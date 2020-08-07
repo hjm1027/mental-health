@@ -72,6 +72,16 @@ type ParentCommentModel struct {
 	SubCommentNum uint32    `gorm:"column:sub_comment_num"`
 }
 
+// 子评论物理表
+type SubCommentModel struct {
+	Id           uint32    `gorm:"column:id; primary_key; AUTO_INCREMENT"`
+	UserId       uint32    `gorm:"column:user_id"`
+	TargetUserId uint32    `gorm:"column:target_user_id"` // 回复的用户id
+	ParentId     uint32    `gorm:"column:parent_id"`
+	Content      string    `gorm:"column:content"`
+	Time         time.Time `gorm:"column:time"`
+}
+
 // 评论点赞中间表
 type CommentLikeModel struct {
 	Id        uint32 `gorm:"column:id; primary_key; AUTO_INCREMENT"`
@@ -100,4 +110,8 @@ type ParentCommentInfo struct {
 	Time           time.Time         `json:"time"`
 	UserInfo       UserHoleResponse2 `json:"user_info"`
 	SubCommentsNum uint32            `json:"sub_comments_num"`
+}
+
+type TargetUserInfo struct {
+	Id uint32 `json:"id"`
 }

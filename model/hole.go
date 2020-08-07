@@ -131,6 +131,10 @@ func (hole *ParentCommentModel) TableName() string {
 	return "parent_comment"
 }
 
+func (hole *SubCommentModel) TableName() string {
+	return "sub_comment"
+}
+
 // 创建父评论
 func (comment *ParentCommentModel) New() (uint32, error) {
 	d := DB.Self.Create(comment)
@@ -171,4 +175,18 @@ func CommentHasLiked(userId uint32, commentId string) (uint32, bool) {
 	var data CommentLikeModel
 	d := DB.Self.Where("user_id = ? AND comment_id = ?", userId, commentId).Find(&data)
 	return data.Id, !d.RecordNotFound()
+}
+
+// Create a new subComment.
+func (comment *SubCommentModel) New() (uint32, error) {
+	d := DB.Self.Create(comment)
+	id := comment.Id
+	return id, d.Error
+}
+
+// Update parentComment's the total number of subComment
+func (comment *ParentCommentModel) UpdateSubCommentNum(n int) error {
+	comment.SubCommentNum += 1
+	d := DB.Self.Save(&comment)
+	return d.Error
 }

@@ -20,6 +20,18 @@ func (user *UserModel) HaveUser() (uint8, error) {
 	return 1, d.Error
 }
 
+// 通过id获取用户信息
+func (u *UserModel) GetUserById() error {
+	d := DB.Self.Where("id = ?", u.Id).First(&u)
+	return d.Error
+}
+
+// 通过学号获取用户信息
+func (u *UserModel) GetUserBySid() error {
+	d := DB.Self.Where("sid = ?", u.Sid).First(&u)
+	return d.Error
+}
+
 // 通过学号获取用户
 func GetUserBySid(sid string) (*UserModel, error) {
 	u := &UserModel{}
