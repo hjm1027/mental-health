@@ -67,7 +67,7 @@ paths:
       tags:
         - user
       summary: 获取用户信息
-      description: 返回 头像、名称、简介、手机、个人主页照片
+      description: 返回 头像、名称、简介、手机、个人主页照片、是否是老师
       consumes:
         - application/json
       parameters:
@@ -139,6 +139,47 @@ paths:
           schema:
             $ref: '#/definitions/CodeResponse'
   
+  /user/info/{id}/:
+    get:
+      tags:
+        - user
+      summary: 通过学号获取用户信息
+      description: 返回 头像、名称、简介、手机、个人主页照片、是否是老师
+      consumes:
+        - application/json
+      parameters:
+        - name: token
+          in: header
+          required: true
+          description: token
+          type: string
+        - name: id
+          in: path
+          required: true
+          description: 学生学号
+          type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/UserInfoResponse'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '401':
+          description: 未授权
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '500':
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/CodeResponse'
+            
   /mood/new/:   
     post:
       tags:
@@ -574,7 +615,7 @@ paths:
           schema:
             $ref: '#/definitions/CodeResponse'
 
-  /hole/{id}/comments/:
+  /hole/comments/{id}/:
     get:
       tags:
         - hole
@@ -680,7 +721,7 @@ paths:
           schema:
             $ref: '#/definitions/CodeResponse'
 
-  /hole/{id}/comment/:
+  /hole/comment/{id}/:
     post:
       tags:
         - hole
@@ -733,7 +774,7 @@ paths:
           schema:
             $ref: '#/definitions/CodeResponse'
 
-  /comment/{id}/:
+  /hole/comment/{id}/reply/:
     post:
       tags:
         - hole
@@ -791,7 +832,7 @@ paths:
           schema:
             $ref: '#/definitions/CodeResponse'
 
-  /comment/{id}/like/:
+  /hole/{id}/comment/like/:
     put:
       tags:
         - hole
@@ -1564,6 +1605,9 @@ definitions:
       back_avatar:
         type: string
         description: 个人主页照片
+      is_teacher:
+        type: boolean
+        description: 是否是老师
   
   
   MoodInfo:

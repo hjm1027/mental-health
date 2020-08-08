@@ -42,6 +42,7 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	u.Use(middleware.AuthMiddleware())
 	{
 		u.GET("/info/", user.GetInfo)
+		u.GET("/info/:id/", user.GetInfoBySid)
 		u.POST("/info/", user.PostInfo)
 	}
 
