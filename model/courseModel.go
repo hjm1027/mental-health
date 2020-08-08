@@ -15,6 +15,7 @@ type CourseModel struct {
 }
 
 type CourseInfoResponse struct {
+	Id          uint32    `json:"id"`
 	Url         string    `json:"url"`
 	Name        string    `json:"name"`
 	Source      string    `json:"source"`
@@ -23,6 +24,8 @@ type CourseInfoResponse struct {
 	FavoriteNum uint32    `json:"favorite_num"`
 	WatchNum    uint32    `json:"watch_num"`
 	Time        time.Time `json:"time"`
+	IsLike      bool      `json:"is_like"`
+	IsFavorite  bool      `json:"is_favorite"`
 }
 
 // 课程点赞中间表

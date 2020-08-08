@@ -64,3 +64,13 @@ func CourseUnfavorite(id uint32) error {
 	d := DB.Self.Delete(&data)
 	return d.Error
 }
+
+//获取所有点赞课程
+func GetCourseLikeCollectionsByUserId(userId uint32, limit, page uint32) (*[]CourseLikeModel, error) {
+	var data []CourseLikeModel
+	d := DB.Self.Where("user_id = ?", userId).Order("id DESC").Limit(limit).Offset((page - 1) * limit).Find(&data)
+	if d.RecordNotFound() {
+		return nil, nil
+	}
+	return &data, d.Error
+}

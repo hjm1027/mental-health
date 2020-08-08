@@ -12,6 +12,8 @@ import (
 
 //获取课程信息
 func GetInfo(c *gin.Context) {
+	userId := c.MustGet("id").(uint32)
+
 	courseId, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
 		handler.SendBadRequest(c, errno.ErrGetParam, nil, err.Error())
@@ -24,7 +26,11 @@ func GetInfo(c *gin.Context) {
 		return
 	}
 
+	_, isLike := model.CourseHasLiked(userId, course.Id)
+	_, isFavorite := model.CourseHasFavorited(userId, course.Id)
+
 	response := model.CourseInfoResponse{
+		Id:          course.Id,
 		Url:         course.Url,
 		Name:        course.Name,
 		Source:      course.Source,
@@ -33,6 +39,8 @@ func GetInfo(c *gin.Context) {
 		FavoriteNum: course.FavoriteNum,
 		WatchNum:    course.WatchNum,
 		Time:        course.Time,
+		IsLike:      isLike,
+		IsFavorite:  isFavorite,
 	}
 	handler.SendResponse(c, nil, response)
 }
