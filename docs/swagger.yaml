@@ -473,7 +473,7 @@ paths:
           schema:
             type: object
             properties:
-              is_like:
+              like_state:
                 type: boolean
       responses:
         "200":
@@ -528,7 +528,7 @@ paths:
           schema:
             type: object
             properties:
-              is_like:
+              favorite_state:
                 type: boolean
       responses:
         "200":
@@ -1058,7 +1058,7 @@ paths:
           schema:
             type: object
             properties:
-              is_like:
+              like_state:
                 type: boolean
       responses:
         "200":
@@ -1156,7 +1156,7 @@ paths:
           schema:
             type: object
             properties:
-              is_like:
+              favorite_state:
                 type: boolean
       responses:
         "200":

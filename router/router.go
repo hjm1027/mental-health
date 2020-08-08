@@ -77,6 +77,7 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	Course.Use(middleware.AuthMiddleware())
 	{
 		Course.GET("/info/:id/", course.GetInfo)
+		Course.PUT("/like/:id/", course.LikeCourse)
 	}
 
 	return g

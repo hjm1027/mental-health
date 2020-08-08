@@ -24,3 +24,17 @@ type CourseInfoResponse struct {
 	WatchNum    uint32    `json:"watch_num"`
 	Time        time.Time `json:"time"`
 }
+
+// 课程点赞中间表
+type CourseLikeModel struct {
+	Id       uint32 `gorm:"column:id; primary_key; AUTO_INCREMENT"`
+	UserId   uint32 `gorm:"column:user_id"`
+	CourseId uint32 `gorm:"column:course_id"`
+}
+
+// 课程收藏中间表
+type CourseFavoriteModel struct {
+	Id       uint32 `gorm:"column:id; primary_key; AUTO_INCREMENT"`
+	UserId   uint32 `gorm:"column:user_id"`
+	CourseId uint32 `gorm:"column:course_id"`
+}

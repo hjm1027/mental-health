@@ -135,6 +135,25 @@ CREATE TABLE `course` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
+CREATE TABLE `course_like` (
+  `id`         INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `course_id` INT UNSIGNED  NOT NULL COMMENT "课程id",
+  `user_id`    INT UNSIGNED NOT NULL,
+
+  PRIMARY KEY (`id`),
+  KEY `course_id` (`course_id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
+
+CREATE TABLE `course_favorite` (
+  `id`         INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `course_id` INT UNSIGNED  NOT NULL COMMENT "课程id",
+  `user_id`    INT UNSIGNED NOT NULL,
+
+  PRIMARY KEY (`id`),
+  KEY `course_id` (`course_id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 /*
 INSERT INTO `user` VALUES(0,2018212691,'hjm','0','asd','','','');
