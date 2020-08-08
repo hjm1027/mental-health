@@ -52,6 +52,7 @@ func Login(c *gin.Context) {
 			Introduction: viper.GetString("default_user.introduction"),
 			Phone:        viper.GetString("default_user.phone"),
 			Back_avatar:  viper.GetString("default_user.back_avatar"),
+			IsTeacher:    false,
 		})
 		if err != nil {
 			handler.SendError(c, errno.ErrUpdateUser, nil, err.Error())

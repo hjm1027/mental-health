@@ -10,7 +10,7 @@ CREATE TABLE `user` (
   `id`         INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `sid`        VARCHAR(10)  NOT NULL UNIQUE COMMENT "学生学号",
   `username`   VARCHAR(25)  NOT NULL ,
-  `is_teacher`  TINYINT(1)   NOT NULL  DEFAULT 0 COMMENT "0为学生,1为老师",
+  `is_teacher`  BOOLEAN   NOT NULL  DEFAULT false ,
   `avatar`     VARCHAR(255),
   `introduction`  VARCHAR(255)  COMMENT "个性签名",
   `phone`  VARCHAR(50),

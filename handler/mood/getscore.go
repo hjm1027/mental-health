@@ -12,8 +12,7 @@ import (
 )
 
 type MoodScoreRequest struct {
-	Year  uint32 `json:"year" binding:"required"`
-	Month uint8  `json:"month" binding:"required"`
+	Year uint32 `json:"year" binding:"required"`
 }
 
 type MoodScoreResponse struct {
@@ -26,8 +25,9 @@ func GetMoodScore(c *gin.Context) {
 	userId := c.MustGet("id").(uint32)
 	yearstr := c.Query("year")
 	year, _ := strconv.ParseInt(yearstr, 10, 64)
-	monthstr := c.Query("month")
-	month, _ := strconv.ParseInt(monthstr, 10, 64)
+	month := uint8(time.Now().Month())
+	/*monthstr := c.Query("month")
+	month, _ := strconv.ParseInt(monthstr, 10, 64)*/
 
 	var i uint8
 	if year == int64(time.Now().Year()) {

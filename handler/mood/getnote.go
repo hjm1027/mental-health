@@ -12,8 +12,7 @@ import (
 )
 
 type MoodNoteRequest struct {
-	Year  uint32 `json:"year" binding:"required"`
-	Month uint8  `json:"month" binding:"required"`
+	Year uint32 `json:"year" binding:"required"`
 }
 
 type MoodNoteResponse struct {

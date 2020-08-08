@@ -30,6 +30,7 @@ type UserInfoRequest struct {
 	Introduction string `json:"introduction"`
 	Phone        string `json:"phone"`
 	Back_avatar  string `json:"back_avatar"`
+	IsTeacher    bool   `json:"is_teacher"`
 }
 
 type UserInfoResponse struct {
