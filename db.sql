@@ -36,7 +36,7 @@ CREATE TABLE `mood` (
 
 CREATE TABLE `hole` (
   `id`                    INT UNSIGNED   NOT NULL AUTO_INCREMENT,
-  `name`           VARCHAR(50)       NOT NULL,
+  `name`           VARCHAR(255)       NOT NULL,
   `content`               TEXT                NOT NULL COMMENT "问题内容",
   `like_num`              INT                 NOT NULL DEFAULT 0 COMMENT "点赞数",
   `favorite_num`  INT                    NOT NULL DEFAULT 0 COMMENT "收藏数",
@@ -71,7 +71,7 @@ CREATE TABLE `sub_comment` (
   `time`         DATETIME    NOT NULL           COMMENT "评论时间",
   `content`      TEXT                           COMMENT "评论内容",
 
-  `parent_id`      VARCHAR(40) NOT NULL,
+  `parent_id`      INT UNSIGNED NOT NULL,
   `user_id`        INT UNSIGNED  NOT NULL,
   `target_user_id` INT UNSIGNED  NOT NULL COMMENT "评论的目标用户id",
 
@@ -121,6 +121,21 @@ CREATE TABLE `comment_like` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
+CREATE TABLE `course` (
+  `id`         INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `url`    VARCHAR(255) NOT NULL  COMMENT "视频地址",
+  `name`  VARCHAR(255) NOT NULL,
+  `source` VARCHAR(255) NOT NULL,
+  `summary` VARCHAR(255) NOT NULL,
+  `like_num`              INT                 NOT NULL DEFAULT 0 COMMENT "点赞数",
+  `favorite_num`  INT                    NOT NULL DEFAULT 0 COMMENT "收藏数",
+  `watch_num`  INT                    NOT NULL DEFAULT 0 COMMENT "收藏数",
+  `time`                  DATETIME         NOT NULL COMMENT "发布时间",
+
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
+
+
 /*
 INSERT INTO `user` VALUES(0,2018212691,'hjm','0','asd','','','');
 */
@@ -139,3 +154,8 @@ INSERT INTO `hole` (name, content, type,time,user_id) VALUES ('水', '经验+3�
 INSERT INTO `hole` (name, content, type,time,user_id) VALUES ('哈哈哈哈哈', '我又来水了',  5,'2020-07-03 22:27:01',1);
 INSERT INTO `hole` (name, content, type,time,user_id) VALUES ('过年啦', '到2020了',  2,'2020-01-01 00:00:01',2);
 INSERT INTO `hole` (name, content, type,time,user_id) VALUES ('不许水评论！', '小心封号',  2,'2020-08-02 23:56:59',5);
+
+INSERT INTO `course` (name,url, source, summary,time) VALUES ('自信培养', 'www.baidu.com','CCNU心理站','培养自信','2018-06-07 12:56:01');
+INSERT INTO `course` (name,url, source, summary,time) VALUES ('心理与生活', 'www.google.com','2级心理站','大致介绍','2019-11-30 07:23:18');
+INSERT INTO `course` (name,url, source, summary,time) VALUES ('谈话的艺术', 'www.bing.com','心理健康中心','如何谈话','2020-02-12 19:09:22');
+INSERT INTO `course` (name,url, source, summary,time) VALUES ('发展心理学', 'www.asjhjesh.com','校医院','心理学史','2020-07-12 23:18:00');

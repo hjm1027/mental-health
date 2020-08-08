@@ -3,6 +3,7 @@ package router
 import (
 	"net/http"
 
+	"github.com/mental-health/handler/course"
 	"github.com/mental-health/handler/hole"
 	"github.com/mental-health/handler/mood"
 	"github.com/mental-health/handler/sd"
@@ -69,6 +70,13 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 		Hole.POST("/comment/:id/reply/", hole.Reply)
 		Hole.PUT("/:id/comment/like/", hole.CommentLike)
 		Hole.GET("/comments/:id/", hole.GetComments)
+	}
+
+	//Course路由组
+	Course := g.Group("/api/v1/course/")
+	Course.Use(middleware.AuthMiddleware())
+	{
+		Course.GET("/info/:id/", course.GetInfo)
 	}
 
 	return g

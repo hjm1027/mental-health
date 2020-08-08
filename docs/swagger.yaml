@@ -4,7 +4,7 @@ info:
   version: 1.0.0
   description: 二级心理健康工作站
 
-host: 120.25.215.117
+host: 120.25.215.117:4096
 basePath: /api/v1
 tags:
   - name: auth
