@@ -80,6 +80,7 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 		Course.PUT("/like/:id/", course.LikeCourse)
 		Course.PUT("/favorite/:id/", course.FavoriteCourse)
 		Course.GET("/collection/like/", course.GetLikeCollection)
+		Course.GET("/collection/favorite/", course.GetFavoriteCollection)
 	}
 
 	return g

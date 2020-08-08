@@ -74,3 +74,13 @@ func GetCourseLikeCollectionsByUserId(userId uint32, limit, page uint32) (*[]Cou
 	}
 	return &data, d.Error
 }
+
+//获取所有点赞课程
+func GetCourseFavoriteCollectionsByUserId(userId uint32, limit, page uint32) (*[]CourseFavoriteModel, error) {
+	var data []CourseFavoriteModel
+	d := DB.Self.Where("user_id = ?", userId).Order("id DESC").Limit(limit).Offset((page - 1) * limit).Find(&data)
+	if d.RecordNotFound() {
+		return nil, nil
+	}
+	return &data, d.Error
+}
