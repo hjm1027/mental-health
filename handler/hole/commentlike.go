@@ -23,6 +23,10 @@ type CommentLikeResponse struct {
 func CommentLike(c *gin.Context) {
 	var err error
 	id, err := strconv.ParseUint(c.Param("id"), 10, 32)
+	if err != nil {
+		handler.SendBadRequest(c, errno.ErrGetParam, nil, err.Error())
+		return
+	}
 
 	// 获取请求中的点赞状态
 	var bodyData CommentLikeRequest

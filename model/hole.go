@@ -126,7 +126,31 @@ func GetHoleList(userId uint32, limit, page uint32) (*[]HoleModel, error) {
 	return &data, d.Error
 }
 
-/*--------------------------------------Comment operation/*--------------------------------------*/
+//更新点赞数
+func (hole *HoleModel) UpdateLikeNum(n int) error {
+	if n == 1 {
+		hole.LikeNum += 1
+	} else if n == -1 {
+		hole.LikeNum -= 1
+	}
+
+	d := DB.Self.Save(&hole)
+	return d.Error
+}
+
+//更新收藏数
+func (hole *HoleModel) UpdateFavoriteNum(n int) error {
+	if n == 1 {
+		hole.FavoriteNum += 1
+	} else if n == -1 {
+		hole.FavoriteNum -= 1
+	}
+
+	d := DB.Self.Save(&hole)
+	return d.Error
+}
+
+/*--------------------------------------Comment operation--------------------------------------*/
 func (hole *ParentCommentModel) TableName() string {
 	return "parent_comment"
 }

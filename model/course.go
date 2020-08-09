@@ -41,6 +41,18 @@ func CourseUnlike(id uint32) error {
 	return d.Error
 }
 
+//更新点赞数
+func (course *CourseModel) UpdateLikeNum(n int) error {
+	if n == 1 {
+		course.LikeNum += 1
+	} else if n == -1 {
+		course.LikeNum -= 1
+	}
+
+	d := DB.Self.Save(&course)
+	return d.Error
+}
+
 // 判断课程是否已经被当前用户收藏
 func CourseHasFavorited(userId uint32, courseId uint32) (uint32, bool) {
 	var data CourseFavoriteModel
@@ -65,6 +77,18 @@ func CourseUnfavorite(id uint32) error {
 	return d.Error
 }
 
+//更新收藏数
+func (course *CourseModel) UpdateFavoriteNum(n int) error {
+	if n == 1 {
+		course.FavoriteNum += 1
+	} else if n == -1 {
+		course.FavoriteNum -= 1
+	}
+
+	d := DB.Self.Save(&course)
+	return d.Error
+}
+
 //获取所有点赞课程
 func GetCourseLikeCollectionsByUserId(userId uint32, limit, page uint32) (*[]CourseLikeModel, error) {
 	var data []CourseLikeModel
@@ -75,7 +99,7 @@ func GetCourseLikeCollectionsByUserId(userId uint32, limit, page uint32) (*[]Cou
 	return &data, d.Error
 }
 
-//获取所有点赞课程
+//获取所有收藏课程
 func GetCourseFavoriteCollectionsByUserId(userId uint32, limit, page uint32) (*[]CourseFavoriteModel, error) {
 	var data []CourseFavoriteModel
 	d := DB.Self.Where("user_id = ?", userId).Order("id DESC").Limit(limit).Offset((page - 1) * limit).Find(&data)

@@ -21,6 +21,13 @@ func FavoriteHole(c *gin.Context) {
 		return
 	}
 
+	//get hole
+	hole := &model.HoleModel{Id: uint32(holeId)}
+	if err = hole.GetById(); err != nil {
+		handler.SendError(c, errno.ErrDatabase, nil, err.Error())
+		return
+	}
+
 	userId := c.MustGet("id").(uint32)
 
 	recordId, hasFavorited := model.HasFavorited(userId, uint32(holeId))
@@ -43,15 +50,27 @@ func FavoriteHole(c *gin.Context) {
 		return
 	}
 
+	var err2 error
+
 	// 收藏或者取消收藏
 	if bodyData.FavoriteState {
 		err = model.Unfavorite(recordId)
+		if err != nil {
+			handler.SendError(c, errno.ErrDatabase, nil, err.Error())
+			return
+		}
+		err2 = hole.UpdateFavoriteNum(-1)
 	} else {
 		err = model.Favorite(userId, uint32(holeId))
+		if err != nil {
+			handler.SendError(c, errno.ErrDatabase, nil, err.Error())
+			return
+		}
+		err2 = hole.UpdateFavoriteNum(1)
 	}
 
-	if err != nil {
-		handler.SendError(c, errno.ErrDatabase, nil, err.Error())
+	if err2 != nil {
+		handler.SendError(c, errno.ErrDatabase, nil, err2.Error())
 		return
 	}
 

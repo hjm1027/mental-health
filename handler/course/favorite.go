@@ -21,6 +21,13 @@ func FavoriteCourse(c *gin.Context) {
 		return
 	}
 
+	//get course
+	course := &model.CourseModel{Id: uint32(courseId)}
+	if err = course.GetInfo(); err != nil {
+		handler.SendError(c, errno.ErrDatabase, nil, err.Error())
+		return
+	}
+
 	userId := c.MustGet("id").(uint32)
 
 	recordId, hasFavorited := model.CourseHasFavorited(userId, uint32(courseId))
@@ -43,15 +50,27 @@ func FavoriteCourse(c *gin.Context) {
 		return
 	}
 
+	var err2 error
+
 	// 点赞或者取消点赞
 	if bodyData.FavoriteState {
 		err = model.CourseUnfavorite(recordId)
+		if err != nil {
+			handler.SendError(c, errno.ErrDatabase, nil, err.Error())
+			return
+		}
+		err2 = course.UpdateFavoriteNum(-1)
 	} else {
 		err = model.CourseFavorite(userId, uint32(courseId))
+		if err != nil {
+			handler.SendError(c, errno.ErrDatabase, nil, err.Error())
+			return
+		}
+		err2 = course.UpdateFavoriteNum(1)
 	}
 
-	if err != nil {
-		handler.SendError(c, errno.ErrDatabase, nil, err.Error())
+	if err2 != nil {
+		handler.SendError(c, errno.ErrDatabase, nil, err2.Error())
 		return
 	}
 

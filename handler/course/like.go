@@ -21,6 +21,13 @@ func LikeCourse(c *gin.Context) {
 		return
 	}
 
+	//get course
+	course := &model.CourseModel{Id: uint32(courseId)}
+	if err = course.GetInfo(); err != nil {
+		handler.SendError(c, errno.ErrDatabase, nil, err.Error())
+		return
+	}
+
 	userId := c.MustGet("id").(uint32)
 
 	recordId, hasLiked := model.CourseHasLiked(userId, uint32(courseId))
@@ -43,15 +50,27 @@ func LikeCourse(c *gin.Context) {
 		return
 	}
 
+	var err2 error
+
 	// 点赞或者取消点赞
 	if bodyData.LikeState {
 		err = model.CourseUnlike(recordId)
+		if err != nil {
+			handler.SendError(c, errno.ErrDatabase, nil, err.Error())
+			return
+		}
+		err2 = course.UpdateLikeNum(-1)
 	} else {
 		err = model.CourseLike(userId, uint32(courseId))
+		if err != nil {
+			handler.SendError(c, errno.ErrDatabase, nil, err.Error())
+			return
+		}
+		err2 = course.UpdateLikeNum(1)
 	}
 
-	if err != nil {
-		handler.SendError(c, errno.ErrDatabase, nil, err.Error())
+	if err2 != nil {
+		handler.SendError(c, errno.ErrDatabase, nil, err2.Error())
 		return
 	}
 

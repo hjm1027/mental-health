@@ -21,6 +21,13 @@ func LikeHole(c *gin.Context) {
 		return
 	}
 
+	//get hole
+	hole := &model.HoleModel{Id: uint32(holeId)}
+	if err = hole.GetById(); err != nil {
+		handler.SendError(c, errno.ErrDatabase, nil, err.Error())
+		return
+	}
+
 	userId := c.MustGet("id").(uint32)
 
 	recordId, hasLiked := model.HasLiked(userId, uint32(holeId))
@@ -43,15 +50,27 @@ func LikeHole(c *gin.Context) {
 		return
 	}
 
+	var err2 error
+
 	// 点赞或者取消点赞
 	if bodyData.LikeState {
 		err = model.Unlike(recordId)
+		if err != nil {
+			handler.SendError(c, errno.ErrDatabase, nil, err.Error())
+			return
+		}
+		err2 = hole.UpdateLikeNum(-1)
 	} else {
 		err = model.Like(userId, uint32(holeId))
+		if err != nil {
+			handler.SendError(c, errno.ErrDatabase, nil, err.Error())
+			return
+		}
+		err2 = hole.UpdateLikeNum(1)
 	}
 
-	if err != nil {
-		handler.SendError(c, errno.ErrDatabase, nil, err.Error())
+	if err2 != nil {
+		handler.SendError(c, errno.ErrDatabase, nil, err2.Error())
 		return
 	}
 
