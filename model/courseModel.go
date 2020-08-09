@@ -41,3 +41,13 @@ type CourseFavoriteModel struct {
 	UserId   uint32 `gorm:"column:user_id"`
 	CourseId uint32 `gorm:"column:course_id"`
 }
+
+type CourseSearchInfo struct {
+	Id          uint32 `json:"id"`
+	Url         string `json:"url"`
+	Name        string `json:"name"`
+	Source      string `json:"source"`
+	Summary     string `json:"summary"`
+	LikeNum     uint32 `json:"like_num"`
+	FavoriteNum uint32 `json:"favorite_num"`
+}

@@ -7,6 +7,7 @@ import (
 	"github.com/mental-health/handler/hole"
 	"github.com/mental-health/handler/mood"
 	"github.com/mental-health/handler/sd"
+	"github.com/mental-health/handler/search"
 	"github.com/mental-health/handler/user"
 	"github.com/mental-health/router/middleware"
 
@@ -81,6 +82,13 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 		Course.PUT("/favorite/:id/", course.FavoriteCourse)
 		Course.GET("/collection/like/", course.GetLikeCollection)
 		Course.GET("/collection/favorite/", course.GetFavoriteCollection)
+	}
+
+	//Search路由组
+	Search := g.Group("/api/v1/search/")
+	Search.Use(middleware.AuthMiddleware())
+	{
+		Search.GET("/search/course/", search.SearchCourse)
 	}
 
 	return g

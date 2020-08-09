@@ -36,4 +36,7 @@ var (
 	ErrGetSubCommentInfo    = &Errno{Code: 20501, Message: "Error occurred while getting subComment info"}
 	ErrGetParentCommentInfo = &Errno{Code: 20502, Message: "Error occurred while getting parent comment info"}
 	ErrCommentList          = &Errno{Code: 20503, Message: "Error occurred while getting comment list. "}
+
+	//search errors
+	ErrSearchCourse = &Errno{Code: 20601, Message: "Error occured in searching courses."}
 )

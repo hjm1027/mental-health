@@ -108,3 +108,27 @@ func GetCourseFavoriteCollectionsByUserId(userId uint32, limit, page uint32) (*[
 	}
 	return &data, d.Error
 }
+
+/*------------------------------------------search operation------------------------------------------*/
+//根据关键词搜索
+func AgainstAndMatchCourses(kw string, page, limit uint64, t string) ([]CourseModel, error) {
+	courses := &[]CourseModel{}
+	where := "MATCH (course.name,course.source) AGAINST ('" + kw + "') "
+	d := DB.Self.Debug().Table("course").
+		Where(where).Order(t).Limit(limit).Offset((page - 1) * limit).Find(courses)
+	if d.RecordNotFound() {
+		return nil, nil
+	}
+	return *courses, nil
+}
+
+// 获取所有课程
+func AllCourses(page, limit uint64, t string) ([]CourseModel, error) {
+	//fmt.Println(t)
+	courses := &[]CourseModel{}
+	d := DB.Self.Table("course").Order(t).Limit(limit).Offset((page - 1) * limit).Find(&courses)
+	if d.RecordNotFound() {
+		return nil, nil
+	}
+	return *courses, nil
+}

@@ -132,7 +132,8 @@ CREATE TABLE `course` (
   `watch_num`  INT                    NOT NULL DEFAULT 0 COMMENT "收藏数",
   `time`                  DATETIME         NOT NULL COMMENT "发布时间",
 
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  FULLTEXT KEY (`name`, `source`) WITH PARSER ngram
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 CREATE TABLE `course_like` (
