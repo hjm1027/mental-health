@@ -1,5 +1,7 @@
 package model
 
+import "fmt"
+
 func (course *CourseModel) TableName() string {
 	return "course"
 }
@@ -131,4 +133,35 @@ func AllCourses(page, limit uint64, t string) ([]CourseModel, error) {
 		return nil, nil
 	}
 	return *courses, nil
+}
+
+// 获取所有问题
+func AllHoles(page, limit uint64, t uint8) ([]HoleModel, error) {
+	//fmt.Println(t)
+	holes := &[]HoleModel{}
+	if t != 0 {
+		d := DB.Self.Table("hole").Where("type = ?", t).Limit(limit).Offset((page - 1) * limit).Find(&holes)
+		if d.RecordNotFound() {
+			return nil, nil
+		}
+	} else {
+		d := DB.Self.Table("hole").Limit(limit).Offset((page - 1) * limit).Find(&holes)
+		if d.RecordNotFound() {
+			return nil, nil
+		}
+	}
+	return *holes, nil
+}
+
+//根据关键词搜索
+func SearchHoles(kw string, page, limit uint64, t uint8) ([]HoleModel, error) {
+	holes := &[]HoleModel{}
+	where := "MATCH (hole.name,hole.content) AGAINST ('" + kw + "') "
+	d := DB.Self.Debug().Table("hole").
+		Where(where).Limit(limit).Offset((page - 1) * limit).Find(holes)
+	if d.RecordNotFound() {
+		fmt.Println("wu")
+		return nil, nil
+	}
+	return *holes, nil
 }

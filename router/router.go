@@ -88,7 +88,8 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	Search := g.Group("/api/v1/search/")
 	Search.Use(middleware.AuthMiddleware())
 	{
-		Search.GET("/search/course/", search.SearchCourse)
+		Search.GET("/course/", search.SearchCourse)
+		Search.GET("/hole/", search.SearchHole)
 	}
 
 	return g

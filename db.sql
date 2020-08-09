@@ -36,8 +36,8 @@ CREATE TABLE `mood` (
 
 CREATE TABLE `hole` (
   `id`                    INT UNSIGNED   NOT NULL AUTO_INCREMENT,
-  `name`           VARCHAR(255)       NOT NULL,
-  `content`               TEXT                NOT NULL COMMENT "问题内容",
+  `name`           VARCHAR(255)     NOT NULL,
+  `content`      VARCHAR(255)     NOT NULL COMMENT "问题内容",
   `like_num`              INT                 NOT NULL DEFAULT 0 COMMENT "点赞数",
   `favorite_num`  INT                    NOT NULL DEFAULT 0 COMMENT "收藏数",
   `comment_num`           INT       NOT NULL DEFAULT 0 COMMENT "一级评论数",
@@ -48,7 +48,8 @@ CREATE TABLE `hole` (
   `user_id`               INT UNSIGNED NOT NULL,
 
   PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`)
+  KEY `user_id` (`user_id`),
+  FULLTEXT KEY (`name`,`content`) WITH PARSER ngram
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 CREATE TABLE `parent_comment` (

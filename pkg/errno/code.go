@@ -39,4 +39,5 @@ var (
 
 	//search errors
 	ErrSearchCourse = &Errno{Code: 20601, Message: "Error occured in searching courses."}
+	ErrSearchHole   = &Errno{Code: 20601, Message: "Error occured in searching holes."}
 )

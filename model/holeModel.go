@@ -37,6 +37,7 @@ type HoleReadModel struct {
 type HoleInfoResponse struct {
 	HoleId      uint32           `json:"hole_id"`
 	Type        uint8            `json:"type"`
+	Name        string           `json:"name"`
 	Content     string           `json:"content"`
 	LikeNum     uint32           `json:"like_num"`
 	ReadNum     uint32           `json:"read_num"`
