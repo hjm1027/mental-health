@@ -631,12 +631,12 @@ paths:
           description: 问题id
           type: string
         - in: query
-          name: pageSize
+          name: limit
           required: true
           description: 期望的一级评论数量
           type: integer
         - in: query
-          name: pageNum
+          name: page
           required: true
           description: 翻页页码，默认为1
           type: integer
@@ -887,7 +887,7 @@ paths:
           schema:
             $ref: '#/definitions/CodeResponse'
 
-  /course/{id}/info/:
+  /course/info/{id}/:
     get:
       tags:
         - course
@@ -929,115 +929,8 @@ paths:
           schema:
             $ref: '#/definitions/CodeResponse'
 
-  /course/all/:
-    get:
-      tags:
-        - course
-      summary: 获取所有课程
-      description: 获取所有课程
-      parameters:
-        - in: header
-          name: token
-          description: token
-          required: true
-          type: string
-        - in: query
-          name: pageSize
-          required: true
-          description: 每一页期望的问题数量
-          type: integer
-        - in: query
-          name: pageNum
-          required: true
-          description: 页数，默认为1
-          type: integer
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-              message:
-                type: string
-              data:
-                type: object
-                properties:
-                  sum:
-                    type: integer
-                    description: 返回的课程数
-                  list:
-                    type: array
-                    items:
-                      $ref: '#/definitions/CourseInfoResponse'
-        '400':
-          description: bad request
-          schema:
-            $ref: '#/definitions/CodeResponse'
-        '401':
-          description: 未授权
-          schema:
-            $ref: '#/definitions/CodeResponse'
-        '404':
-          description: not found
-          schema:
-            $ref: '#/definitions/CodeResponse'
-        '500':
-          description: 服务器错误
-          schema:
-            $ref: '#/definitions/CodeResponse'
 
-  /course/popular/:
-    get:
-      tags:
-        - course
-      summary: 获取热门课程
-      description: 获取热门课程
-      parameters:
-        - in: header
-          name: token
-          description: token
-          required: true
-          type: string
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-              message:
-                type: string
-              data:
-                type: object
-                properties:
-                  sum:
-                    type: integer
-                    description: 返回的课程数
-                  list:
-                    type: array
-                    items:
-                      $ref: '#/definitions/CourseInfoResponse'
-        '400':
-          description: bad request
-          schema:
-            $ref: '#/definitions/CodeResponse'
-        '401':
-          description: 未授权
-          schema:
-            $ref: '#/definitions/CodeResponse'
-        '404':
-          description: not found
-          schema:
-            $ref: '#/definitions/CodeResponse'
-        '500':
-          description: 服务器错误
-          schema:
-            $ref: '#/definitions/CodeResponse'
-
-  /course/{id}/like/:
+  /course/like/{id}/:
     put:
       tags:
         - course
@@ -1135,7 +1028,7 @@ paths:
           schema:
             $ref: '#/definitions/CodeResponse'
 
-  /course/{id}/favorite/:
+  /course/favorite/{id}/:
     put:
       tags:
         - course
@@ -1238,6 +1131,7 @@ paths:
       tags:
         - search
       summary: 搜索课程
+      description: 可以搜名字和来源（不要只搜一个字）
       parameters:
         - in: header
           name: token
@@ -1245,19 +1139,19 @@ paths:
           type: string
         - in: query
           name: keyword
-          required: true
+          required: false
           type: string
-          description: 关键字
+          description: 关键字(默认为空)
         - in: query
           name: page
-          required: true
+          required: false
           type: integer
-          description: 页码
+          description: 页码（默认为1）
         - in: query
           name: limit
-          required: true
+          required: false
           type: integer
-          description: 每页最大数
+          description: 每页最大数（默认为10）
       responses:
         "200":
           description: OK
@@ -1296,6 +1190,7 @@ paths:
       tags:
         - search
       summary: 搜索问题
+      description: 可以搜名字和内容（不要只搜一个字）
       parameters:
         - in: header
           name: token
@@ -1303,24 +1198,24 @@ paths:
           type: string
         - in: query
           name: keyword
-          required: true
+          required: false
           type: string
-          description: 关键字
+          description: 关键字(默认为空)
         - in: query
           name: type
-          required: true
+          required: false
           type: integer
-          description: 0/1/2/3/4/5分别为全部、 环境适应、人际关系、学业学习、生活经济、求职择业
+          description: 0/1/2/3/4/5/6分别为全部、 环境适应、人际关系、学业学习、生活经济、求职择业、其他（默认为0）
         - in: query
           name: page
-          required: true
+          required: false
           type: integer
-          description: 页码
+          description: 页码（默认为1）
         - in: query
           name: limit
-          required: true
+          required: false
           type: integer
-          description: 每页最大数
+          description: 每页最大数（默认为10）
       responses:
         "200":
           description: OK
@@ -1722,7 +1617,10 @@ definitions:
         description: 问题id
       type:
         type: integer
-        description: 问题类型（1/2/3/4/5）
+        description: 问题类型（1/2/3/4/5/6）
+      name:
+        type: string
+        description: 问题名称
       content:
         type: string
         description: 问题内容
@@ -1805,6 +1703,9 @@ definitions:
     type: object
     description: 课程信息返回值
     properties:
+      url:
+        type: string
+        description: 课程地址
       name:
         type: string
         description: 课程名称
@@ -1823,9 +1724,7 @@ definitions:
       time:
         type: string
         description: 创建时间
-      watch_num:
-        type: integer
-        description: 观看量
+
 
   MessageResponseList:
     type: array
