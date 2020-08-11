@@ -251,3 +251,13 @@ func GetSubCommentsByParentId(ParentId uint32) (*[]SubCommentModel, error) {
 	d := DB.Self.Where("parent_id = ?", ParentId).Order("time").Find(&subComments)
 	return &subComments, d.Error
 }
+
+// Judge whether it is a subComment by id, if so then also return the subComment.
+func IsSubComment(id uint32) (*SubCommentModel, bool) {
+	var comment SubCommentModel
+	d := DB.Self.Where("id = ?", id).First(&comment)
+	if !d.RecordNotFound() {
+		return &comment, true
+	}
+	return nil, false
+}

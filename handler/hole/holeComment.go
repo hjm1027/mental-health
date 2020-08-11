@@ -5,6 +5,7 @@ import (
 	"time"
 	"unicode/utf8"
 
+	"github.com/lexkong/log"
 	"github.com/mental-health/handler"
 	"github.com/mental-health/model"
 	"github.com/mental-health/pkg/errno"
@@ -77,4 +78,9 @@ func NewParentComment(c *gin.Context) {
 	}
 
 	handler.SendResponse(c, nil, commentInfo)
+
+	err = service.NewMessageForParentComment(userId, comment, hole)
+	if err != nil {
+		log.Error("NewMessageForParentComment failed", err)
+	}
 }

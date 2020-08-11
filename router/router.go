@@ -5,6 +5,7 @@ import (
 
 	"github.com/mental-health/handler/course"
 	"github.com/mental-health/handler/hole"
+	"github.com/mental-health/handler/message"
 	"github.com/mental-health/handler/mood"
 	"github.com/mental-health/handler/sd"
 	"github.com/mental-health/handler/search"
@@ -90,6 +91,13 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	{
 		Search.GET("/course/", search.SearchCourse)
 		Search.GET("/hole/", search.SearchHole)
+	}
+
+	//Message路由组
+	Message := g.Group("/api/v1/message/")
+	Message.Use(middleware.AuthMiddleware())
+	{
+		Message.GET("/all/", message.Get)
 	}
 
 	return g

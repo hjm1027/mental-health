@@ -3,9 +3,11 @@ package hole
 import (
 	"strconv"
 
+	"github.com/lexkong/log"
 	"github.com/mental-health/handler"
 	"github.com/mental-health/model"
 	"github.com/mental-health/pkg/errno"
+	"github.com/mental-health/service"
 
 	"github.com/gin-gonic/gin"
 )
@@ -75,4 +77,12 @@ func FavoriteHole(c *gin.Context) {
 	}
 
 	handler.SendResponse(c, nil, "ok")
+
+	// New message reminder for liking an hole
+	if !bodyData.FavoriteState {
+		err = service.NewMessageForHoleFavoriting(userId, hole)
+		if err != nil {
+			log.Error("NewMessageForHoleFavoriting failed", err)
+		}
+	}
 }

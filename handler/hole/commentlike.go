@@ -7,6 +7,7 @@ import (
 	"github.com/mental-health/handler"
 	"github.com/mental-health/model"
 	"github.com/mental-health/pkg/errno"
+	"github.com/mental-health/service"
 
 	"github.com/gin-gonic/gin"
 )
@@ -76,4 +77,12 @@ func CommentLike(c *gin.Context) {
 	}
 
 	handler.SendResponse(c, nil, data)
+
+	// New message reminder for liking a comment
+	if !bodyData.LikeState {
+		err = service.NewMessageForCommentLiking(userId, uint32(id))
+		if err != nil {
+			log.Error("NewMessageForCommentLiking failed", err)
+		}
+	}
 }

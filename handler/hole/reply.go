@@ -9,6 +9,7 @@ import (
 	"github.com/mental-health/handler"
 	"github.com/mental-health/model"
 	"github.com/mental-health/pkg/errno"
+	"github.com/mental-health/service"
 
 	"github.com/gin-gonic/gin"
 )
@@ -115,4 +116,9 @@ func Reply(c *gin.Context) {
 	}
 
 	handler.SendResponse(c, nil, response)
+
+	err = service.NewMessageForSubComment(userId, comment, parentComment)
+	if err != nil {
+		log.Error("NewMessageForSubComment failed", err)
+	}
 }

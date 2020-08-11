@@ -157,6 +157,24 @@ CREATE TABLE `course_favorite` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
+
+CREATE TABLE `message` (
+  `id`          INT UNSIGNED NOT NULL auto_increment,
+  `pub_user_id` INT UNSIGNED NOT NULL DEFAULT 0,
+  `sub_user_id` INT UNSIGNED NOT NULL DEFAULT 0,
+  `kind`        TINYINT(1) UNSIGNED   NOT NULL DEFAULT 0  COMMENT "消息提醒的种类，0是点赞，1是收藏，2是评论",
+  `is_read`     TINYINT(1)   NOT NULL DEFAULT 0,
+  `reply`       VARCHAR(255),
+  `time`        VARCHAR(20)  NOT NULL,
+  `hole_id` INT UNSIGNED,
+  `content`     VARCHAR(255),
+  `sid`         VARCHAR(255),
+  `parent_comment_id`     VARCHAR(255),
+
+  PRIMARY KEY (`id`),
+  KEY sub_user_id (`sub_user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
+
 /*
 INSERT INTO `user` VALUES(0,2018212691,'hjm','0','asd','','','');
 */
