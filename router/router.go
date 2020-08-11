@@ -98,6 +98,8 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	Message.Use(middleware.AuthMiddleware())
 	{
 		Message.GET("/all/", message.Get)
+		Message.GET("/count/", message.Count)
+		Message.GET("/read/", message.ReadAll)
 	}
 
 	return g
