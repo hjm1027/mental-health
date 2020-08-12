@@ -44,9 +44,9 @@ func NewMood(c *gin.Context) {
 
 	//type Month int
 	//const (January Month = 1 + iota)
-	year := uint32(time.Now().Year())
-	month := uint8(time.Now().Month())
-	day := uint8(time.Now().Day())
+	year := uint32(time.Now().UTC().Add(8 * time.Hour).Year())
+	month := uint8(time.Now().UTC().Add(8 * time.Hour).Month())
+	day := uint8(time.Now().UTC().Add(8 * time.Hour).Day())
 
 	//monthmap := map[string]uint8{"January": 1, "February": 2, "March": 3, "April": 4, "May": 5, "June": 6,
 	//	"July": 7, "August": 8, "September": 9, "October": 10, "November": 11, "December": 12}

@@ -25,7 +25,7 @@ func openDB(username, password, addr, name string) *gorm.DB {
 		name,
 		true,
 		//"Asia/Shanghai"),
-		"Local")
+		"UTC")
 
 	db, err := gorm.Open("mysql", config)
 	if err != nil {

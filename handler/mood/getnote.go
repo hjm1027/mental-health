@@ -25,10 +25,10 @@ func GetMoodNote(c *gin.Context) {
 	userId := c.MustGet("id").(uint32)
 	yearstr := c.Query("year")
 	year, _ := strconv.ParseInt(yearstr, 10, 64)
-	month := uint8(time.Now().Month())
+	month := uint8(time.Now().UTC().Add(8 * time.Hour).Month())
 
 	var i uint8
-	if year == int64(time.Now().Year()) {
+	if year == int64(time.Now().UTC().Add(8*time.Hour).Year()) {
 		i = month
 	} else {
 		i = 12

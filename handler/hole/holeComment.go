@@ -2,7 +2,6 @@ package hole
 
 import (
 	"strconv"
-	"time"
 	"unicode/utf8"
 
 	"github.com/lexkong/log"
@@ -10,6 +9,7 @@ import (
 	"github.com/mental-health/model"
 	"github.com/mental-health/pkg/errno"
 	"github.com/mental-health/service"
+	"github.com/mental-health/util"
 
 	"github.com/gin-gonic/gin"
 )
@@ -44,7 +44,7 @@ func NewParentComment(c *gin.Context) {
 		UserId:        userId,
 		HoleId:        uint32(holeId),
 		Content:       data.Content,
-		Time:          time.Now(),
+		Time:          util.GetCurrentTime(),
 		SubCommentNum: 0,
 	}
 

@@ -165,7 +165,7 @@ CREATE TABLE `message` (
   `kind`        TINYINT(1) UNSIGNED   NOT NULL DEFAULT 0  COMMENT "消息提醒的种类，0是点赞，1是收藏，2是评论",
   `is_read`     TINYINT(1)   NOT NULL DEFAULT 0,
   `reply`       VARCHAR(255),
-  `time`        VARCHAR(20)  NOT NULL,
+  `time`        DATETIME  NOT NULL,
   `hole_id` INT UNSIGNED,
   `content`     VARCHAR(255),
   `sid`         VARCHAR(255),

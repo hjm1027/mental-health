@@ -2,10 +2,9 @@ package service
 
 import (
 	"fmt"
-	"strconv"
-	"time"
 
 	"github.com/mental-health/model"
+	"github.com/mental-health/util"
 
 	"github.com/lexkong/log"
 )
@@ -64,7 +63,7 @@ func NewMessageForParentComment(userId uint32, comment *model.ParentCommentModel
 		Kind:            2,
 		IsRead:          false,
 		Reply:           comment.Content,
-		Time:            strconv.FormatInt(comment.Time.Unix(), 10),
+		Time:            util.GetCurrentTime(),
 		HoleId:          hole.Id,
 		Content:         hole.Content,
 		Sid:             user.Sid,
@@ -101,7 +100,7 @@ func NewMessageForSubComment(userId uint32, comment *model.SubCommentModel, pare
 		Kind:            2,
 		IsRead:          false,
 		Reply:           comment.Content,
-		Time:            strconv.FormatInt(comment.Time.Unix(), 10),
+		Time:            util.GetCurrentTime(),
 		HoleId:          parentComment.HoleId,
 		Content:         parentComment.Content,
 		Sid:             user.Sid,
@@ -123,7 +122,7 @@ func NewMessageForHoleLiking(userId uint32, hole *model.HoleModel) error {
 		Kind:            0,
 		IsRead:          false,
 		Reply:           "",
-		Time:            strconv.FormatInt(time.Now().Unix(), 10),
+		Time:            util.GetCurrentTime(),
 		HoleId:          hole.Id,
 		Content:         hole.Content,
 		Sid:             "",
@@ -145,7 +144,7 @@ func NewMessageForHoleFavoriting(userId uint32, hole *model.HoleModel) error {
 		Kind:            1,
 		IsRead:          false,
 		Reply:           "",
-		Time:            strconv.FormatInt(time.Now().Unix(), 10),
+		Time:            util.GetCurrentTime(),
 		HoleId:          hole.Id,
 		Content:         hole.Content,
 		Sid:             "",
@@ -187,7 +186,7 @@ func NewMessageForParentCommentLiking(userId, commentId uint32) error {
 		Kind:            0,
 		IsRead:          false,
 		Reply:           "",
-		Time:            strconv.FormatInt(time.Now().Unix(), 10),
+		Time:            util.GetCurrentTime(),
 		HoleId:          hole.Id,
 		Content:         comment.Content,
 		Sid:             "",
@@ -221,7 +220,7 @@ func NewMessageForSubCommentLiking(userId uint32, comment *model.SubCommentModel
 		Kind:            0, //点赞
 		IsRead:          false,
 		Reply:           "",
-		Time:            strconv.FormatInt(time.Now().Unix(), 10),
+		Time:            util.GetCurrentTime(),
 		HoleId:          hole.Id,
 		Content:         comment.Content,
 		Sid:             "",

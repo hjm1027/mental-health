@@ -1,13 +1,12 @@
 package hole
 
 import (
-	"fmt"
-	"time"
 	"unicode/utf8"
 
 	"github.com/mental-health/handler"
 	"github.com/mental-health/model"
 	"github.com/mental-health/pkg/errno"
+	"github.com/mental-health/util"
 
 	"github.com/gin-gonic/gin"
 )
@@ -47,9 +46,9 @@ func New(c *gin.Context) {
 		CommentNum:  0,
 		ReadNum:     0,
 		Type:        data.Type,
-		Time:        time.Now(),
+		Time:        util.GetCurrentTime(),
 	}
-	fmt.Println(hole.Time)
+	//fmt.Println(hole.Time)
 
 	if err := hole.New(); err != nil {
 		handler.SendError(c, err, nil, err.Error())

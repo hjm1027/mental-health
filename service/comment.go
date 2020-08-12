@@ -2,9 +2,9 @@ package service
 
 import (
 	"sync"
-	"time"
 
 	"github.com/mental-health/model"
+	"github.com/mental-health/util"
 
 	"github.com/lexkong/log"
 )
@@ -91,7 +91,7 @@ func GetParentCommentInfo2(id uint32, userId uint32) (*model.ParentCommentInfo2,
 		return nil, err
 	}
 
-	user := &model.UserModel{Id: id}
+	user := &model.UserModel{Id: comment.UserId}
 	if err := user.GetUserById(); err != nil {
 		log.Error("user.GetUserById() error", err)
 		return nil, err
@@ -127,7 +127,7 @@ func GetParentCommentInfo2(id uint32, userId uint32) (*model.ParentCommentInfo2,
 		Content:         comment.Content,
 		LikeNum:         likeNum,
 		IsLike:          isLike,
-		Time:            time.Now(),
+		Time:            util.GetCurrentTime(),
 		UserInfo:        userInfo,
 		SubCommentsNum:  comment.SubCommentNum,
 		SubCommentsList: subCommentInfos,
@@ -243,7 +243,7 @@ func GetSubCommentInfoById(id uint32, userId uint32) (*model.CommentInfo, error)
 		Content:        comment.Content,
 		LikeNum:        likeNum,
 		IsLike:         isLike,
-		Time:           time.Now(),
+		Time:           util.GetCurrentTime(),
 		UserInfo:       commentUser,
 		TargetUserInfo: targetUser,
 	}

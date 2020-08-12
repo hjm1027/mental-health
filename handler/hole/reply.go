@@ -10,6 +10,7 @@ import (
 	"github.com/mental-health/model"
 	"github.com/mental-health/pkg/errno"
 	"github.com/mental-health/service"
+	"github.com/mental-health/util"
 
 	"github.com/gin-gonic/gin"
 )
@@ -66,7 +67,7 @@ func Reply(c *gin.Context) {
 		ParentId:     uint32(parentId),
 		TargetUserId: parentComment.Id,
 		Content:      data.Content,
-		Time:         time.Now(),
+		Time:         util.GetCurrentTime(),
 	}
 
 	// Create a new subComment
@@ -110,7 +111,7 @@ func Reply(c *gin.Context) {
 		Content:        data.Content,
 		LikeNum:        0,
 		IsLike:         false,
-		Time:           time.Now(),
+		Time:           util.GetCurrentTime(),
 		UserInfo:       userinfo2,
 		TargetUserInfo: targetinfo,
 	}

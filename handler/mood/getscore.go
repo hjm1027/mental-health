@@ -25,12 +25,12 @@ func GetMoodScore(c *gin.Context) {
 	userId := c.MustGet("id").(uint32)
 	yearstr := c.Query("year")
 	year, _ := strconv.ParseInt(yearstr, 10, 64)
-	month := uint8(time.Now().Month())
+	month := uint8(time.Now().UTC().Add(8 * time.Hour).Month())
 	/*monthstr := c.Query("month")
 	month, _ := strconv.ParseInt(monthstr, 10, 64)*/
 
 	var i uint8
-	if year == int64(time.Now().Year()) {
+	if year == int64(time.Now().UTC().Add(8*time.Hour).Year()) {
 		i = uint8(month)
 	} else {
 		i = 12
