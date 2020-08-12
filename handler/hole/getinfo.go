@@ -75,6 +75,7 @@ func GetHoleInfo(c *gin.Context) {
 	data := model.HoleInfoResponse{
 		HoleId:      hole.Id,
 		Type:        hole.Type,
+		Name:        hole.Name,
 		Content:     hole.Content,
 		LikeNum:     hole.LikeNum,
 		ReadNum:     newNum,

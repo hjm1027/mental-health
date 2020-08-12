@@ -32,7 +32,7 @@ func GetCollectionList(userId, limit, page uint32) ([]*model.HoleInfoResponse, e
 		}
 
 		//get user
-		user, err := model.GetUserInfoById(userId)
+		user, err := model.GetUserInfoById(hole.Id)
 		if err != nil {
 			log.Error("GetCollectionsByUserId get user error", err)
 		}
@@ -49,6 +49,7 @@ func GetCollectionList(userId, limit, page uint32) ([]*model.HoleInfoResponse, e
 		data := &model.HoleInfoResponse{
 			HoleId:      hole.Id,
 			Type:        hole.Type,
+			Name:        hole.Name,
 			Content:     hole.Content,
 			LikeNum:     hole.LikeNum,
 			ReadNum:     hole.ReadNum,
@@ -91,7 +92,7 @@ func GetHoleList(userId, limit, page uint32) ([]*model.HoleInfoResponse, error) 
 		}
 
 		//get user
-		user, err := model.GetUserInfoById(userId)
+		user, err := model.GetUserInfoById(hole.Id)
 		if err != nil {
 			log.Error("GetHoleList get user error", err)
 		}
@@ -108,6 +109,7 @@ func GetHoleList(userId, limit, page uint32) ([]*model.HoleInfoResponse, error) 
 		data := &model.HoleInfoResponse{
 			HoleId:      hole.Id,
 			Type:        hole.Type,
+			Name:        hole.Name,
 			Content:     hole.Content,
 			LikeNum:     hole.LikeNum,
 			ReadNum:     hole.ReadNum,
