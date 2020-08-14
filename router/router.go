@@ -9,6 +9,7 @@ import (
 	"github.com/mental-health/handler/mood"
 	"github.com/mental-health/handler/sd"
 	"github.com/mental-health/handler/search"
+	"github.com/mental-health/handler/upload"
 	"github.com/mental-health/handler/user"
 	"github.com/mental-health/router/middleware"
 
@@ -100,6 +101,13 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 		Message.GET("/all/", message.Get)
 		Message.GET("/count/", message.Count)
 		Message.GET("/read/", message.ReadAll)
+	}
+
+	//Upload路由组
+	Upload := g.Group("/api/v1/upload/")
+	Upload.Use(middleware.AuthMiddleware())
+	{
+		Upload.POST("/image/", upload.Image)
 	}
 
 	return g

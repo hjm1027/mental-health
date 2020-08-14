@@ -9,6 +9,7 @@ require (
 	github.com/gin-gonic/gin v1.6.3
 	github.com/jinzhu/gorm v1.9.14
 	github.com/lexkong/log v0.0.0-20180607165131-972f9cd951fc
+	github.com/qiniu/api.v7/v7 v7.4.0
 	github.com/satori/go.uuid v1.2.0
 	github.com/shirou/gopsutil v2.20.6+incompatible
 	github.com/spf13/pflag v1.0.5
