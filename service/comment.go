@@ -4,7 +4,6 @@ import (
 	"sync"
 
 	"github.com/mental-health/model"
-	"github.com/mental-health/util"
 
 	"github.com/lexkong/log"
 )
@@ -127,7 +126,7 @@ func GetParentCommentInfo2(id uint32, userId uint32) (*model.ParentCommentInfo2,
 		Content:         comment.Content,
 		LikeNum:         likeNum,
 		IsLike:          isLike,
-		Time:            util.GetCurrentTime(),
+		Time:            comment.Time,
 		UserInfo:        userInfo,
 		SubCommentsNum:  comment.SubCommentNum,
 		SubCommentsList: subCommentInfos,
@@ -243,7 +242,7 @@ func GetSubCommentInfoById(id uint32, userId uint32) (*model.CommentInfo, error)
 		Content:        comment.Content,
 		LikeNum:        likeNum,
 		IsLike:         isLike,
-		Time:           util.GetCurrentTime(),
+		Time:           comment.Time,
 		UserInfo:       commentUser,
 		TargetUserInfo: targetUser,
 	}

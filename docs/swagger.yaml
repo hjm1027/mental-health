@@ -1310,14 +1310,14 @@ paths:
         description: token
       - in: query
         name: page
-        required: true
+        required: false
         type: integer
-        description: 页码
+        description: 页码(默认1)
       - in: query
         name: limit
-        required: true
+        required: false
         type: integer
-        description: 每页最大数
+        description: 每页最大数（默认10）
       responses:
         "200":
           description: OK
@@ -1373,6 +1373,33 @@ paths:
           schema:
             $ref: '#/definitions/CodeResponse'
 
+  /message/readall/:
+    get:
+      tags:
+       - message
+      summary: 读取消息提醒
+      description: 将所有消息的状态从未读变成已读
+      parameters:
+      - in: header
+        name: token
+        required: true
+        type: string
+        description: token
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '401':
+          description: 未授权
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '500':
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/CodeResponse'
+      
+      
   /reserve/:
     get:
       tags:
@@ -1503,6 +1530,9 @@ definitions:
       is_teacher:
         type: boolean
         description: 是否是老师
+      sid:
+        type: string
+        description: 用户学号
   
   
   MoodInfo:
@@ -1738,24 +1768,44 @@ definitions:
     properties:
       type:
         type: integer
-        description: 消息类型,1/2/3分别为 预约通过/拒绝，回答了问题，回复了评论
+        description: 消息类型,0/1/2分别为 点赞，收藏，评论
+      user_info:
+        type: object
+        description: 用户信息
+        properties:
+          username:
+            type: string
+            description: 用户名称
+          avatar:
+            type: string
+            description: 用户头像
+          sid:
+            type: string
+            description: 用户学号
+          is_teacher:
+            type: boolean
+            description: 是否是老师
       hole_id:
         type: integer
-        description: 问题id，可能为空
+        description: 问题id
       is_read:
         type: boolean
         description: 是否阅读
+      reply:
+        type: string
+        description: （评论）回复的内容，可能为空
+      content:
+        type: string
+        description: 评论的内容
       time: 
         type: string
         description: 消息时间
-      is_teacher:
-        type: boolean
-        description: 是否是老师（因为老师不匿名）
-      user_avatar:
+      sid:
         type: string
-        description: 用户头像
-      user_username:
-        type: string
-        description: 用户姓名
-      
+        description: 用户学号
+      parent_comment_id:
+        type: integer
+        description: 一级评论id
+
+
       

@@ -77,10 +77,9 @@ func UploadImage(filename string, id uint32, r io.ReaderAt, dataLen int64) (stri
 	ret := storage.PutRet{}
 	putExtra := storage.RputExtra{Params: map[string]string{"x:name": "STACK"}}
 	err = formUploader.Put(context.Background(), &ret, upToken, objectName, r, dataLen, &putExtra)
-	//err = formUploader.PutFile(context.Background(), &ret, upToken, objectName, "/home/bowser/Pictures/maogai/1.jpg", &putExtra)
 	if err != nil {
 		return "", err
 	}
-	url := domainName + objectName
+	url := domainName + "/" + objectName
 	return url, nil
 }

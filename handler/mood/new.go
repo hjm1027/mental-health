@@ -1,6 +1,7 @@
 package mood
 
 import (
+	"fmt"
 	"strconv"
 	"time"
 
@@ -60,6 +61,12 @@ func NewMood(c *gin.Context) {
 		Day:    day,
 		Score:  data.Score,
 		Note:   data.Note,
+	}
+	fmt.Println(mood.Date)
+
+	if err := mood.Have(); err != nil {
+		handler.SendError(c, err, nil, err.Error())
+		return
 	}
 
 	if err := mood.New(); err != nil {

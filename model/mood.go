@@ -1,5 +1,7 @@
 package model
 
+import "errors"
+
 // 必须要写一个TableName函数，返回table的名字，否则gorm读取不到表。
 func (u *MoodModel) TableName() string {
 	return "mood"
@@ -9,6 +11,16 @@ func (u *MoodModel) TableName() string {
 func (mood *MoodModel) New() error {
 	d := DB.Self.Create(mood)
 	return d.Error
+}
+
+// 查询今天是否已经添加心情
+func (mood *MoodModel) Have() error {
+	var data MoodModel
+	d := DB.Self.Table("mood").Where("date = ? AND user_id = ?", mood.Date, mood.UserId).First(&data)
+	if !d.RecordNotFound() {
+		return errors.New("This user has added a mood today")
+	}
+	return nil
 }
 
 //获取一个月的心情指数

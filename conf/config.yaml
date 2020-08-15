@@ -20,12 +20,12 @@ db:
   password: 123
 default_user:
   username: health
-  avatar: https://avatars2.githubusercontent.com/u/43539191?s=460&v=4
+  avatar: qen7rjp6a.bkt.clouddn.com/1-1597458748.png
   introduction: 该用户没有填写简介~
   phone: 无
-  back_avatar: https://avatars2.githubusercontent.com/u/43539191?s=460&v=4
-  oss:
-    access_key: SkU
-    secret_key:  YAn
-    bucket_name: hjm1027
-    domain_name: e
+  back_avatar: qen7rjp6a.bkt.clouddn.com/1-1597458748.png
+oss:
+  access_key: SkU
+  secret_key:  YAn
+  bucket_name: hjm1027
+  domain_name: qen

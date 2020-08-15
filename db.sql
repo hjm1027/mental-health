@@ -184,17 +184,43 @@ INSERT INTO `user` (sid, username, is_teacher) VALUES ('2018212691', 'Hjm1027', 
 INSERT INTO `user` (sid, username, is_teacher) VALUES ('1234568890', '随便',  0);
 INSERT INTO `user` (sid, username, is_teacher) VALUES ('3787546378', '不知道取什么好',  0);
 INSERT INTO `user` (sid, username, is_teacher) VALUES ('1047395326', 'Wow, IGNB',  0);
-INSERT INTO `user` (sid, username, is_teacher) VALUES ('9247128475', '信息管理学院',  0);
+INSERT INTO `user` (sid, username, is_teacher) VALUES ('9247128475', '信息管理学院',  1);
 INSERT INTO `user` (sid, username, is_teacher) VALUES ('7204901939', 'GITHUB',  0);
 INSERT INTO `user` (sid, username, is_teacher) VALUES ('8705469760', '中华人民共和国湖北省武汉市',  0);
 
-INSERT INTO `hole` (name, content, type,time,user_id) VALUES ('第一个问题', '作业好多写不完',  1,'2020-08-04 09:16:50',1);
+INSERT INTO `hole` (name, content, comment_num,type,time,user_id) VALUES ('第一个问题', '作业好多写不完',3,  1,'2020-08-04 09:16:50',1);
 INSERT INTO `hole` (name, content, type,time,user_id) VALUES ('水', '经验+3，告辞',  3,'2019-01-01 14:18:2',1);
 INSERT INTO `hole` (name, content, type,time,user_id) VALUES ('哈哈哈哈哈', '我又来水了',  5,'2020-07-03 22:27:01',1);
 INSERT INTO `hole` (name, content, type,time,user_id) VALUES ('过年啦', '到2020了',  2,'2020-01-01 00:00:01',2);
 INSERT INTO `hole` (name, content, type,time,user_id) VALUES ('不许水评论！', '小心封号',  2,'2020-08-02 23:56:59',5);
 
+INSERT INTO `parent_comment` (time, content, sub_comment_num,user_id,hole_id) VALUES ('2019-06-04 09:16:50', '我也是',  0,2,1);
+INSERT INTO `parent_comment` (time, content, sub_comment_num,user_id,hole_id) VALUES ('2020-01-09 18:25:12', '可以试试**方法',  1,3,1);
+INSERT INTO `parent_comment` (time, content, sub_comment_num,user_id,hole_id) VALUES ('2020-07-01 09:16:50', '+1',  0,4,1);
+
+INSERT INTO `sub_comment` (time, content, parent_id,user_id,target_user_id) VALUES ('2020-08-02 22:51:02', '果然效果显著',  2,6,3);
+
 INSERT INTO `course` (name,url, source, summary,time) VALUES ('自信培养', 'www.baidu.com','CCNU心理站','培养自信','2018-06-07 12:56:01');
 INSERT INTO `course` (name,url, source, summary,time) VALUES ('心理与生活', 'www.google.com','2级心理站','大致介绍','2019-11-30 07:23:18');
 INSERT INTO `course` (name,url, source, summary,time) VALUES ('谈话的艺术', 'www.bing.com','心理健康中心','如何谈话','2020-02-12 19:09:22');
 INSERT INTO `course` (name,url, source, summary,time) VALUES ('发展心理学', 'www.asjhjesh.com','校医院','心理学史','2020-07-12 23:18:00');
+INSERT INTO `course` (name,url, source, summary,time) VALUES ('yugbyusfb', 'www.asd.com','zxcsdf','ytjtrherg','2020-08-07 19:09:22');
+INSERT INTO `course` (name,url, source, summary,time) VALUES ('21443242', 'www.6575.com','123123','98066566','2020-08-12 23:18:00');
+INSERT INTO `course` (name,url, source, summary,time) VALUES ('$^**((^$', 'www.((*)).com','#%^','!@@@!!','2020-08-12 23:18:00');
+
+INSERT INTO `mood` (date, year, month,day,score,note,user_id) VALUES ('2019.11.13', 2019,11,13,5,'erg', 1);
+INSERT INTO `mood` (date, year, month,day,score,note,user_id) VALUES ('2019.11.16', 2019,11,16,2,'erg2', 1);
+INSERT INTO `mood` (date, year, month,day,score,note,user_id) VALUES ('2019.11.21', 2019,11,21,3,'erg3', 1);
+INSERT INTO `mood` (date, year, month,day,score,note,user_id) VALUES ('2019.11.27', 2019,11,27,1,'erg4', 1);
+INSERT INTO `mood` (date, year, month,day,score,note,user_id) VALUES ('2019.12.09', 2019,12,09,4,'asd', 1);
+INSERT INTO `mood` (date, year, month,day,score,note,user_id) VALUES ('2019.12.25', 2019,12,25,3,'asd2', 1);
+INSERT INTO `mood` (date, year, month,day,score,note,user_id) VALUES ('2020.07.02', 2020,7,2,5,'zxc', 1);
+INSERT INTO `mood` (date, year, month,day,score,note,user_id) VALUES ('2020.07.04', 2020,7,4,1,'zxc2', 1);
+INSERT INTO `mood` (date, year, month,day,score,note,user_id) VALUES ('2020.07.07', 2020,7,7,4,'zxc3', 1);
+INSERT INTO `mood` (date, year, month,day,score,note,user_id) VALUES ('2020.07.14', 2020,7,14,2,'zxc4', 1);
+INSERT INTO `mood` (date, year, month,day,score,note,user_id) VALUES ('2020.07.15', 2020,7,15,1,'zxc5', 1);
+INSERT INTO `mood` (date, year, month,day,score,note,user_id) VALUES ('2020.07.18', 2020,7,18,3,'zxc6', 1);
+INSERT INTO `mood` (date, year, month,day,score,note,user_id) VALUES ('2020.07.22', 2020,7,22,5,'zxc7', 1);
+INSERT INTO `mood` (date, year, month,day,score,note,user_id) VALUES ('2020.07.28', 2020,7,28,4,'zxc8', 1);
+INSERT INTO `mood` (date, year, month,day,score,note,user_id) VALUES ('2020.08.13', 2020,8,13,5,'还可以', 1);
+INSERT INTO `mood` (date, year, month,day,score,note,user_id) VALUES ('2020.08.14', 2020,8,14,4,'今日心情测试', 1);
