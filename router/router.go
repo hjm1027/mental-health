@@ -108,6 +108,7 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	Upload.Use(middleware.AuthMiddleware())
 	{
 		Upload.POST("/image/", upload.Image)
+		Upload.POST("/video/", upload.Video)
 	}
 
 	return g
