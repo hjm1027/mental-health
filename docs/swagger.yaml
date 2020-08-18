@@ -20,11 +20,13 @@ tags:
   - name: search
     description: 搜索
   - name: upload
-    description: 上传图片
+    description: 上传文件
   - name: message
     description: 消息提醒
   - name: reserve
     description: 预约老师
+  - name: poster
+    description: 海报
 
 schemes:
   - https
@@ -1267,7 +1269,7 @@ paths:
         name: image
         required: true
         type: file
-        description: 二进制图片文件
+        description: 图片文件
       responses:
         "200":
           description: OK
@@ -1297,6 +1299,132 @@ paths:
           schema:
             $ref: '#/definitions/CodeResponse'
 
+  /upload/video/:
+    post:
+      tags:
+        - upload
+      summary: 上传视频
+      description: 上传视频文件，返回url
+      consumes:
+      - multipart/form-data
+      parameters:
+      - in: header
+        name: token
+        required: true
+        type: string
+        description: token
+      - in: formData
+        name: video
+        required: true
+        type: file
+        description: 视频文件
+      - in: query
+        name: name
+        required: true
+        type: string
+        description: 视频名称
+      - in: query
+        name: source
+        required: true
+        type: string
+        description: 视频来源
+      - in: query
+        name: summary
+        required: true
+        type: string
+        description: 视频简介
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    description: url
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '401':
+          description: 未授权
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '500':
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/CodeResponse'
+
+  /upload/videolink/:
+    post:
+      tags:
+        - upload
+      summary: 上传视频的链接
+      description: 如果不想上传视频，就上传链接
+      consumes:
+      - multipart/form-data
+      parameters:
+      - in: header
+        name: token
+        required: true
+        type: string
+        description: token
+      - in: formData
+        name: video
+        required: true
+        type: file
+        description: 视频文件
+      - in: query
+        name: name
+        required: true
+        type: string
+        description: 视频名称
+      - in: query
+        name: source
+        required: true
+        type: string
+        description: 视频来源
+      - in: query
+        name: summary
+        required: true
+        type: string
+        description: 视频简介
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    description: url
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '401':
+          description: 未授权
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '500':
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/CodeResponse'
+            
   /message/all/:
     get:
       tags:
@@ -1470,6 +1598,82 @@ paths:
           schema:
             $ref: '#/definitions/CodeResponse'
 
+  /poster/info/:
+    get:
+      tags:
+        - poster
+      summary: 获取海报信息
+      description: 返回首页海报，平台介绍，树洞海报
+      consumes:
+        - application/json
+      parameters:
+        - name: token
+          in: header
+          required: true
+          description: token
+          type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/PosterResponse'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '401':
+          description: 未授权
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '500':
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/CodeResponse'
+    
+    post:
+      tags:
+        - poster
+      summary: 修改海报信息
+      description: 修改首页海报，平台介绍，树洞海报
+      consumes:
+        - application/json
+      parameters:
+        - name: token
+          in: header
+          required: true
+          description: token
+          type: string
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/PosterRequest'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '401':
+          description: 未授权
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '500':
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/CodeResponse'
+            
 
 
 definitions:
@@ -1807,5 +2011,34 @@ definitions:
         type: integer
         description: 一级评论id
 
+  PosterResponse:
+    properties:
+      code:
+        type: integer
+      message:
+        type: string
+      data:
+        type: object
+        properties:
+          home:
+            type: string
+            description: 首页海报
+          platform:
+            type: string
+            description: 平台介绍
+          hole:
+            type: string
+            description: 树洞海报
 
+  PosterRequest:
+    properties:
+      home:
+        type: string
+        description: 首页海报
+      platform:
+        type: string
+        description: 平台介绍
+      hole:
+        type: string
+        description: 树洞海报
       
