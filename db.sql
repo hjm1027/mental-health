@@ -175,6 +175,15 @@ CREATE TABLE `message` (
   KEY sub_user_id (`sub_user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
+CREATE TABLE `message` (
+  `id`          INT UNSIGNED NOT NULL auto_increment,
+  `home` VARCHAR(255) ,
+  `platform`         VARCHAR(255),
+  `hole`     VARCHAR(255),
+
+  PRIMARY KEY (`id`),
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
+
 /*
 INSERT INTO `user` VALUES(0,2018212691,'hjm','0','asd','','','');
 */
