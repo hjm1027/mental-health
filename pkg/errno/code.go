@@ -47,4 +47,7 @@ var (
 	// upload errors
 	ErrGetFile    = &Errno{Code: 20801, Message: "Error occurred in getting file from FormFile()"}
 	ErrUploadFile = &Errno{Code: 20802, Message: "Error occurred in uploading file to oss"}
+
+	// poster errors
+	ErrGetPoster = &Errno{Code: 20901, Message: "Error occurred while getting poster."}
 )

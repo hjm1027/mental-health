@@ -7,6 +7,7 @@ import (
 	"github.com/mental-health/handler/hole"
 	"github.com/mental-health/handler/message"
 	"github.com/mental-health/handler/mood"
+	"github.com/mental-health/handler/poster"
 	"github.com/mental-health/handler/sd"
 	"github.com/mental-health/handler/search"
 	"github.com/mental-health/handler/upload"
@@ -109,6 +110,14 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	{
 		Upload.POST("/image/", upload.Image)
 		Upload.POST("/video/", upload.Video)
+	}
+
+	//Poster路由组
+	Poster := g.Group("/api/v1/poster/")
+	Poster.Use(middleware.AuthMiddleware())
+	{
+		Poster.GET("/info/", poster.GetPosterInfo)
+		Poster.POST("/info/", poster.PostPosterInfo)
 	}
 
 	return g

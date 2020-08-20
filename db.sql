@@ -175,13 +175,13 @@ CREATE TABLE `message` (
   KEY sub_user_id (`sub_user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
-CREATE TABLE `message` (
+CREATE TABLE `poster` (
   `id`          INT UNSIGNED NOT NULL auto_increment,
   `home` VARCHAR(255) ,
   `platform`         VARCHAR(255),
   `hole`     VARCHAR(255),
 
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 /*
