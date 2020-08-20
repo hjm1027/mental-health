@@ -1368,19 +1368,17 @@ paths:
         - upload
       summary: 上传视频的链接
       description: 如果不想上传视频，就上传链接
-      consumes:
-      - multipart/form-data
       parameters:
       - in: header
         name: token
         required: true
         type: string
         description: token
-      - in: formData
-        name: video
+      - in: query
+        name: url
         required: true
-        type: file
-        description: 视频文件
+        type: string
+        description: 视频链接
       - in: query
         name: name
         required: true
