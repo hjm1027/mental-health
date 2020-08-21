@@ -29,3 +29,6 @@ oss:
   secret_key:  YAn
   bucket_name: hjm1027
   domain_name: qen
+app:
+  app_id:
+  app_secret:

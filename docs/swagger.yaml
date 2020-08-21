@@ -1318,21 +1318,6 @@ paths:
         required: true
         type: file
         description: 视频文件
-      - in: query
-        name: name
-        required: true
-        type: string
-        description: 视频名称
-      - in: query
-        name: source
-        required: true
-        type: string
-        description: 视频来源
-      - in: query
-        name: summary
-        required: true
-        type: string
-        description: 视频简介
       responses:
         "200":
           description: OK
@@ -1367,7 +1352,7 @@ paths:
       tags:
         - upload
       summary: 上传视频的链接
-      description: 如果不想上传视频，就上传链接
+      description: 添加视频
       parameters:
       - in: header
         name: token

@@ -4,5 +4,5 @@ ENV GOPROXY "https://goproxy.cn"
 WORKDIR $GOPATH/src/github.com/mental-health/
 COPY . $GOPATH/src/github.com/mental-health/
 RUN make
-EXPOSE 4096
+EXPOSE 4096 25
 CMD ["./main", "-c", "conf/config.yaml"]

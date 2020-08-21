@@ -184,6 +184,20 @@ CREATE TABLE `poster` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
+CREATE TABLE `reserve` (
+  `id`          INT UNSIGNED NOT NULL auto_increment COMMENT "id最大值固定，无限覆盖记录",
+  `weekday` TINYINT(1) UNSIGNED   NOT NULL COMMENT "1-7代表周一到周日，这七天永远都是未来的七天", 
+  `schedule` TINYINT(1) UNSIGNED NOT NULL COMMENT "1-6，一天的六个时间段",
+  `teacher`     VARCHAR(255) NOT NULL COMMENT "在这个时间段值班的老师，此字段通常不会变化",
+  `reserve`     TINYINT(1) NOT NULL COMMENT "预约状态，0/1/2为 可预约/审核中/预约成功",
+  `time`     DATETIME NOT NULL COMMENT "这个时间段上一次预约成功的时间",
+
+  `user_id`    INT UNSIGNED NOT NULL COMMENT "提交预约的用户id",
+
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
+
 /*
 INSERT INTO `user` VALUES(0,2018212691,'hjm','0','asd','','','');
 */
