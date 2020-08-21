@@ -9,5 +9,6 @@ type ReserveModel struct {
 	Teacher  string    `gorm:"column:teacher"`
 	Reserve  uint8     `gorm:"column:reserve"`
 	Time     time.Time `gorm:"column:time"`
+	Type     uint8     `gorm:"column:type"`
 	UserId   uint32    `gorm:"column:user_id"`
 }

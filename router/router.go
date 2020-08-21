@@ -8,6 +8,7 @@ import (
 	"github.com/mental-health/handler/message"
 	"github.com/mental-health/handler/mood"
 	"github.com/mental-health/handler/poster"
+	"github.com/mental-health/handler/reserve"
 	"github.com/mental-health/handler/sd"
 	"github.com/mental-health/handler/search"
 	"github.com/mental-health/handler/upload"
@@ -119,6 +120,13 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	{
 		Poster.GET("/info/", poster.GetPosterInfo)
 		Poster.POST("/info/", poster.PostPosterInfo)
+	}
+
+	//Reserve路由组
+	Reserve := g.Group("/api/v1/reserve/")
+	Reserve.Use(middleware.AuthMiddleware())
+	{
+		Reserve.GET("/query/", reserve.QueryReserve)
 	}
 
 	return g
