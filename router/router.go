@@ -110,6 +110,7 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	{
 		Upload.POST("/image/", upload.Image)
 		Upload.POST("/video/", upload.Video)
+		Upload.POST("/videolink/", course.NewCourse)
 	}
 
 	//Poster路由组

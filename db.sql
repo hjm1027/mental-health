@@ -130,7 +130,7 @@ CREATE TABLE `course` (
   `summary` VARCHAR(255) NOT NULL,
   `like_num`              INT                 NOT NULL DEFAULT 0 COMMENT "点赞数",
   `favorite_num`  INT                    NOT NULL DEFAULT 0 COMMENT "收藏数",
-  `watch_num`  INT                    NOT NULL DEFAULT 0 COMMENT "收藏数",
+  `watch_num`  INT                    NOT NULL DEFAULT 0 COMMENT "观看数",
   `time`                  DATETIME         NOT NULL COMMENT "发布时间",
 
   PRIMARY KEY (`id`),

@@ -14,6 +14,12 @@ func (course *CourseFavoriteModel) TableName() string {
 	return "course_favorite"
 }
 
+func (course *CourseModel) New() (uint32, error) {
+	d := DB.Self.Create(course)
+	id := course.Id
+	return id, d.Error
+}
+
 func (course *CourseModel) GetInfo() error {
 	d := DB.Self.Where("id = ?", course.Id).First(course)
 	return d.Error
