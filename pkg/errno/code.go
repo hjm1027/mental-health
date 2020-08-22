@@ -52,5 +52,6 @@ var (
 	ErrGetPoster = &Errno{Code: 20901, Message: "Error occurred while getting poster."}
 
 	// reserve errors
-	ErrQueryReserve = &Errno{Code: 20901, Message: "Error occurred while query reserve."}
+	ErrQueryReserve   = &Errno{Code: 20901, Message: "Error occurred while query reserve."}
+	ErrGetTeacherList = &Errno{Code: 20901, Message: "Error occurred while getting teacher list."}
 )

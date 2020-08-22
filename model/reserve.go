@@ -36,3 +36,9 @@ func QueryReserve(weekday, schedule uint8, time time.Time) (bool, error) {
 	}
 	return false, d.Error
 }
+
+func GetAllTeacher(limit, page uint32) (*[]UserModel, error) {
+	var data []UserModel
+	d := DB.Self.Table("user").Where("is_teacher = true").Limit(limit).Offset((page - 1) * limit).Find(&data)
+	return &data, d.Error
+}

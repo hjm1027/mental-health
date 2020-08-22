@@ -213,6 +213,11 @@ INSERT INTO `user` (sid, username, is_teacher) VALUES ('1047395326', 'Wow, IGNB'
 INSERT INTO `user` (sid, username, is_teacher) VALUES ('9247128475', '信息管理学院',  1);
 INSERT INTO `user` (sid, username, is_teacher) VALUES ('7204901939', 'GITHUB',  0);
 INSERT INTO `user` (sid, username, is_teacher) VALUES ('8705469760', '中华人民共和国湖北省武汉市',  0);
+INSERT INTO `user` (sid, username, is_teacher) VALUES ('0000000000', '这是个老师',  1);
+INSERT INTO `user` (sid, username, is_teacher) VALUES ('0111111110', '这也是老师',  1);
+INSERT INTO `user` (sid, username, is_teacher) VALUES ('0122222210', '这还是老师',  1);
+INSERT INTO `user` (sid, username, is_teacher) VALUES ('0123333210', '又一个老师',  1);
+INSERT INTO `user` (sid, username, is_teacher) VALUES ('0123443210', '最后的老师',  1);
 
 INSERT INTO `hole` (name, content, comment_num,type,time,user_id) VALUES ('第一个问题', '作业好多写不完',3,  1,'2020-08-04 09:16:50',1);
 INSERT INTO `hole` (name, content, type,time,user_id) VALUES ('水', '经验+3，告辞',  3,'2019-01-01 14:18:2',1);

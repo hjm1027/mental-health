@@ -127,6 +127,7 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	Reserve.Use(middleware.AuthMiddleware())
 	{
 		Reserve.GET("/query/", reserve.QueryReserve)
+		Reserve.GET("/teacherlist/", reserve.TeacherList)
 	}
 
 	return g
