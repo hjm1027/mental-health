@@ -1510,48 +1510,52 @@ paths:
           schema:
             $ref: '#/definitions/CodeResponse'
       
-      
-  /reserve/:
+  /reserve/teacherlist/:
     get:
       tags:
         - reserve
-      summary: 进行预约
+      summary: 查看可预约的老师
       parameters:
       - in: header
         name: token
         required: true
         type: string
         description: token
-      - in: query
-        name: method
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/TeacherInfo'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '401':
+          description: 未授权
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '500':
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/CodeResponse'
+
+  /reserve/query/:
+    get:
+      tags:
+        - reserve
+      summary: 查询一个时间段是否可以预约
+      parameters:
+      - in: header
+        name: token
         required: true
-        type: integer
-        description: 1为线上，2为线下
-      - in: query
-        name: type
+        type: string
+        description: token
+      - in: body
+        name: body
+        description: 时间段
         required: true
-        type: integer
-        description: 1/2/3/4/5分别为 环境适应、人际关系、学业学习、生活经济、求职择业
-      - in: query
-        name: year
-        required: true
-        type: integer
-        description: 年
-      - in: query
-        name: month
-        required: true
-        type: integer
-        description: 月
-      - in: query
-        name: day
-        required: true
-        type: integer
-        description: 日
-      - in: query
-        name: hour
-        required: true
-        type: integer
-        description: 等一张 可预约时间表，比如1代表10:00-12:00之类的
+        schema:
+          $ref: '#/definitions/ReserveQuery'
       responses:
         "200":
           description: OK
@@ -1580,7 +1584,72 @@ paths:
           description: 服务器错误
           schema:
             $ref: '#/definitions/CodeResponse'
+            
+  /reserve/new/:
+    post:
+      tags:
+        - reserve
+      summary: 进行预约
+      description: 一定要先查询啊，通过了再预约
+      parameters:
+      - in: header
+        name: token
+        required: true
+        type: string
+        description: token
+      - in: body
+        name: body
+        description: 时间段
+        required: true
+        schema:
+          $ref: '#/definitions/ReserveRequest'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '401':
+          description: 未授权
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '500':
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/CodeResponse'
 
+  /reserve/form/:
+    get:
+      tags:
+        - reserve
+      summary: 查询预约时间表
+      parameters:
+      - in: header
+        name: token
+        required: true
+        type: string
+        description: token
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ReserveFormResponse'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '401':
+          description: 未授权
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '500':
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/CodeResponse'
+            
   /poster/info/:
     get:
       tags:
@@ -1721,7 +1790,33 @@ definitions:
         type: string
         description: 用户学号
   
-  
+  TeacherInfo:
+    properties:
+      id:
+        type: integer
+        description: 用户id
+      username:
+        type: string
+        description: 用户名称
+      avatar:
+        type: string
+        description: 用户头像
+      introduction:
+        type: string
+        description: 用户简介
+      phone:
+        type: string
+        description: 用户手机号
+      back_avatar:
+        type: string
+        description: 个人主页照片
+      is_teacher:
+        type: boolean
+        description: 是否是老师
+      sid:
+        type: string
+        description: 用户学号
+        
   MoodInfo:
     required:
       - score
@@ -2025,3 +2120,88 @@ definitions:
         type: string
         description: 树洞海报
       
+  ReserveQuery:
+    type: object
+    properties:
+      weekday:
+        type: string
+        description: 周几，范围1-7
+      schedule:
+        type: string
+        description: 哪个时间段，范围1-6
+  
+  ReserveRequest:
+    required:
+      - weekday
+      - schedule
+      - type
+      - method
+    properties:
+      weekday:
+        type: integer
+        description: 周几，范围1-7
+      schedule:
+        type: integer
+        description: 哪个时间段，范围1-6
+      type:
+        type: integer
+        description: 预约类别，1-6为环境适应，人际关系，学业学习，生活经济，求职择业，其他
+      method:
+        type: integer
+        description: 0/1=线上预约/线下预约
+      module_id:
+        type: integer
+        description: 订阅消息的模板id
+  
+  ReserveFormResponse:
+    type: array
+    description: 预约状态表,从今天的两天后开始，比如假设今天周四，就会按顺序给出周六到下周五的预约情况。
+    items:
+      $ref: '#/definitions/ReserveFormItem'
+      
+  ReserveFormItem:
+    type: object
+    description: 七天中的一天
+    properties:
+      weekday:
+        type: integer
+        description: 周几,1-7
+      date:
+        type: string
+        description: 具体日期
+      schedule1:
+        type: integer
+        description: 第一个时间段的预约状态
+      teacher1:
+        type: integer
+        description: 第一个时间段的老师id
+      schedule2:
+        type: integer
+        description: 第二个时间段的预约状态
+      teacher2:
+        type: integer
+        description: 第二个时间段的老师id
+      schedule3:
+        type: integer
+        description: 第三个时间段的预约状态
+      teacher3:
+        type: integer
+        description: 第三个时间段的老师id
+      schedule4:
+        type: integer
+        description: 第四个时间段的预约状态
+      teacher4:
+        type: integer
+        description: 第四个时间段的老师id
+      schedule5:
+        type: integer
+        description: 第五个时间段的预约状态
+      teacher5:
+        type: integer
+        description: 第五个时间段的老师id
+      schedule6:
+        type: integer
+        description: 第六个时间段的预约状态
+      teacher6:
+        type: integer
+        description: 第六个时间段的老师id
