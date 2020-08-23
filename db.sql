@@ -191,7 +191,7 @@ CREATE TABLE `reserve` (
   `teacher`     VARCHAR(255) NOT NULL COMMENT "在这个时间段值班的老师，此字段通常不会变化",
   `reserve`     TINYINT(1) NOT NULL COMMENT "预约状态，0/1/2为 可预约/审核中/预约成功",
   `time`     DATETIME  COMMENT "这个时间段上一次提交预约的时间",
-  `advance_time`  TINYINT(1) NOT NULL DEFAULT 0 COMMENT "提前x天预约，2<=x<=9",
+  `advance_time`  TINYINT(1) NOT NULL DEFAULT 0 COMMENT "提前x天预约，2<=x<=8",
   `type`     TINYINT(1) NOT NULL  DEFAULT 0 COMMENT "预约类别，1-6为环境适应，人际关系，学业学习，生活经济，求职择业，其他",
   `method`     TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0/1=线上预约/线下预约",
 
