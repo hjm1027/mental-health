@@ -68,3 +68,11 @@ func (reserve *ReserveModel) Status() (uint8, error) {
 	d := DB.Self.Table("reserve").Where("weekday = ? AND schedule = ?", reserve.Weekday, reserve.Schedule).First(&data)
 	return data.Reserve, d.Error
 }
+
+func CheckReserve(weekday, schedule, status uint8) error {
+	var data ReserveModel
+	d := DB.Self.Table("reserve").Where("weekday = ? AND schedule = ?", weekday, schedule).First(&data)
+	data.Reserve = status
+	d = DB.Self.Save(data)
+	return d.Error
+}

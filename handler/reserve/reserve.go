@@ -157,5 +157,6 @@ func Reserve(c *gin.Context) {
 			}
 		}
 	}()
+
 	handler.SendResponse(c, errno.OK, nil)
 }

@@ -57,5 +57,6 @@ var (
 	ErrGetTeacherBySchedule = &Errno{Code: 21003, Message: "Error occurred while getting teacher by schedule."}
 	ErrCreateReserve        = &Errno{Code: 21004, Message: "Error occurred in creating reserve."}
 	ErrSendMail             = &Errno{Code: 21005, Message: "Error occurred while sending mail."}
-	ErrGetStatus            = &Errno{Code: 21005, Message: "Error occurred while geting reserve status."}
+	ErrGetStatus            = &Errno{Code: 21006, Message: "Error occurred while geting reserve status."}
+	ErrCheckReserve         = &Errno{Code: 21007, Message: "Error occurred while checking reserve."}
 )
