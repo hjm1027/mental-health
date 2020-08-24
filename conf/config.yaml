@@ -32,3 +32,11 @@ oss:
 app:
   app_id: a
   app_secret: b
+mail:   #qq邮箱好坑，开通满14天才能开启SMTP服务
+  user: 1749511631@qq.com
+  password: mlo
+  to: 3197811671@qq.com
+  host: smtp.qq.com:25
+  user2: 1749511631@qq.com
+  password2: mlo
+  to2: 3197811671@qq.com

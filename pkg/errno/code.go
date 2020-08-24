@@ -52,8 +52,10 @@ var (
 	ErrGetPoster = &Errno{Code: 20901, Message: "Error occurred while getting poster."}
 
 	// reserve errors
-	ErrQueryReserve         = &Errno{Code: 20901, Message: "Error occurred while query reserve."}
-	ErrGetTeacherList       = &Errno{Code: 20901, Message: "Error occurred while getting teacher list."}
-	ErrGetTeacherBySchedule = &Errno{Code: 20901, Message: "Error occurred while getting teacher by schedule."}
-	ErrCreateReserve        = &Errno{Code: 20201, Message: "Error occurred in creating reserve."}
+	ErrQueryReserve         = &Errno{Code: 21001, Message: "Error occurred while query reserve."}
+	ErrGetTeacherList       = &Errno{Code: 21002, Message: "Error occurred while getting teacher list."}
+	ErrGetTeacherBySchedule = &Errno{Code: 21003, Message: "Error occurred while getting teacher by schedule."}
+	ErrCreateReserve        = &Errno{Code: 21004, Message: "Error occurred in creating reserve."}
+	ErrSendMail             = &Errno{Code: 21005, Message: "Error occurred while sending mail."}
+	ErrGetStatus            = &Errno{Code: 21005, Message: "Error occurred while geting reserve status."}
 )

@@ -28,10 +28,10 @@ func QueryReserve(weekday, schedule uint8, time time.Time) (bool, error) {
 	if data.Time.IsZero() {
 		return true, nil
 	}
-	if (data.Time.Year() == time.Year()) && (data.Time.YearDay() < time.YearDay()+int(data.AdvanceTime)-2) {
+	if (data.Time.Year() == time.Year()) && (data.Time.YearDay() < time.YearDay()-int(data.AdvanceTime)+2) {
 		return true, nil
 	}
-	if (data.Time.Year() < time.Year()) && (data.Time.YearDay() < time.YearDay()+leapYear(data.Time.Year())+int(data.AdvanceTime)-2) {
+	if (data.Time.Year() < time.Year()) && (data.Time.YearDay() < time.YearDay()+leapYear(data.Time.Year())-int(data.AdvanceTime)+2) {
 		return true, nil
 	}
 	return false, d.Error
@@ -61,4 +61,10 @@ func (reserve *ReserveModel) New(userId uint32) (error, error) {
 	data.UserId = userId
 	d2 := DB.Self.Save(data)
 	return d.Error, d2.Error
+}
+
+func (reserve *ReserveModel) Status() (uint8, error) {
+	var data ReserveModel
+	d := DB.Self.Table("reserve").Where("weekday = ? AND schedule = ?", reserve.Weekday, reserve.Schedule).First(&data)
+	return data.Reserve, d.Error
 }
