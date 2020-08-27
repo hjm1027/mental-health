@@ -1686,6 +1686,36 @@ paths:
           schema:
             $ref: '#/definitions/CodeResponse'
             
+  /reserve/record/:
+    get:
+      tags:
+        - reserve
+      summary: 我的记录
+      description: 记录预约状态
+      parameters:
+      - in: header
+        name: token
+        required: true
+        type: string
+        description: token
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ReserveRecordResponse'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '401':
+          description: 未授权
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '500':
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/CodeResponse'
+  
   /poster/info/:
     get:
       tags:
@@ -2253,3 +2283,21 @@ definitions:
       teacher6:
         type: integer
         description: 第六个时间段的老师id
+
+  ReserveRecordResponse:
+    type: array
+    description: 我的记录
+    items:
+      $ref: '#/definitions/ReserveRecordItem'
+      
+  ReserveRecordItem:
+    properties:
+      time:
+        type: string
+        description: 时间
+      type:
+        type: integer
+        description: 类型,0/1/2为发起预约/接受预约/拒绝预约
+      teacher:
+        type: string
+        description: 老师名字

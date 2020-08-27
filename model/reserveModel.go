@@ -7,6 +7,7 @@ type ReserveModel struct {
 	Weekday     uint8     `gorm:"column:weekday"`
 	Schedule    uint8     `gorm:"column:schedule"`
 	Teacher     string    `gorm:"column:teacher"`
+	TeacherId   uint32    `gorm:"column:teacher_id"`
 	Reserve     uint8     `gorm:"column:reserve"`
 	Time        time.Time `gorm:"column:time"`
 	AdvanceTime uint8     `gorm:"column:advance_time"`

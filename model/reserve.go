@@ -76,3 +76,19 @@ func CheckReserve(weekday, schedule, status uint8) error {
 	d = DB.Self.Save(data)
 	return d.Error
 }
+
+func GetReserveBySchedule(weekday, schedule uint8) (ReserveModel, error) {
+	var reserve ReserveModel
+	d := DB.Self.Table("reserve").Where("weekday = ? AND schedule = ?", weekday, schedule).First(&reserve)
+	return reserve, d.Error
+}
+
+func QueryReserve2(data ReserveModel, time time.Time) uint8 {
+	if (data.Time.Year() == time.Year()) && (data.Time.YearDay() < time.YearDay()-int(data.AdvanceTime)+2) {
+		return 0
+	}
+	if (data.Time.Year() < time.Year()) && (data.Time.YearDay() < time.YearDay()+leapYear(data.Time.Year())-int(data.AdvanceTime)+2) {
+		return 0
+	}
+	return 2
+}

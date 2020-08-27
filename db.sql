@@ -189,6 +189,7 @@ CREATE TABLE `reserve` (
   `weekday` TINYINT(1) UNSIGNED   NOT NULL COMMENT "1-7代表周一到周日，这七天永远都是未来的七天", 
   `schedule` TINYINT(1) UNSIGNED NOT NULL COMMENT "1-6，一天的六个时间段",
   `teacher`     VARCHAR(255) NOT NULL COMMENT "在这个时间段值班的老师，此字段通常不会变化",
+  `teacher_id`     VARCHAR(20) NOT NULL COMMENT "老师的用户id",
   `reserve`     TINYINT(1) NOT NULL COMMENT "预约状态，0/1/2为 可预约/审核中/预约成功",
   `time`     DATETIME  COMMENT "这个时间段上一次提交预约的时间",
   `advance_time`  TINYINT(1) NOT NULL DEFAULT 0 COMMENT "提前x天预约，2<=x<=8",
@@ -198,7 +199,8 @@ CREATE TABLE `reserve` (
   `user_id`    INT UNSIGNED NOT NULL DEFAULT 0 COMMENT "提交预约的用户id",
 
   PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`)
+  KEY `user_id` (`user_id`),
+  KEY `teacher_id` (`teacher_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 /*
@@ -258,51 +260,51 @@ INSERT INTO `mood` (date, year, month,day,score,note,user_id) VALUES ('2020.08.1
 
 -- true data
 
-INSERT INTO `reserve` (weekday, schedule, teacher,reserve) VALUES (1, 1,'第1个老师', 0);
-INSERT INTO `reserve` (weekday, schedule, teacher,reserve) VALUES (1, 2,'第2个老师', 0);
-INSERT INTO `reserve` (weekday, schedule, teacher,reserve) VALUES (1, 3,'第3个老师', 0);
-INSERT INTO `reserve` (weekday, schedule, teacher,reserve) VALUES (1, 4,'第4个老师', 0);
-INSERT INTO `reserve` (weekday, schedule, teacher,reserve) VALUES (1, 5,'第5个老师', 0);
-INSERT INTO `reserve` (weekday, schedule, teacher,reserve) VALUES (1, 6,'第6个老师', 0);
+INSERT INTO `reserve` (weekday, schedule, teacher,reserve,teacher_id) VALUES (1, 1,'第1个老师', 0,10001);
+INSERT INTO `reserve` (weekday, schedule, teacher,reserve,teacher_id) VALUES (1, 2,'第2个老师', 0,10002);
+INSERT INTO `reserve` (weekday, schedule, teacher,reserve,teacher_id) VALUES (1, 3,'第3个老师', 0,10003);
+INSERT INTO `reserve` (weekday, schedule, teacher,reserve,teacher_id) VALUES (1, 4,'第4个老师', 0,10004);
+INSERT INTO `reserve` (weekday, schedule, teacher,reserve,teacher_id) VALUES (1, 5,'第5个老师', 0,10005);
+INSERT INTO `reserve` (weekday, schedule, teacher,reserve,teacher_id) VALUES (1, 6,'第6个老师', 0,10006);
 
-INSERT INTO `reserve` (weekday, schedule, teacher,reserve) VALUES (2, 1,'第7个老师', 0);
-INSERT INTO `reserve` (weekday, schedule, teacher,reserve) VALUES (2, 2,'第8个老师', 0);
-INSERT INTO `reserve` (weekday, schedule, teacher,reserve) VALUES (2, 3,'第9个老师', 0);
-INSERT INTO `reserve` (weekday, schedule, teacher,reserve) VALUES (2, 4,'第10个老师', 0);
-INSERT INTO `reserve` (weekday, schedule, teacher,reserve) VALUES (2, 5,'第11个老师', 0);
-INSERT INTO `reserve` (weekday, schedule, teacher,reserve) VALUES (2, 6,'第12个老师', 0);
+INSERT INTO `reserve` (weekday, schedule, teacher,reserve,teacher_id) VALUES (2, 1,'第7个老师', 0,10007);
+INSERT INTO `reserve` (weekday, schedule, teacher,reserve,teacher_id) VALUES (2, 2,'第8个老师', 0,10008);
+INSERT INTO `reserve` (weekday, schedule, teacher,reserve,teacher_id) VALUES (2, 3,'第9个老师', 0,10009);
+INSERT INTO `reserve` (weekday, schedule, teacher,reserve,teacher_id) VALUES (2, 4,'第10个老师', 0,10010);
+INSERT INTO `reserve` (weekday, schedule, teacher,reserve,teacher_id) VALUES (2, 5,'第11个老师', 0,10011);
+INSERT INTO `reserve` (weekday, schedule, teacher,reserve,teacher_id) VALUES (2, 6,'第12个老师', 0,10012);
 
-INSERT INTO `reserve` (weekday, schedule, teacher,reserve) VALUES (3, 1,'第13个老师', 0);
-INSERT INTO `reserve` (weekday, schedule, teacher,reserve) VALUES (3, 2,'第14个老师', 0);
-INSERT INTO `reserve` (weekday, schedule, teacher,reserve) VALUES (3, 3,'第15个老师', 0);
-INSERT INTO `reserve` (weekday, schedule, teacher,reserve) VALUES (3, 4,'第16个老师', 0);
-INSERT INTO `reserve` (weekday, schedule, teacher,reserve) VALUES (3, 5,'第17个老师', 0);
-INSERT INTO `reserve` (weekday, schedule, teacher,reserve) VALUES (3, 6,'第18个老师', 0);
+INSERT INTO `reserve` (weekday, schedule, teacher,reserve,teacher_id) VALUES (3, 1,'第13个老师', 0,10013);
+INSERT INTO `reserve` (weekday, schedule, teacher,reserve,teacher_id) VALUES (3, 2,'第14个老师', 0,10014);
+INSERT INTO `reserve` (weekday, schedule, teacher,reserve,teacher_id) VALUES (3, 3,'第15个老师', 0,10015);
+INSERT INTO `reserve` (weekday, schedule, teacher,reserve,teacher_id) VALUES (3, 4,'第16个老师', 0,10016);
+INSERT INTO `reserve` (weekday, schedule, teacher,reserve,teacher_id) VALUES (3, 5,'第17个老师', 0,10017);
+INSERT INTO `reserve` (weekday, schedule, teacher,reserve,teacher_id) VALUES (3, 6,'第18个老师', 0,10018);
 
-INSERT INTO `reserve` (weekday, schedule, teacher,reserve) VALUES (4, 1,'第19个老师', 0);
-INSERT INTO `reserve` (weekday, schedule, teacher,reserve) VALUES (4, 2,'第20个老师', 0);
-INSERT INTO `reserve` (weekday, schedule, teacher,reserve) VALUES (4, 3,'第21个老师', 0);
-INSERT INTO `reserve` (weekday, schedule, teacher,reserve) VALUES (4, 4,'第22个老师', 0);
-INSERT INTO `reserve` (weekday, schedule, teacher,reserve) VALUES (4, 5,'第23个老师', 0);
-INSERT INTO `reserve` (weekday, schedule, teacher,reserve) VALUES (4, 6,'第24个老师', 0);
+INSERT INTO `reserve` (weekday, schedule, teacher,reserve,teacher_id) VALUES (4, 1,'第19个老师', 0,10019);
+INSERT INTO `reserve` (weekday, schedule, teacher,reserve,teacher_id) VALUES (4, 2,'第20个老师', 0,10020);
+INSERT INTO `reserve` (weekday, schedule, teacher,reserve,teacher_id) VALUES (4, 3,'第21个老师', 0,10021);
+INSERT INTO `reserve` (weekday, schedule, teacher,reserve,teacher_id) VALUES (4, 4,'第22个老师', 0,10022);
+INSERT INTO `reserve` (weekday, schedule, teacher,reserve,teacher_id) VALUES (4, 5,'第23个老师', 0,10023);
+INSERT INTO `reserve` (weekday, schedule, teacher,reserve,teacher_id) VALUES (4, 6,'第24个老师', 0,10024);
 
-INSERT INTO `reserve` (weekday, schedule, teacher,reserve) VALUES (5, 1,'第25个老师', 0);
-INSERT INTO `reserve` (weekday, schedule, teacher,reserve) VALUES (5, 2,'第26个老师', 0);
-INSERT INTO `reserve` (weekday, schedule, teacher,reserve) VALUES (5, 3,'第27个老师', 0);
-INSERT INTO `reserve` (weekday, schedule, teacher,reserve) VALUES (5, 4,'第28个老师', 0);
-INSERT INTO `reserve` (weekday, schedule, teacher,reserve) VALUES (5, 5,'第29个老师', 0);
-INSERT INTO `reserve` (weekday, schedule, teacher,reserve) VALUES (5, 6,'第30个老师', 0);
+INSERT INTO `reserve` (weekday, schedule, teacher,reserve,teacher_id) VALUES (5, 1,'第25个老师', 0,10025);
+INSERT INTO `reserve` (weekday, schedule, teacher,reserve,teacher_id) VALUES (5, 2,'第26个老师', 0,10026);
+INSERT INTO `reserve` (weekday, schedule, teacher,reserve,teacher_id) VALUES (5, 3,'第27个老师', 0,10027);
+INSERT INTO `reserve` (weekday, schedule, teacher,reserve,teacher_id) VALUES (5, 4,'第28个老师', 0,10028);
+INSERT INTO `reserve` (weekday, schedule, teacher,reserve,teacher_id) VALUES (5, 5,'第29个老师', 0,10029);
+INSERT INTO `reserve` (weekday, schedule, teacher,reserve,teacher_id) VALUES (5, 6,'第30个老师', 0,10030);
 
-INSERT INTO `reserve` (weekday, schedule, teacher,reserve) VALUES (6, 1,'第31个老师', 0);
-INSERT INTO `reserve` (weekday, schedule, teacher,reserve) VALUES (6, 2,'第32个老师', 0);
-INSERT INTO `reserve` (weekday, schedule, teacher,reserve) VALUES (6, 3,'第33个老师', 0);
-INSERT INTO `reserve` (weekday, schedule, teacher,reserve) VALUES (6, 4,'第34个老师', 0);
-INSERT INTO `reserve` (weekday, schedule, teacher,reserve) VALUES (6, 5,'第35个老师', 0);
-INSERT INTO `reserve` (weekday, schedule, teacher,reserve) VALUES (6, 6,'第36个老师', 0);
+INSERT INTO `reserve` (weekday, schedule, teacher,reserve,teacher_id) VALUES (6, 1,'第31个老师', 0,10031);
+INSERT INTO `reserve` (weekday, schedule, teacher,reserve,teacher_id) VALUES (6, 2,'第32个老师', 0,10032);
+INSERT INTO `reserve` (weekday, schedule, teacher,reserve,teacher_id) VALUES (6, 3,'第33个老师', 0,10033);
+INSERT INTO `reserve` (weekday, schedule, teacher,reserve,teacher_id) VALUES (6, 4,'第34个老师', 0,10034);
+INSERT INTO `reserve` (weekday, schedule, teacher,reserve,teacher_id) VALUES (6, 5,'第35个老师', 0,10035);
+INSERT INTO `reserve` (weekday, schedule, teacher,reserve,teacher_id) VALUES (6, 6,'第36个老师', 0,10036);
 
-INSERT INTO `reserve` (weekday, schedule, teacher,reserve) VALUES (7, 1,'第37个老师', 0);
-INSERT INTO `reserve` (weekday, schedule, teacher,reserve) VALUES (7, 2,'第38个老师', 0);
-INSERT INTO `reserve` (weekday, schedule, teacher,reserve) VALUES (7, 3,'第39个老师', 0);
-INSERT INTO `reserve` (weekday, schedule, teacher,reserve) VALUES (7, 4,'第40个老师', 0);
-INSERT INTO `reserve` (weekday, schedule, teacher,reserve) VALUES (7, 5,'第41个老师', 0);
-INSERT INTO `reserve` (weekday, schedule, teacher,reserve) VALUES (7, 6,'第42个老师', 0);
+INSERT INTO `reserve` (weekday, schedule, teacher,reserve,teacher_id) VALUES (7, 1,'第37个老师', 0,10037);
+INSERT INTO `reserve` (weekday, schedule, teacher,reserve,teacher_id) VALUES (7, 2,'第38个老师', 0,10038);
+INSERT INTO `reserve` (weekday, schedule, teacher,reserve,teacher_id) VALUES (7, 3,'第39个老师', 0,10039);
+INSERT INTO `reserve` (weekday, schedule, teacher,reserve,teacher_id) VALUES (7, 4,'第40个老师', 0,10040);
+INSERT INTO `reserve` (weekday, schedule, teacher,reserve,teacher_id) VALUES (7, 5,'第41个老师', 0,10041);
+INSERT INTO `reserve` (weekday, schedule, teacher,reserve,teacher_id) VALUES (7, 6,'第42个老师', 0,10042);
