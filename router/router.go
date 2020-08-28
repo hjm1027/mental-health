@@ -130,6 +130,7 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 		Reserve.GET("/teacherlist/", reserve.TeacherList)
 		Reserve.POST("/new/", reserve.Reserve)
 		Reserve.PUT("/check/", reserve.CheckReserve)
+		Reserve.GET("/form/", reserve.ReserveForm)
 	}
 
 	return g

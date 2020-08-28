@@ -1672,7 +1672,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/ReserveFormResponse'
+            $ref: '#/definitions/FormResponse'
         '400':
           description: bad request
           schema:
@@ -2231,58 +2231,39 @@ definitions:
         type: boolean
         description: true为接受，false为拒绝
         
-  ReserveFormResponse:
+  FormResponse:
     type: array
-    description: 预约状态表,从今天的两天后开始，比如假设今天周四，就会按顺序给出周六到下周五的预约情况。
     items:
-      $ref: '#/definitions/ReserveFormItem'
+      $ref: '#/definitions/ReserveFormResponse'
+
+  ReserveFormResponse:
+    properties:
+      weekday:
+        type: integer
+        description: 周几，范围1-7
+      date:
+        type: string
+        description: 日期
+        example: '2020-08-30'
+      item:
+        type: array
+        description: 预约状态表,从今天的两天后开始，比如假设今天周四，就会按顺序给出周六到下周五的预约情况。
+        items:
+          $ref: '#/definitions/ReserveFormItem'
       
   ReserveFormItem:
     type: object
     description: 七天中的一天
     properties:
-      weekday:
+      Id:
         type: integer
-        description: 周几,1-7
-      date:
-        type: string
-        description: 具体日期
-      schedule1:
+        description: 第几个时间段
+      teacher:
         type: integer
-        description: 第一个时间段的预约状态
-      teacher1:
+        description: 对应时间段的老师id
+      reserve:
         type: integer
-        description: 第一个时间段的老师id
-      schedule2:
-        type: integer
-        description: 第二个时间段的预约状态
-      teacher2:
-        type: integer
-        description: 第二个时间段的老师id
-      schedule3:
-        type: integer
-        description: 第三个时间段的预约状态
-      teacher3:
-        type: integer
-        description: 第三个时间段的老师id
-      schedule4:
-        type: integer
-        description: 第四个时间段的预约状态
-      teacher4:
-        type: integer
-        description: 第四个时间段的老师id
-      schedule5:
-        type: integer
-        description: 第五个时间段的预约状态
-      teacher5:
-        type: integer
-        description: 第五个时间段的老师id
-      schedule6:
-        type: integer
-        description: 第六个时间段的预约状态
-      teacher6:
-        type: integer
-        description: 第六个时间段的老师id
+        description: 预约状态，0/1/2分别为 可预约或审核失败/审核中/审核成功 （只有0可以预约）
 
   ReserveRecordResponse:
     type: array

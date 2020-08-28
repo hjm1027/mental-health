@@ -37,19 +37,36 @@ type FormItem struct {
 	Reserve uint8  `json:"reserve"`
 }
 
+func fix(d uint8) uint8 {
+	if d <= 7 {
+		return d
+	} else {
+		return d - 7
+	}
+}
+
+func fix2(w int) int {
+	if w > 0 {
+		return w
+	} else {
+		return 7
+	}
+}
+
 //获取预约状态表格
 func ReserveForm(c *gin.Context) {
 	var response []FormResponse
 
 	time1 := time.Now().UTC().Add(8 * time.Hour)
 	time2 := time.Now().UTC().Add(56 * time.Hour)
-	weekday := int(time2.Weekday())
-	fmt.Println(weekday)
+	weekday := fix2(int(time2.Weekday()))
+	//fmt.Println(weekday)
+	var n int
 
-	for d := uint8(weekday); d <= 7; d++ {
+	for d := uint8(weekday); d < uint8(weekday)+7; d++ {
 		var item []FormItem
 		for i := 1; i <= 6; i++ {
-			reserve, err := model.GetReserveBySchedule(d, uint8(i))
+			reserve, err := model.GetReserveBySchedule(fix(d), uint8(i))
 			if err != nil {
 				handler.SendError(c, errno.ErrGetReserve, nil, err.Error())
 				return
@@ -70,5 +87,23 @@ func ReserveForm(c *gin.Context) {
 
 			item = append(item, formItem)
 		}
+
+		date := time.Now().UTC().Add(56 * time.Hour).Add(time.Duration(24*n) * time.Hour)
+		fmt.Println(date)
+		dateFix := date.Format("2006-01-02 15:04:05")
+		fmt.Println(date.Month())
+		fmt.Println(date.Day())
+		n++
+		//month := string(date.Month())
+
+		formResponse := FormResponse{
+			Weekday: fix(d),
+			Date:    dateFix[:10],
+			Item:    item,
+		}
+
+		response = append(response, formResponse)
 	}
+
+	handler.SendResponse(c, errno.OK, response)
 }
