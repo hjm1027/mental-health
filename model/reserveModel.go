@@ -15,3 +15,11 @@ type ReserveModel struct {
 	Method      uint8     `gorm:"column:method"`
 	UserId      uint32    `gorm:"column:user_id"`
 }
+
+type RecordModel struct {
+	Id      uint32    `gorm:"column:id; primary_key; AUTO_INCREMENT"`
+	Teacher string    `gorm:"column:teacher"`
+	Time    time.Time `gorm:"column:time"`
+	Type    uint8     `gorm:"column:type"`
+	UserId  uint32    `gorm:"column:user_id"`
+}

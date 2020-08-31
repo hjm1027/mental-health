@@ -60,4 +60,7 @@ var (
 	ErrGetStatus            = &Errno{Code: 21006, Message: "Error occurred while geting reserve status."}
 	ErrCheckReserve         = &Errno{Code: 21007, Message: "Error occurred while checking reserve."}
 	ErrGetReserve           = &Errno{Code: 21008, Message: "Error occurred while geting reserve."}
+
+	ErrCreateRecord = &Errno{Code: 21009, Message: "Error occurred in creating record."}
+	ErrGetRecord    = &Errno{Code: 21010, Message: "Error occurred while geting record."}
 )

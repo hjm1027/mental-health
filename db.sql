@@ -203,6 +203,18 @@ CREATE TABLE `reserve` (
   KEY `teacher_id` (`teacher_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
+CREATE TABLE `record` (
+  `id`          INT UNSIGNED NOT NULL auto_increment ,
+  `teacher`     VARCHAR(255) NOT NULL COMMENT "预约的老师",
+  `time`     DATETIME  NOT NULL,
+  `type`     TINYINT(1) NOT NULL COMMENT "0/1/2为发起预约/接受预约/拒绝预约",
+
+  `user_id`    INT UNSIGNED NOT NULL ,
+
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
+
 /*
 INSERT INTO `user` VALUES(0,2018212691,'hjm','0','asd','','','');
 */

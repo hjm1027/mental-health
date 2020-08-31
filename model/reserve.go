@@ -9,6 +9,10 @@ func (reserve *ReserveModel) TableName() string {
 	return "reserve"
 }
 
+func (record *RecordModel) TableName() string {
+	return "record"
+}
+
 func leapYear(year int) int {
 	if year%400 == 0 || (year%4 == 0 && year%100 != 0) {
 		return 366
@@ -91,4 +95,15 @@ func QueryReserve2(data ReserveModel, time time.Time) uint8 {
 		return 0
 	}
 	return 2
+}
+
+func (record *RecordModel) New() error {
+	d := DB.Self.Create(record)
+	return d.Error
+}
+
+func GetRecords(userId uint32) (*[]RecordModel, error) {
+	var data []RecordModel
+	d := DB.Self.Table("record").Where("user_id = ?", userId).Order("id DESC").Find(&data)
+	return &data, d.Error
 }

@@ -122,10 +122,24 @@ func Reserve(c *gin.Context) {
 		return
 	}
 
+	//添加记录
+	record := model.RecordModel{
+		Time:    time2,
+		Type:    0,
+		Teacher: teacher,
+		UserId:  userId,
+	}
+
+	if err := record.New(); err != nil {
+		handler.SendError(c, errno.ErrCreateRecord, nil, err.Error())
+		return
+	}
+
 	//w := parsew(data.Weekday)
 	//s := parses(data.Schedule)
 	//t := parset(data.Type)
 
+	//发送邮件
 	subject := "心理预约请求"
 	body := "尊敬的" + teacher + ",学号为 " + user.Sid + " 的学生向您发出预约申请，预约时间为 " + parsew(data.Weekday) + "的" + parses(data.Schedule) + ",咨询类型为 " + parset(data.Type) + "咨询方式为 " + parsem(data.Method) + "。您可以同意或者拒绝。（随便写的文案，以后再改）"
 
