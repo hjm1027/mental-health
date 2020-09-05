@@ -20,15 +20,15 @@ db:
   password: 123
 default_user:
   username: health
-  avatar: qen7rjp6a.bkt.clouddn.com/1-1597458748.png
+  avatar: http://resources.e20-health.xyz/1-1599278937.png
   introduction: 该用户没有填写简介~
   phone: 无
-  back_avatar: qen7rjp6a.bkt.clouddn.com/1-1597458748.png
+  back_avatar: http://resources.e20-health.xyz/1-1599278937.png
 oss:
   access_key: SkU
   secret_key:  YAn
   bucket_name: hjm1027
-  domain_name: qen
+  domain_name: resources.e20-health.xyz
 app:
   app_id: a
   app_secret: b
