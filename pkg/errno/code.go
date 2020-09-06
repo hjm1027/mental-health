@@ -63,4 +63,7 @@ var (
 
 	ErrCreateRecord = &Errno{Code: 21009, Message: "Error occurred in creating record."}
 	ErrGetRecord    = &Errno{Code: 21010, Message: "Error occurred while geting record."}
+
+	//security errors
+	ErrGetAccessToken = &Errno{Code: 21010, Message: "Error occurred while geting accessToken."}
 )

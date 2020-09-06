@@ -1,0 +1,97 @@
+package security
+
+import (
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"net/http"
+	"time"
+
+	"github.com/lexkong/log"
+	"github.com/spf13/viper"
+)
+
+type accessTokenManager struct {
+	Token     string
+	CreateAt  time.Time
+	ExpiresIn time.Duration
+}
+
+var (
+	AppID     string
+	AppSecret string
+
+	accessToken = &accessTokenManager{ExpiresIn: 7200 * time.Second}
+
+	accessTokenGetURL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s"
+)
+
+func WXSecInit() {
+	AppID = viper.GetString("app_id")
+	AppSecret = viper.GetString("app_secret")
+
+	accessToken.loadToken()
+}
+
+type WXGetTokenPayload struct {
+	AccessToken string `json:"access_token"`
+	ExpiresIn   int32  `json:"expires_in"`
+	ErrCode     int32  `json:"errcode"`
+	ErrMsg      string `json:"errmsg"`
+}
+
+func (t *accessTokenManager) loadToken() error {
+	resp, err := http.Get(fmt.Sprintf(accessTokenGetURL, AppID, AppSecret))
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+	var obj WXGetTokenPayload
+	if err := json.Unmarshal(body, &obj); err != nil {
+		log.Error("json unmarshal to WXGetTokenPayload error", err)
+		return err
+	}
+
+	fmt.Printf("WX access token: old token: %s; new token: %s\n", t.Token, obj.AccessToken)
+
+	t.Token = obj.AccessToken
+	t.CreateAt = time.Now().UTC().Add(8 * time.Hour)
+
+	return nil
+}
+
+func (t *accessTokenManager) check() error {
+	now := time.Now()
+	if t.CreateAt.Add(t.ExpiresIn).Sub(now) <= 0 {
+		// 过期，更新 token
+		if err := t.loadToken(); err != nil {
+			log.Error("Refresh access token failed", err)
+			return err
+		}
+		log.Info("Refresh access token OK")
+	}
+
+	fmt.Printf("WX access token info: createAt=%v, expiresIn=%v, sub time from now=%v\n",
+		t.CreateAt, t.ExpiresIn, t.CreateAt.Add(t.ExpiresIn).Sub(now))
+
+	return nil
+}
+
+func RefreshTokenScheduled() {
+	for {
+		// 提前10分钟更新
+		time.Sleep(accessToken.ExpiresIn - time.Minute*10)
+
+		if err := accessToken.loadToken(); err != nil {
+			log.Error("Refresh access token failed", err)
+			continue
+		}
+
+		log.Info("Refresh WX access token OK")
+	}
+}
