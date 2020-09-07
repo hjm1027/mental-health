@@ -37,7 +37,7 @@ func SearchCourse(c *gin.Context) {
 	tw := map[string]string{"0": "favorite_num DESC,like_num DESC,time DESC", "1": "time DESC", "2": "like_num DESC,time DESC", "3": "favorite_num DESC,time DESC"}
 	//fmt.Println(tw[t])
 
-	courseList := []model.CourseSearchInfo{}
+	var courseList []model.CourseSearchInfo
 	if keyword != "" {
 		courseList, err = service.SearchCourses(keyword, page, limit, tw[t])
 	} else {

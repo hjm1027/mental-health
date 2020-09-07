@@ -23,14 +23,21 @@ var (
 
 	accessToken = &accessTokenManager{ExpiresIn: 7200 * time.Second}
 
-	accessTokenGetURL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s"
+	msgSecCheckURL    = "https://api.weixin.qq.com/wxa/msg_sec_check?access_token="
+	accessTokenGetURL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%v&secret=%v"
 )
 
 func WXSecInit() {
-	AppID = viper.GetString("app_id")
-	AppSecret = viper.GetString("app_secret")
+	AppID = viper.GetString("app.app_id")
+	AppSecret = viper.GetString("app.app_secret")
 
-	accessToken.loadToken()
+	err := accessToken.loadToken()
+	if err != nil {
+		log.Error("accessToken.loadToken() error", err)
+		return
+	}
+
+	msgSecCheckURL += accessToken.Token
 }
 
 type WXGetTokenPayload struct {
@@ -41,7 +48,9 @@ type WXGetTokenPayload struct {
 }
 
 func (t *accessTokenManager) loadToken() error {
+	//fmt.Println(fmt.Sprintf(accessTokenGetURL, AppID, AppSecret))
 	resp, err := http.Get(fmt.Sprintf(accessTokenGetURL, AppID, AppSecret))
+	//fmt.Println(resp)
 	if err != nil {
 		return err
 	}
@@ -57,7 +66,7 @@ func (t *accessTokenManager) loadToken() error {
 		return err
 	}
 
-	fmt.Printf("WX access token: old token: %s; new token: %s\n", t.Token, obj.AccessToken)
+	//fmt.Printf("WX access token: old token: %s; new token: %s\n", t.Token, obj.AccessToken)
 
 	t.Token = obj.AccessToken
 	t.CreateAt = time.Now().UTC().Add(8 * time.Hour)
@@ -66,7 +75,7 @@ func (t *accessTokenManager) loadToken() error {
 }
 
 func (t *accessTokenManager) check() error {
-	now := time.Now()
+	now := time.Now().UTC().Add(8 * time.Hour)
 	if t.CreateAt.Add(t.ExpiresIn).Sub(now) <= 0 {
 		// 过期，更新 token
 		if err := t.loadToken(); err != nil {
@@ -76,8 +85,8 @@ func (t *accessTokenManager) check() error {
 		log.Info("Refresh access token OK")
 	}
 
-	fmt.Printf("WX access token info: createAt=%v, expiresIn=%v, sub time from now=%v\n",
-		t.CreateAt, t.ExpiresIn, t.CreateAt.Add(t.ExpiresIn).Sub(now))
+	/*fmt.Printf("WX access token info: createAt=%v, expiresIn=%v, sub time from now=%v\n",
+	t.CreateAt, t.ExpiresIn, t.CreateAt.Add(t.ExpiresIn).Sub(now))*/
 
 	return nil
 }

@@ -30,8 +30,8 @@ oss:
   bucket_name: hjm1027
   domain_name: resources.e20-health.xyz
 app:
-  app_id: a
-  app_secret: b
+  app_id: wx9
+  app_secret: 1d9
 mail:   #qq邮箱好坑，开通满14天才能开启SMTP服务
   user: 1749511631@qq.com
   password: mlo

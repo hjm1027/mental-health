@@ -9,6 +9,7 @@ import (
 	"github.com/mental-health/model"
 	"github.com/mental-health/router"
 	"github.com/mental-health/router/middleware"
+	"github.com/mental-health/util/security"
 
 	"github.com/gin-gonic/gin"
 	"github.com/lexkong/log"
@@ -55,6 +56,10 @@ func main() {
 		}
 		log.Info("The router has been deployed successfully.")
 	}()
+
+	// WX security check
+	security.WXSecInit()
+	go security.RefreshTokenScheduled()
 
 	log.Infof("Start to listening the incoming requests on http address: %s", viper.GetString("addr"))
 	log.Info(http.ListenAndServe(viper.GetString("addr"), g).Error())

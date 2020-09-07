@@ -11,6 +11,7 @@ import (
 	"github.com/mental-health/pkg/errno"
 	"github.com/mental-health/service"
 	"github.com/mental-health/util"
+	"github.com/mental-health/util/security"
 
 	"github.com/gin-gonic/gin"
 )
@@ -59,6 +60,17 @@ func Reply(c *gin.Context) {
 	// Words are limited to 300
 	if utf8.RuneCountInString(data.Content) > 300 {
 		handler.SendBadRequest(c, errno.ErrWordLimitation, nil, "Comment's content is limited to 300.")
+		return
+	}
+
+	// 小程序内容安全检测
+	ok, err := security.MsgSecCheck(data.Content)
+	if err != nil {
+		handler.SendError(c, errno.ErrSecurityCheck, nil, err.Error())
+		return
+	} else if !ok {
+		log.Errorf(err, "WX security check msg(%s) error", data.Content)
+		handler.SendBadRequest(c, errno.ErrSecurityCheck, nil, "reply content violation")
 		return
 	}
 

@@ -65,5 +65,5 @@ var (
 	ErrGetRecord    = &Errno{Code: 21010, Message: "Error occurred while geting record."}
 
 	//security errors
-	ErrGetAccessToken = &Errno{Code: 21010, Message: "Error occurred while geting accessToken."}
+	ErrSecurityCheck = &Errno{Code: 21010, Message: "Error occurred in security check"}
 )

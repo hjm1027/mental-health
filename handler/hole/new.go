@@ -7,8 +7,10 @@ import (
 	"github.com/mental-health/model"
 	"github.com/mental-health/pkg/errno"
 	"github.com/mental-health/util"
+	"github.com/mental-health/util/security"
 
 	"github.com/gin-gonic/gin"
+	"github.com/lexkong/log"
 )
 
 type NewHoleRequest struct {
@@ -34,6 +36,27 @@ func New(c *gin.Context) {
 	// 字符数，非字节
 	if utf8.RuneCountInString(data.Content) > 500 {
 		handler.SendBadRequest(c, errno.ErrWordLimitation, nil, "Hole's content is limited to 500.")
+		return
+	}
+
+	// 小程序内容安全检测
+	ok, err := security.MsgSecCheck(data.Header)
+	if err != nil {
+		handler.SendError(c, errno.ErrSecurityCheck, nil, err.Error())
+		return
+	} else if !ok {
+		log.Errorf(err, "WX security check msg(%s) error", data.Header)
+		handler.SendBadRequest(c, errno.ErrSecurityCheck, nil, "hole header violation")
+		return
+	}
+
+	ok2, err2 := security.MsgSecCheck(data.Content)
+	if err2 != nil {
+		handler.SendError(c, errno.ErrSecurityCheck, nil, err2.Error())
+		return
+	} else if !ok2 {
+		log.Errorf(err2, "WX security check msg(%s) error", data.Content)
+		handler.SendBadRequest(c, errno.ErrSecurityCheck, nil, "hole content violation")
 		return
 	}
 
