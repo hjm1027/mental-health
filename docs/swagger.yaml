@@ -4,7 +4,7 @@ info:
   version: 1.0.0
   description: 二级心理健康工作站
 
-host: 120.25.215.117:4096
+host: e20-health.xyz #(https)
 basePath: /api/v1
 tags:
   - name: auth
@@ -27,6 +27,8 @@ tags:
     description: 预约老师
   - name: poster
     description: 海报
+  - name: test
+    description: 测评
 
 schemes:
   - https
@@ -931,6 +933,49 @@ paths:
           schema:
             $ref: '#/definitions/CodeResponse'
 
+    post:
+      tags:
+        - course
+      summary: 修改课程信息
+      description: 修改课程信息
+      parameters:
+        - in: header
+          name: token
+          description: token
+          required: true
+          type: string
+        - in: path
+          name: id
+          description: 课程id
+          required: true
+          type: string
+        - in: body
+          name: data
+          required: true
+          description: 课程信息
+          schema:
+            $ref: '#/definitions/CourseInfo'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '401':
+          description: 未授权
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '500':
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/CodeResponse'
 
   /course/like/{id}/:
     put:
@@ -1793,6 +1838,51 @@ paths:
             $ref: '#/definitions/CodeResponse'
             
 
+  /test/new/:
+    post:
+      tags:
+        - test
+      summary: 上传测评的链接
+      description: 添加测评
+      parameters:
+      - in: header
+        name: token
+        required: true
+        type: string
+        description: token
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/TestRequest'
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: 测评id
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '401':
+          description: 未授权
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '500':
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/CodeResponse'
 
 definitions:
   authModel:
@@ -2103,6 +2193,22 @@ definitions:
         type: string
         description: 创建时间
 
+  CourseInfo:
+    type: object
+    description: 课程信息返回值
+    properties:
+      url:
+        type: string
+        description: 课程地址
+      name:
+        type: string
+        description: 课程名称
+      source:
+        type: string
+        description: 课程来源
+      summary:
+        type: string
+        description: 课程简介
 
   MessageResponseList:
     type: array
@@ -2282,3 +2388,15 @@ definitions:
       teacher:
         type: string
         description: 老师名字
+  
+  TestRequest:
+    properties:
+      url:
+        type: string
+        description: 测评链接
+      header:
+        type: string
+        description: 测评标题
+      content:
+        type: string
+        description: 测评简介
