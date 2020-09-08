@@ -25,6 +25,18 @@ func (course *CourseModel) GetInfo() error {
 	return d.Error
 }
 
+//编辑课程信息
+func (course *CourseModel) PostInfo() error {
+	var data CourseModel
+	d := DB.Self.Where("id = ?", course.Id).First(&data)
+	data.Url = course.Url
+	data.Name = course.Name
+	data.Source = course.Source
+	data.Summary = course.Summary
+	d = DB.Self.Save(&data)
+	return d.Error
+}
+
 // 判断课程是否已经被当前用户点赞
 func CourseHasLiked(userId uint32, courseId uint32) (uint32, bool) {
 	var data CourseLikeModel

@@ -215,6 +215,15 @@ CREATE TABLE `record` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
+CREATE TABLE `test` (
+  `id`          INT UNSIGNED NOT NULL auto_increment ,
+  `url`     VARCHAR(255) NOT NULL,
+  `header`     VARCHAR(255)  NOT NULL,
+  `content`     VARCHAR(255) NOT NULL,
+
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
+
 /*
 INSERT INTO `user` VALUES(0,2018212691,'hjm','0','asd','','','');
 */

@@ -11,6 +11,7 @@ import (
 	"github.com/mental-health/handler/reserve"
 	"github.com/mental-health/handler/sd"
 	"github.com/mental-health/handler/search"
+	"github.com/mental-health/handler/test"
 	"github.com/mental-health/handler/upload"
 	"github.com/mental-health/handler/user"
 	"github.com/mental-health/router/middleware"
@@ -82,6 +83,7 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	Course.Use(middleware.AuthMiddleware())
 	{
 		Course.GET("/info/:id/", course.GetInfo)
+		Course.POST("/info/:id/", course.PostInfo)
 		Course.PUT("/like/:id/", course.LikeCourse)
 		Course.PUT("/favorite/:id/", course.FavoriteCourse)
 		Course.GET("/collection/like/", course.GetLikeCollection)
@@ -132,6 +134,15 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 		Reserve.PUT("/check/", reserve.CheckReserve)
 		Reserve.GET("/form/", reserve.ReserveForm)
 		Reserve.GET("/record/", reserve.GetRecord)
+	}
+
+	//Test路由组
+	Test := g.Group("/api/v1/test/")
+	Test.Use(middleware.AuthMiddleware())
+	{
+		Test.POST("/new/", test.New)
+		Test.GET("/info/:id/", test.GetInfo)
+		Test.GET("/list/", test.GetList)
 	}
 
 	return g

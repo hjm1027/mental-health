@@ -65,5 +65,9 @@ var (
 	ErrGetRecord    = &Errno{Code: 21010, Message: "Error occurred while geting record."}
 
 	//security errors
-	ErrSecurityCheck = &Errno{Code: 21010, Message: "Error occurred in security check"}
+	ErrSecurityCheck = &Errno{Code: 21101, Message: "Error occurred in security check"}
+
+	//test
+	ErrGetTestInfo = &Errno{Code: 21201, Message: "Error occurred while getting test."}
+	ErrGetTestList = &Errno{Code: 21201, Message: "Error occurred while getting test list."}
 )
