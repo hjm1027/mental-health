@@ -1884,6 +1884,69 @@ paths:
           schema:
             $ref: '#/definitions/CodeResponse'
 
+  /test/info/{id}/:
+    get:
+      tags:
+        - test
+      summary: 获取测评信息
+      parameters:
+      - in: header
+        name: token
+        required: true
+        type: string
+        description: token
+      - name: id
+        in: path
+        type: integer
+        required: true
+        description: 测评id
+      responses:
+        "200":
+          description: OK
+          schema:
+           $ref: '#/definitions/TestRequest' 
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '401':
+          description: 未授权
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '500':
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/CodeResponse'
+    
+  /test/list/:
+    get:
+      tags:
+        - test
+      summary: 获取测评列表
+      parameters:
+      - in: header
+        name: token
+        required: true
+        type: string
+        description: token
+      responses:
+        "200":
+          description: OK
+          schema:
+           $ref: '#/definitions/TestRequestList' 
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '401':
+          description: 未授权
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '500':
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/CodeResponse'
+            
 definitions:
   authModel:
     required:
@@ -2391,6 +2454,9 @@ definitions:
   
   TestRequest:
     properties:
+      id:
+        type: integer
+        description: 测评id
       url:
         type: string
         description: 测评链接
@@ -2400,3 +2466,9 @@ definitions:
       content:
         type: string
         description: 测评简介
+  
+  TestRequestList:
+    type: array
+    description: 测评列表
+    items:
+      $ref: '#/definitions/TestRequest'
