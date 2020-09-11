@@ -1929,6 +1929,16 @@ paths:
         required: true
         type: string
         description: token
+      - in: query
+        name: limit
+        required: false
+        description: 每一页期望的问题数量,默认为10
+        type: integer
+      - in: query
+        name: page
+        required: false
+        description: 页数，默认为1
+        type: integer
       responses:
         "200":
           description: OK
@@ -2465,7 +2475,10 @@ definitions:
         description: 测评标题
       content:
         type: string
-        description: 测评简介
+        description: 测评文案
+      image: 
+        type: string
+        description: 图片的url
   
   TestRequestList:
     type: array
