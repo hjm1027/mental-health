@@ -1595,12 +1595,16 @@ paths:
         required: true
         type: string
         description: token
-      - in: body
-        name: body
-        description: 时间段
+      - in: query
+        name: weekday
         required: true
-        schema:
-          $ref: '#/definitions/ReserveQuery'
+        type: integer
+        description: 周几，范围1-7
+      - in: query
+        name: schedule
+        required: true
+        type: integer
+        description: 哪个时间段，范围1-6
       responses:
         "200":
           description: OK
@@ -1965,10 +1969,13 @@ definitions:
     properties:
       sid:
         type: integer
-        description: student's id
+        description: 学生学号
       password:
         type: string
-        description: student's password in one.ccnu.edu.cn
+        description: 一站式门户的密码
+      jscode:
+        type: string
+        description: 用于获取小程序openid
 
 
   authResponse:
