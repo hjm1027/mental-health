@@ -5,4 +5,5 @@ type TestModel struct {
 	Url     string `gorm:"column:url"`
 	Header  string `gorm:"column:header"`
 	Content string `gorm:"column:content"`
+	Image   string `gorm:"column:image"`
 }

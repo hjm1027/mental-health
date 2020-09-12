@@ -15,11 +15,11 @@ func (test *TestModel) GetById() error {
 	return d.Error
 }
 
-func GetList(limit, page uint32) (*[]TestModel, error) {
-	var tests []TestModel
+func GetList(limit, page uint32) ([]*TestModel, error) {
+	var tests []*TestModel
 	d := DB.Self.Table("test").Order("id DESC").Limit(limit).Offset((page - 1) * limit).Find(&tests)
 	if d.RecordNotFound() {
-		return &tests, nil
+		return tests, nil
 	}
-	return &tests, d.Error
+	return tests, d.Error
 }

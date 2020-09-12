@@ -12,6 +12,7 @@ type NewTestRequest struct {
 	Url     string `json:"url" binding:"required"`
 	Header  string `json:"header" binding:"required"`
 	Content string `json:"content" binding:"required"`
+	Image   string `json:"image" binding:"required"`
 }
 
 type NewTestResponse struct {
@@ -29,6 +30,7 @@ func New(c *gin.Context) {
 		Url:     data.Url,
 		Header:  data.Header,
 		Content: data.Content,
+		Image:   data.Image,
 	}
 
 	if err := test.New(); err != nil {

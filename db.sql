@@ -220,6 +220,7 @@ CREATE TABLE `test` (
   `url`     VARCHAR(255) NOT NULL,
   `header`     VARCHAR(255)  NOT NULL,
   `content`     VARCHAR(255) NOT NULL,
+  `image`     VARCHAR(255) NOT NULL,
 
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;

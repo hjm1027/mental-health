@@ -10,6 +10,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type TestListResponse struct {
+	Sum  int                `json:"sum"`
+	List []*model.TestModel `json:"list"`
+}
+
 func GetList(c *gin.Context) {
 	limitStr := c.DefaultQuery("limit", "10")
 	limit, err := strconv.ParseUint(limitStr, 10, 64)
@@ -31,5 +36,10 @@ func GetList(c *gin.Context) {
 		return
 	}
 
-	handler.SendResponse(c, nil, testList)
+	response := TestListResponse{
+		Sum:  len(testList),
+		List: testList,
+	}
+
+	handler.SendResponse(c, nil, response)
 }
