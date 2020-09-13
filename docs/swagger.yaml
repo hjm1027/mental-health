@@ -1735,7 +1735,7 @@ paths:
           schema:
             $ref: '#/definitions/CodeResponse'
             
-  /reserve/record/:
+  /reserve/recordlist/:
     get:
       tags:
         - reserve
@@ -1747,6 +1747,16 @@ paths:
         required: true
         type: string
         description: token
+      - in: query
+        name: limit
+        required: false
+        description: 每一页期望的问题数量,默认为10
+        type: integer
+      - in: query
+        name: page
+        required: false
+        description: 页数，默认为1
+        type: integer
       responses:
         "200":
           description: OK
@@ -1765,6 +1775,41 @@ paths:
           schema:
             $ref: '#/definitions/CodeResponse'
   
+  /reserve/record/{id}/:
+    get:
+      tags:
+        - reserve
+      summary: 单个记录
+      description: 查看详细信息
+      parameters:
+      - in: header
+        name: token
+        required: true
+        type: string
+        description: token
+      - in: path
+        name: id
+        required: true
+        description: 记录id
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ReserveRecordItem'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '401':
+          description: 未授权
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '500':
+          description: 服务器错误
+          schema:
+            $ref: '#/definitions/CodeResponse'
+            
   /poster/info/:
     get:
       tags:
@@ -2401,9 +2446,6 @@ definitions:
       method:
         type: integer
         description: 0/1=线上预约/线下预约
-      module_id:
-        type: integer
-        description: 订阅消息的模板id
   
   ReserveCheckRequest:
     properties:
@@ -2452,22 +2494,48 @@ definitions:
         description: 预约状态，0/1/2分别为 可预约或审核失败/审核中/审核成功 （只有0可以预约）
 
   ReserveRecordResponse:
-    type: array
-    description: 我的记录
-    items:
-      $ref: '#/definitions/ReserveRecordItem'
+    type: object
+    properties:
+      sum:
+        type: integer
+        description: 共有多少个结果
+      list:
+        type: array
+        description: 我的记录
+        items:
+          $ref: '#/definitions/ReserveRecordItem'
       
   ReserveRecordItem:
     properties:
-      time:
-        type: string
-        description: 时间
-      type:
+      id:
         type: integer
-        description: 类型,0/1/2为发起预约/接受预约/拒绝预约
+        description: 记录id
       teacher:
         type: string
         description: 老师名字
+      date:
+        type: string
+        description: 预约的日期(以后，不是今天)
+        example: '2020-09-01'
+      type:
+        type: integer
+        description: 预约类型
+      weekday:
+        type: string
+        description: 1-7
+      schedule:
+        type: string
+        description: 1-6
+      method:
+        type: string
+        description: 0/1=线上预约/线下预约
+      status:
+        type: string
+        description: 预约状态，0/1/2为 预约失败/审核中/预约成功
+      submit_time:
+        type: string
+        description: 预约提交时间
+      
   
   TestRequest:
     properties:
@@ -2488,7 +2556,13 @@ definitions:
         description: 图片的url
   
   TestRequestList:
-    type: array
-    description: 测评列表
-    items:
-      $ref: '#/definitions/TestRequest'
+    type: object
+    properties:
+      sum: 
+        type: integer
+        description: 总数
+      list:
+        type: array
+        description: 测评列表
+        items:
+          $ref: '#/definitions/TestRequest'
