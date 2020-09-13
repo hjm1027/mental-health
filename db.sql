@@ -205,9 +205,14 @@ CREATE TABLE `reserve` (
 
 CREATE TABLE `record` (
   `id`          INT UNSIGNED NOT NULL auto_increment ,
-  `teacher`     VARCHAR(255) NOT NULL COMMENT "预约的老师",
-  `time`     DATETIME  NOT NULL,
-  `type`     TINYINT(1) NOT NULL COMMENT "0/1/2为发起预约/接受预约/拒绝预约",
+  `teacher`     VARCHAR(255) NOT NULL COMMENT "预约的老师名称",
+  `date`     VARCHAR(50) NOT NULL COMMENT "记录日期(2020.08.02)",
+  `type`     TINYINT(1) NOT NULL COMMENT "预约类型",
+  `weekday` TINYINT(1) UNSIGNED   NOT NULL,
+  `schedule` TINYINT(1) UNSIGNED NOT NULL,
+  `method`     TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0/1=线上预约/线下预约",
+  `status`     TINYINT(1) NOT NULL COMMENT "预约状态，0/1/2为 预约失败/审核中/预约成功",
+  `submit_time`     DATETIME  NOT NULL COMMENT "预约提交时间",
 
   `user_id`    INT UNSIGNED NOT NULL ,
 

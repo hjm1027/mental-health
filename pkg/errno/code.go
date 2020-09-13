@@ -61,8 +61,11 @@ var (
 	ErrCheckReserve         = &Errno{Code: 21007, Message: "Error occurred while checking reserve."}
 	ErrGetReserve           = &Errno{Code: 21008, Message: "Error occurred while geting reserve."}
 
-	ErrCreateRecord = &Errno{Code: 21009, Message: "Error occurred in creating record."}
-	ErrGetRecord    = &Errno{Code: 21010, Message: "Error occurred while geting record."}
+	ErrCreateRecord  = &Errno{Code: 21009, Message: "Error occurred in creating record."}
+	ErrGetRecord     = &Errno{Code: 21010, Message: "Error occurred while geting record."}
+	ErrUpdateRecord  = &Errno{Code: 21011, Message: "Error occurred while update record."}
+	GetReserveRecord = &Errno{Code: 21012, Message: "Error occurred while geting reserve record."}
+	ErrGetRecordInfo = &Errno{Code: 21013, Message: "Error in getting record info"}
 
 	//security errors
 	ErrSecurityCheck = &Errno{Code: 21101, Message: "Error occurred in security check"}

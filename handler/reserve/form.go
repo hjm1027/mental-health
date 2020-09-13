@@ -1,7 +1,6 @@
 package reserve
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/mental-health/handler"
@@ -89,10 +88,10 @@ func ReserveForm(c *gin.Context) {
 		}
 
 		date := time.Now().UTC().Add(56 * time.Hour).Add(time.Duration(24*n) * time.Hour)
-		fmt.Println(date)
+		//fmt.Println(date)
 		dateFix := date.Format("2006-01-02 15:04:05")
-		fmt.Println(date.Month())
-		fmt.Println(date.Day())
+		//fmt.Println(date.Month())
+		//fmt.Println(date.Day())
 		n++
 		//month := string(date.Month())
 

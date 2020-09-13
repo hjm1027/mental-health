@@ -75,6 +75,12 @@ func parsem(method uint8) string {
 	return m[method]
 }
 
+func getDate(time2 time.Time, advanceTime uint8) string {
+	date := time2.Add(time.Duration(24*advanceTime) * time.Hour)
+	dateFix := date.Format("2006-01-02 15:04:05")
+	return dateFix[:10]
+}
+
 //进行预约
 func Reserve(c *gin.Context) {
 	userId := c.MustGet("id").(uint32)
@@ -124,10 +130,15 @@ func Reserve(c *gin.Context) {
 
 	//添加记录
 	record := model.RecordModel{
-		Time:    time2,
-		Type:    0,
-		Teacher: teacher,
-		UserId:  userId,
+		Date:       getDate(time2, advanceTime),
+		Type:       data.Type,
+		Teacher:    teacher,
+		Weekday:    data.Weekday,
+		Schedule:   data.Schedule,
+		Method:     data.Method,
+		Status:     1,
+		SubmitTime: time2,
+		UserId:     userId,
 	}
 
 	if err := record.New(); err != nil {

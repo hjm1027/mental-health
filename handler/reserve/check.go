@@ -1,8 +1,6 @@
 package reserve
 
 import (
-	"time"
-
 	"github.com/mental-health/handler"
 	"github.com/mental-health/model"
 	"github.com/mental-health/pkg/errno"
@@ -25,38 +23,31 @@ func CheckReserve(c *gin.Context) {
 		return
 	}
 
-	time2 := time.Now().UTC().Add(8 * time.Hour)
+	/*time2 := time.Now().UTC().Add(8 * time.Hour)
 	teacher, err := model.GetTeacherBySchedule(data.Weekday, data.Schedule)
 	if err != nil {
 		handler.SendError(c, errno.ErrGetTeacherBySchedule, nil, err.Error())
+		return
+	}*/
+
+	//获取预约记录
+	record, err := model.GetReserveRecord(userId, data.Weekday, data.Schedule)
+	if err != nil {
+		handler.SendError(c, errno.GetReserveRecord, nil, err.Error())
 		return
 	}
 
 	var status uint8
 	if data.Check {
 		status = 2
-
-		record := model.RecordModel{
-			Time:    time2,
-			Type:    1,
-			Teacher: teacher,
-			UserId:  userId,
-		}
-		if err := record.New(); err != nil {
-			handler.SendError(c, errno.ErrCreateRecord, nil, err.Error())
+		if err := record.UpdateRecord(status); err != nil {
+			handler.SendError(c, errno.ErrUpdateRecord, nil, err.Error())
 			return
 		}
 	} else {
 		status = 0
-
-		record := model.RecordModel{
-			Time:    time2,
-			Type:    2,
-			Teacher: teacher,
-			UserId:  userId,
-		}
-		if err := record.New(); err != nil {
-			handler.SendError(c, errno.ErrCreateRecord, nil, err.Error())
+		if err := record.UpdateRecord(status); err != nil {
+			handler.SendError(c, errno.ErrUpdateRecord, nil, err.Error())
 			return
 		}
 	}

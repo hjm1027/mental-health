@@ -17,9 +17,14 @@ type ReserveModel struct {
 }
 
 type RecordModel struct {
-	Id      uint32    `gorm:"column:id; primary_key; AUTO_INCREMENT"`
-	Teacher string    `gorm:"column:teacher"`
-	Time    time.Time `gorm:"column:time"`
-	Type    uint8     `gorm:"column:type"`
-	UserId  uint32    `gorm:"column:user_id"`
+	Id         uint32    `gorm:"column:id; primary_key; AUTO_INCREMENT"`
+	Teacher    string    `gorm:"column:teacher"`
+	Date       string    `gorm:"column:date"`
+	Type       uint8     `gorm:"column:type"`
+	Weekday    uint8     `gorm:"column:weekday"`
+	Schedule   uint8     `gorm:"column:schedule"`
+	Method     uint8     `gorm:"column:method"`
+	Status     uint8     `gorm:"column:status"`
+	SubmitTime time.Time `gorm:"column:submit_time"`
+	UserId     uint32    `gorm:"column:user_id"`
 }
