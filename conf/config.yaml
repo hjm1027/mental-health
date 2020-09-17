@@ -33,7 +33,7 @@ app:
   app_id: wx9
   app_secret: 1d9
   template_id: JNpX93oyxSKW-aHj0VM7T5tNNuFZYL-KphgTV4udvAU
-mail:   #qq邮箱好坑，开通满14天才能开启SMTP服务
+mail:   
   user: 1749511631@qq.com
   password: mlo
   to: 3197811671@qq.com

@@ -61,12 +61,12 @@ func (t *accessTokenManager) loadToken() error {
 		return err
 	}
 	var obj WXGetTokenPayload
-	if err := json.Unmarshal(body, &obj); err != nil {
+	if err := json.Unmarshal([]byte(body), &obj); err != nil {
 		log.Error("json unmarshal to WXGetTokenPayload error", err)
 		return err
 	}
 
-	//fmt.Printf("WX access token: old token: %s; new token: %s\n", t.Token, obj.AccessToken)
+	fmt.Printf("WX access token: old token: %s; new token: %s\n", t.Token, obj.AccessToken)
 
 	t.Token = obj.AccessToken
 	t.CreateAt = time.Now().UTC().Add(8 * time.Hour)
@@ -85,8 +85,8 @@ func (t *accessTokenManager) check() error {
 		log.Info("Refresh access token OK")
 	}
 
-	/*fmt.Printf("WX access token info: createAt=%v, expiresIn=%v, sub time from now=%v\n",
-	t.CreateAt, t.ExpiresIn, t.CreateAt.Add(t.ExpiresIn).Sub(now))*/
+	fmt.Printf("WX access token info: createAt=%v, expiresIn=%v, sub time from now=%v\n",
+		t.CreateAt, t.ExpiresIn, t.CreateAt.Add(t.ExpiresIn).Sub(now))
 
 	return nil
 }
