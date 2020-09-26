@@ -44,12 +44,12 @@ func NewParentComment(c *gin.Context) {
 	// 小程序内容安全检测
 	ok, err := security.MsgSecCheck(data.Content)
 	if err != nil {
-		//handler.SendError(c, errno.ErrSecurityCheck, nil, err.Error())
-		//return
+		handler.SendError(c, errno.ErrSecurityCheck, nil, err.Error())
+		return
 	} else if !ok {
 		log.Errorf(err, "WX security check msg(%s) error", data.Content)
-		//handler.SendBadRequest(c, errno.ErrSecurityCheck, nil, "hole comment content violation")
-		//return
+		handler.SendBadRequest(c, errno.ErrSecurityCheck, nil, "hole comment content violation")
+		return
 	}
 
 	var comment = &model.ParentCommentModel{

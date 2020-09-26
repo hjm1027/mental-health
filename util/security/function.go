@@ -48,7 +48,7 @@ type WXGetTokenPayload struct {
 }
 
 func (t *accessTokenManager) loadToken() error {
-	//fmt.Println(fmt.Sprintf(accessTokenGetURL, AppID, AppSecret))
+	fmt.Println(fmt.Sprintf(accessTokenGetURL, AppID, AppSecret))
 	resp, err := http.Get(fmt.Sprintf(accessTokenGetURL, AppID, AppSecret))
 	//fmt.Println(resp)
 	if err != nil {
@@ -66,14 +66,17 @@ func (t *accessTokenManager) loadToken() error {
 		return err
 	}
 
-	fmt.Printf("WX access token: old token: %s; new token: %s\n", t.Token, obj.AccessToken)
+	//fmt.Printf("WX access token: old token: %s; new token: %s\n", t.Token, obj.AccessToken)
 
 	t.Token = obj.AccessToken
 	t.CreateAt = time.Now().UTC().Add(8 * time.Hour)
+	//fmt.Println(t)
+	//fmt.Println(accessToken)
 
 	return nil
 }
 
+/*
 func (t *accessTokenManager) check() error {
 	now := time.Now().UTC().Add(8 * time.Hour)
 	if t.CreateAt.Add(t.ExpiresIn).Sub(now) <= 0 {
@@ -85,16 +88,17 @@ func (t *accessTokenManager) check() error {
 		log.Info("Refresh access token OK")
 	}
 
-	fmt.Printf("WX access token info: createAt=%v, expiresIn=%v, sub time from now=%v\n",
-		t.CreateAt, t.ExpiresIn, t.CreateAt.Add(t.ExpiresIn).Sub(now))
+	//fmt.Printf("WX access token info: createAt=%v, expiresIn=%v, sub time from now=%v\n",
+	//	t.CreateAt, t.ExpiresIn, t.CreateAt.Add(t.ExpiresIn).Sub(now))
 
 	return nil
-}
+}*/
 
 func RefreshTokenScheduled() {
 	for {
-		// 提前10分钟更新
-		time.Sleep(accessToken.ExpiresIn - time.Minute*10)
+		// 提前60分钟更新
+		time.Sleep(accessToken.ExpiresIn - time.Minute*60)
+		//time.Sleep(accessToken.ExpiresIn - time.Second*7190)
 
 		if err := accessToken.loadToken(); err != nil {
 			log.Error("Refresh access token failed", err)

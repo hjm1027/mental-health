@@ -26,9 +26,10 @@ type checkResponse struct {
 
 // 消息文本检测
 func MsgSecCheck(content string) (bool, error) {
-	if err := accessToken.check(); err != nil {
-		return false, err
-	}
+	msgSecCheckURL = "https://api.weixin.qq.com/wxa/msg_sec_check?access_token=" + accessToken.Token
+	//if err := accessToken.check(); err != nil {
+	//	return false, err
+	//}
 
 	data, err := json.Marshal(msgCheckReq{
 		Content: content,

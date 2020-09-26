@@ -42,12 +42,12 @@ func New(c *gin.Context) {
 	// 小程序内容安全检测
 	ok, err := security.MsgSecCheck(data.Header)
 	if err != nil {
-		//handler.SendError(c, errno.ErrSecurityCheck, nil, err.Error())
-		//return
+		handler.SendError(c, errno.ErrSecurityCheck, nil, err.Error())
+		return
 	} else if !ok {
 		log.Errorf(err, "WX security check msg(%s) error", data.Header)
-		//handler.SendBadRequest(c, errno.ErrSecurityCheck, nil, "hole header violation")
-		//return
+		handler.SendBadRequest(c, errno.ErrSecurityCheck, nil, "hole header violation")
+		return
 	}
 
 	ok2, err2 := security.MsgSecCheck(data.Content)
