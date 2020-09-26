@@ -30,9 +30,9 @@ oss:
   bucket_name: hjm1027
   domain_name: resources.e20-health.xyz
 app:
-  app_id: wx9ff144fb4a6072b1
+  app_id: wx9
   app_secret: 1d9
-  template_id: JNp
+  template_id: JNpX93oyxSKW-aHj0VM7T5tNNuFZYL-KphgTV4udvAU
 mail:
   user: 1749511631@qq.com
   password: mlo

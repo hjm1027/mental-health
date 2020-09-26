@@ -48,7 +48,8 @@ type WXGetTokenPayload struct {
 }
 
 func (t *accessTokenManager) loadToken() error {
-	fmt.Println(fmt.Sprintf(accessTokenGetURL, AppID, AppSecret))
+	//fmt.Println(msgSecCheckURL)
+	//fmt.Println(fmt.Sprintf(accessTokenGetURL, AppID, AppSecret))
 	resp, err := http.Get(fmt.Sprintf(accessTokenGetURL, AppID, AppSecret))
 	//fmt.Println(resp)
 	if err != nil {
