@@ -19,6 +19,16 @@ CREATE TABLE `user` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
+CREATE TABLE `user_code` (
+  `id`         INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id` INT UNSIGNED NOT NULL,
+  `openid` VARCHAR(255),
+  `unionid` VARCHAR(255),
+
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
+
 CREATE TABLE `mood` (
   `id`         INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `date`   VARCHAR(50) NOT NULL COMMENT "记录时间(2020.08.02)",

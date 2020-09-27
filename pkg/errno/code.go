@@ -15,11 +15,13 @@ var (
 	ErrTokenInvalid = &Errno{Code: 20102, Message: "The token was invalid."}
 
 	// user errors
-	ErrCreateUser   = &Errno{Code: 20201, Message: "Error occurred in creating user."}
-	ErrUpdateUser   = &Errno{Code: 20202, Message: "Error occurred in updating user"}
-	ErrUserNotFound = &Errno{Code: 20203, Message: "The user was not found."}
-	ErrGetUserInfo  = &Errno{Code: 20204, Message: "Error in getting user info"}
-	ErrUserInfo     = &Errno{Code: 20205, Message: "The user information json cannot be null"}
+	ErrCreateUser     = &Errno{Code: 20201, Message: "Error occurred in creating user."}
+	ErrUpdateUser     = &Errno{Code: 20202, Message: "Error occurred in updating user"}
+	ErrUserNotFound   = &Errno{Code: 20203, Message: "The user was not found."}
+	ErrGetUserInfo    = &Errno{Code: 20204, Message: "Error in getting user info"}
+	ErrUserInfo       = &Errno{Code: 20205, Message: "The user information json cannot be null"}
+	ErrGetUserOpenid  = &Errno{Code: 20206, Message: "Error in getting user openid"}
+	ErrSaveUserOpenid = &Errno{Code: 20206, Message: "Error in saving user openid"}
 
 	//mood errors
 	ErrGetScoreInfo = &Errno{Code: 20301, Message: "Error in getting mood score."}

@@ -1,9 +1,14 @@
 package user
 
 import (
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/lexkong/log"
 	"github.com/mental-health/handler"
 	"github.com/mental-health/model"
 	"github.com/mental-health/pkg/errno"
@@ -11,6 +16,14 @@ import (
 	"github.com/mental-health/util"
 	"github.com/spf13/viper"
 )
+
+type CodeResponse struct {
+	Openid     string `json:"openid"`
+	SessionKey string `json:"session_key"`
+	Unionid    string `json:"unionid"`
+	ErrCode    int32  `json:"errcode"`
+	ErrMsg     string `json:"errmsg"`
+}
 
 func Login(c *gin.Context) {
 	// Binding the data with the user struct.
@@ -66,6 +79,65 @@ func Login(c *gin.Context) {
 		handler.SendError(c, errno.ErrToken, nil, err.Error())
 		return
 	}
+
+	//获取用户openid
+	AppID := viper.GetString("app.app_id")
+	AppSecret := viper.GetString("app.app_secret")
+
+	url := "https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code"
+	code2Session := fmt.Sprintf(url, AppID, AppSecret, l.Jscode)
+
+	resp, err := http.Get(code2Session)
+	if err != nil {
+		handler.SendError(c, errno.ErrGetUserOpenid, nil, err.Error())
+		return
+	}
+	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		handler.SendError(c, errno.ErrGetUserOpenid, nil, err.Error())
+		return
+	}
+
+	var rp CodeResponse
+	if err := json.Unmarshal(body, &rp); err != nil {
+		handler.SendError(c, errno.ErrGetUserOpenid, nil, err.Error())
+		return
+	}
+
+	if rp.ErrCode != 0 {
+		log.Info(fmt.Sprintf("get user openid failed. code: %d; msg: %s.", rp.ErrCode, rp.ErrMsg))
+		handler.SendError(c, errno.ErrGetUserOpenid, nil, rp.ErrMsg)
+		return
+	}
+	log.Info("get user openid OK.")
+
+	//保存openid
+	have, err := model.HaveUserCode(u.Id)
+	if err != nil {
+		handler.SendError(c, errno.ErrSaveUserOpenid, nil, err.Error())
+		return
+	}
+
+	code := &model.UserCodeModel{
+		UserId:  u.Id,
+		Openid:  rp.Openid,
+		Unionid: rp.Unionid,
+	}
+
+	if have == 0 {
+		if err := code.Create(); err != nil {
+			handler.SendError(c, errno.ErrSaveUserOpenid, nil, err.Error())
+			return
+		}
+	} else {
+		if err := code.Save(); err != nil {
+			handler.SendError(c, errno.ErrSaveUserOpenid, nil, err.Error())
+			return
+		}
+	}
+	log.Info("save user openid OK.")
 
 	handler.SendResponse(c, errno.OK, model.AuthResponse{Token: t, IsNew: IsNewUser})
 }

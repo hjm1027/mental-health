@@ -4,6 +4,7 @@ package model
 type LoginModel struct {
 	Sid      string `json:"sid"      binding:"required"`
 	Password string `json:"password" binding:"required"`
+	Jscode   string `json:"jscode"`
 }
 
 // UserModel represents a registered user.
@@ -16,6 +17,13 @@ type UserModel struct {
 	Phone        string `gorm:"column:phone"`
 	Back_avatar  string `gorm:"column:back_avatar"`
 	IsTeacher    bool   `gorm:"column:is_teacher"`
+}
+
+type UserCodeModel struct {
+	Id      uint32 `gorm:"column:id; primary_key; AUTO_INCREMENT"`
+	UserId  uint32 `gorm:"column:user_id"`
+	Openid  string `gorm:"column:openid"`
+	Unionid string `gorm:"column:unionid"`
 }
 
 // AuthResponse represents a JSON web token.

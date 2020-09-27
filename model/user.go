@@ -5,6 +5,10 @@ func (u *UserModel) TableName() string {
 	return "user"
 }
 
+func (u *UserCodeModel) TableName() string {
+	return "user_code"
+}
+
 // 添加一个用户
 func (user *UserModel) Create() error {
 	d := DB.Self.Create(user)
@@ -14,6 +18,15 @@ func (user *UserModel) Create() error {
 // 检验是否存在用户
 func (user *UserModel) HaveUser() (uint8, error) {
 	d := DB.Self.First(user, "sid = ?", user.Sid)
+	if d.RecordNotFound() {
+		return 0, nil
+	}
+	return 1, d.Error
+}
+
+// 检验是否存在用户openid
+func HaveUserCode(userId uint32) (uint8, error) {
+	d := DB.Self.Table("user_code").Where("user_id = ?", userId)
 	if d.RecordNotFound() {
 		return 0, nil
 	}
@@ -88,4 +101,18 @@ func (u *UserModel) GetInfo() *UserInfoResponse {
 		Back_avatar:  u.Back_avatar,
 	}
 	return &info
+}
+
+func (user *UserCodeModel) Create() error {
+	d := DB.Self.Create(user)
+	return d.Error
+}
+
+func (user *UserCodeModel) Save() error {
+	var data UserCodeModel
+	d := DB.Self.Table("user_code").Where("user_id = ?", user.UserId).First(&data)
+	data.Openid = user.Openid
+	data.Unionid = user.Unionid
+	d = DB.Self.Save(data)
+	return d.Error
 }
